@@ -57,7 +57,7 @@ CREATE TABLE classes (
                          status VARCHAR(20) DEFAULT 'SCHEDULED' CHECK (status IN ('SCHEDULED', 'COMPLETED', 'CANCELLED')),
                          notes TEXT,
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP on update
+                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Client bookings
@@ -136,8 +136,3 @@ $$ language 'plpgsql';
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_classes_updated_at BEFORE UPDATE ON classes FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-
-                                                                                                            ('Personal Training', '1-on-1 training session', 60, false, 1, 80.00),
-                                                                                                            ('Group Yoga', 'Group yoga class for all levels', 75, true, 15, 25.00),
-                                                                                                            ('CrossFit', 'High-intensity group workout', 60, true, 12, 30.00),
-                                                                                                            ('Swimming Lessons', 'Private swimming instruction', 45, false, 1, 60.00);
