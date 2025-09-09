@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -30,7 +30,7 @@ public class CreateUserRequest {
     private String phoneNumber;
 
     @Past(message = "Birthday must be in the past")
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private String address;
 

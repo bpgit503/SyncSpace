@@ -1,13 +1,14 @@
 package com.devbp.syncspace.controllers;
 
+import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.mappers.UserMapper;
 import com.devbp.syncspace.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +27,14 @@ public class UserController {
                 .toList();
 
         return ResponseEntity.ok(userResponseDtos);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody CreateUserRequest createUserRequest){
+
+        UserResponseDto userResponseDto = userMapper.toDto(userService.createUser(createUserRequest));
+
+        return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED );
+
     }
 }

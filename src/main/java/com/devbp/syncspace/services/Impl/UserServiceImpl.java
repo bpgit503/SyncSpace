@@ -21,7 +21,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user, CreateUserRequest createUserRequestDto) {
+    public User createUser(CreateUserRequest createUserRequestDto) {
+
+        if (userRepository.existsByEmail(createUserRequestDto.getEmail())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
 
         User newUser = new User();
         newUser.setEmail(createUserRequestDto.getEmail());
@@ -30,7 +34,8 @@ public class UserServiceImpl implements UserService {
         newUser.setPhoneNumber(createUserRequestDto.getPhoneNumber());
         newUser.setDateOfBirth(createUserRequestDto.getDateOfBirth());
         newUser.setAddress(createUserRequestDto.getAddress());
+        newUser.setUserType(createUserRequestDto.getUserType());
 
-        return userRepository.save(user);
+        return userRepository.save(newUser);
     }
 }

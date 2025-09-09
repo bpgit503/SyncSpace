@@ -20,7 +20,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User createUser(User user, CreateUserRequest createUserRequestDto);
+    User createUser(CreateUserRequest createUserRequestDto);
 
 
 }

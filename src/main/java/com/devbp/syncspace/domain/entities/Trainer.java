@@ -14,7 +14,7 @@ import lombok.*;
 public class Trainer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull(message = "User id is required")
