@@ -3,7 +3,6 @@ package com.devbp.syncspace.domain.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CollectionId;
 
 @Entity
 @Table(name = "trainers")
@@ -12,7 +11,7 @@ import org.hibernate.annotations.CollectionId;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Trainers {
+public class Trainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
