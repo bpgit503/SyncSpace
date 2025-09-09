@@ -30,6 +30,10 @@ Invoices will show clients which classes they have paid for.
 # Admin Story
 
 As an Admin  
+I want to be able to add user (Clients and Trainers) to the system.
+I want to be able to read user (Clients and Trainers) entries
+I want to update user (Clients and Trainers) entries
+I want to be able to delete user (Clients and Trainers) entries
 I want to create classes and class their types  
 I want to create bookings for clients and assign them to a class of their choice with the designated trainer.  
 I want to create invoices for clients who have booked classes with trainers.  
