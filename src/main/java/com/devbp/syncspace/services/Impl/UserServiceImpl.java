@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        return null;
+        //todo implement createUserRequest and DTO
+        return userRepository.save(user);
     }
 }
