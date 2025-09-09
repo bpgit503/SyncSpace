@@ -14,7 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -32,14 +32,14 @@ public class User {
     private String email;
 
     @NotBlank(message = "First name is required")
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @NotBlank(message = "Last name is required")
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column( name = "phone", length = 20)
+    @Column(name = "phone", length = 20)
     private String phoneNumber;
 
     @Past(message = "Birthday must be in the past")
@@ -57,7 +57,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserStatus status =  UserStatus.ACTIVE;
+    private UserStatus status = UserStatus.ACTIVE;
 
     @CreationTimestamp
     @Column(name = "created_at")

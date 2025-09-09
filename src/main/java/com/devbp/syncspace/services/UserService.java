@@ -1,5 +1,6 @@
 package com.devbp.syncspace.services;
 
+import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.entities.User;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User createUser(User user);
+    User createUser(User user, CreateUserRequest createUserRequestDto);
 
 
 }

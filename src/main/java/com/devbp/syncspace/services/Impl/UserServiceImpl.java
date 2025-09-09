@@ -1,5 +1,6 @@
 package com.devbp.syncspace.services.Impl;
 
+import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.UserService;
@@ -20,8 +21,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
-        //todo implement createUserRequest and DTO
+    public User createUser(User user, CreateUserRequest createUserRequestDto) {
+
+        User newUser = new User();
+        newUser.setEmail(createUserRequestDto.getEmail());
+        newUser.setFirstName(createUserRequestDto.getFirstName());
+        newUser.setLastName(createUserRequestDto.getLastName());
+        newUser.setPhoneNumber(createUserRequestDto.getPhoneNumber());
+        newUser.setDateOfBirth(createUserRequestDto.getDateOfBirth());
+        newUser.setAddress(createUserRequestDto.getAddress());
+
         return userRepository.save(user);
     }
 }

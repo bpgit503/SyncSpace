@@ -1,10 +1,5 @@
-package com.devbp.syncspace.domain.dtos;
+package com.devbp.syncspace.domain;
 
-import com.devbp.syncspace.domain.UserStatus;
-import com.devbp.syncspace.domain.UserType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserCreateDto {
+public class CreateUserRequest {
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
@@ -31,7 +26,6 @@ public class UserCreateDto {
 
     @NotBlank(message = "Last name is required")
     private String lastName;
-
 
     private String phoneNumber;
 
