@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+Create CLient DTO
+Create Trainer DTO
+is a class that passes data between layers
