@@ -1,6 +1,6 @@
 package com.devbp.syncspace.controllers;
 
-import com.devbp.syncspace.domain.dtos.UserDto;
+import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.mappers.UserMapper;
 import com.devbp.syncspace.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,11 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> userDtos = userService.getAllUsers().stream()
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        List<UserResponseDto> userResponseDtos = userService.getAllUsers().stream()
                 .map(userMapper::toDto)
                 .toList();
 
-        return ResponseEntity.ok(userDtos);
+        return ResponseEntity.ok(userResponseDtos);
     }
 }
