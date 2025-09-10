@@ -29,12 +29,29 @@ public class UserController {
         return ResponseEntity.ok(userResponseDtos);
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+
+        UserResponseDto userResponseDto = userMapper.toDto(userService.getUserById(id));
+
+        return ResponseEntity.ok(userResponseDto);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email) {
+
+        UserResponseDto userResponseDto = userMapper.toDto(userService.getUserByEmail(email));
+
+        return ResponseEntity.ok(userResponseDto);
+    }
+
+
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody CreateUserRequest createUserRequest){
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
 
         UserResponseDto userResponseDto = userMapper.toDto(userService.createUser(createUserRequest));
 
-        return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED );
+        return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
 
     }
 
