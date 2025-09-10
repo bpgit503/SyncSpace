@@ -8,19 +8,22 @@ import java.util.List;
 //CRUD
 
 /*** TODO: Create the ff
- * get all users
  * get user by id
- * get users by first/last name
- * get user by first and last name
- * read user by id
+ * get user by email
+ * get list users by first/last name
+ * get list user by first and last name
  * Update User
- * Delete User by Id & first and last name
+ * Delete User by email and id
  */
 public interface UserService {
 
     List<User> getAllUsers();
 
     User createUser(CreateUserRequest createUserRequestDto);
+
+    User getUserById(Long id);
+
+    User getUserByEmail(String email);
 
 
 }

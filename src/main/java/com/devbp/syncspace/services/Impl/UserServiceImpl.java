@@ -4,6 +4,8 @@ import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     @Override
     public User createUser(CreateUserRequest createUserRequestDto) {
 
@@ -37,5 +40,18 @@ public class UserServiceImpl implements UserService {
         newUser.setUserType(createUserRequestDto.getUserType());
 
         return userRepository.save(newUser);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
     }
 }
