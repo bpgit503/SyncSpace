@@ -1,5 +1,7 @@
 package com.devbp.syncspace.domain.mappers;
 
+import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.dtos.UpdateUserRequestDto;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.entities.User;
 import org.mapstruct.Mapper;
@@ -10,5 +12,6 @@ public interface UserMapper {
 
     UserResponseDto toDto(User user);
 
+    UpdateUserRequest toDto(UpdateUserRequestDto updateUserRequestDto);
 
 }

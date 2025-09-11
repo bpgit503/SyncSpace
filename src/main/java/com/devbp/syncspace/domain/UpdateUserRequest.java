@@ -1,28 +1,24 @@
-package com.devbp.syncspace.domain.dtos;
+package com.devbp.syncspace.domain;
 
-import com.devbp.syncspace.domain.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponseDto {
+public class UpdateUserRequest {
 
-    private Long id;
     private String email;
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
-    private UserType userType;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private UserStatus status;
 
 }
