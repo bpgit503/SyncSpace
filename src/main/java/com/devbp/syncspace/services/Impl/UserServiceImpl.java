@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@AllArgsConstructorgit
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
             //must check if email already exists within the system
             if (userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), id)) {
-                // creat email already exists exception and throw it
+                // create email already exists exception and throw it
                 throw new IllegalArgumentException("Email is in use");
             } else existingUser.setEmail(updateUserRequest.getEmail());
         }
@@ -81,4 +81,14 @@ public class UserServiceImpl implements UserService {
         //create tests for its multiple use cases
         return existingUser;
     }
+
+    @Transactional
+    @Override
+    public void deleteUser(long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID: "+ id + "was not found"));
+
+        userRepository.delete(user);
+
+    }
+
 }
