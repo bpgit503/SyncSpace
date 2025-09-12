@@ -3,6 +3,8 @@ package com.devbp.syncspace.services.Impl;
 import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.UpdateUserRequest;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
+import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,6 +19,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    //todo create test cases
 
     @Override
     public List<User> getAllUsers() {
@@ -46,27 +50,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
 
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
     }
 
     @Override
     public User getUserByEmail(String email) {
 
-        return userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
     }
 
     @Transactional
     @Override
     public User updateUser(long id, UpdateUserRequest updateUserRequest) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The user with ID: " + id + " doesn't not exist"));
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id ));
 
-        //check if id and emails match
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
-            //must check if email already exists within the system
+
             if (userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), id)) {
-                // create email already exists exception and throw it
-                throw new IllegalArgumentException("Email is in use");
+
+                throw new EmailAlreadyExistsException("Email is in use");
+
             } else existingUser.setEmail(updateUserRequest.getEmail());
         }
 
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setStatus(updateUserRequest.getStatus());
 
 
-        //create tests for its multiple use cases
+        //todo create tests for its multiple use cases
         return existingUser;
     }
 
