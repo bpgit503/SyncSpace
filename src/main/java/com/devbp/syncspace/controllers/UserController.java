@@ -1,11 +1,14 @@
 package com.devbp.syncspace.controllers;
 
 import com.devbp.syncspace.domain.CreateUserRequest;
+import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.dtos.UpdateUserRequestDto;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.mappers.UserMapper;
 import com.devbp.syncspace.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -53,6 +57,16 @@ public class UserController {
 
         return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
 
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable long id, @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
+
+        UpdateUserRequest updateUserRequest = userMapper.toUpdateUserRequest(updateUserRequestDto);
+
+        UserResponseDto userResponseDto = userMapper.toDto(userService.updateUser(id, updateUserRequest));
+
+        return ResponseEntity.ok(userResponseDto);
     }
 
 

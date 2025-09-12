@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
     }
 
+    @Transactional
     @Override
     public User updateUser(long id, UpdateUserRequest updateUserRequest) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The user with ID: " + id + " doesn't not exist"));
@@ -77,6 +78,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setStatus(updateUserRequest.getStatus());
 
 
-        return null;
+        //create tests for its multiple use cases
+        return existingUser;
     }
 }
