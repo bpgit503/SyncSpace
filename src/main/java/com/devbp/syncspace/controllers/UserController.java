@@ -70,9 +70,18 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser( @PathVariable Long id ) {
+    public ResponseEntity<Void> deleteUserById( @PathVariable Long id ) {
 
-        userService.deleteUser(id);
+        userService.deleteUserByEmail(id);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> deleteUserByEmail( @PathVariable String  email ) {
+
+        userService.deleteUserByEmail(email);
 
         return ResponseEntity.noContent().build();
 

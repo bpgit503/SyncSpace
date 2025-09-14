@@ -11,9 +11,10 @@ import java.util.List;
 /*** TODO: Create the ff
  * get user by id
  * get user by email
- * get list users by first/last name or email - search function;
+ * get list users by first/last name or email + search function;
  * Update User update userDTO
- * Delete User by email and id
+ * Delete User by id
+ * Delete User By Email
  * get user by type
  * activate/deactivate user user
  */
@@ -29,6 +30,8 @@ public interface UserService {
 
     User updateUser(long id, UpdateUserRequest userRequest);
 
-    void deleteUser(long id);
+    void deleteUserByEmail(long id);
+
+    void deleteUserByEmail(String Email);
 
 }

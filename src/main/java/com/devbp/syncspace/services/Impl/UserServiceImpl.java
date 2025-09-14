@@ -88,8 +88,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(long id) {
+    public void deleteUserByEmail(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID: "+ id + "was not found"));
+
+        userRepository.delete(user);
+    }
+
+    @Override
+    public void deleteUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : "+ email + "was not found"));
 
         userRepository.delete(user);
     }
