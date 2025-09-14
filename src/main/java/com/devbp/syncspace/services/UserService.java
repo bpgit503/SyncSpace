@@ -34,4 +34,7 @@ public interface UserService {
 
     void deleteUserByEmail(String Email);
 
+    User activateUserByEmail(String Email);
+
+
 }

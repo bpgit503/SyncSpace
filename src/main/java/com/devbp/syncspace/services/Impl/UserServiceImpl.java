@@ -2,6 +2,7 @@ package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User updateUser(long id, UpdateUserRequest updateUserRequest) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id ));
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
 
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
 
@@ -89,16 +90,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUserByEmail(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID: "+ id + "was not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID: " + id + "was not found"));
 
         userRepository.delete(user);
     }
 
     @Override
     public void deleteUserByEmail(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : "+ email + "was not found"));
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : " + email + "was not found"));
 
         userRepository.delete(user);
+    }
+
+    @Override
+    public User activateUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : " + email + "was not found"));
+
+        user.setStatus(UserStatus.ACTIVE);
+
+        return user;
     }
 
 }

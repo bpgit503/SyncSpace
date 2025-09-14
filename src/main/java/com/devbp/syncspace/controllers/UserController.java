@@ -69,8 +69,16 @@ public class UserController {
         return ResponseEntity.ok(userResponseDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById( @PathVariable Long id ) {
+    @PatchMapping("/{email}")
+    public ResponseEntity<UserResponseDto> activateUserStatus(@PathVariable String email){
+
+        UserResponseDto userResponseDto = userMapper.toDto(userService.activateUserByEmail(email));
+
+        return ResponseEntity.ok(userResponseDto);
+    }
+
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
 
         userService.deleteUserByEmail(id);
 
@@ -78,14 +86,15 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<Void> deleteUserByEmail( @PathVariable String  email ) {
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email) {
 
         userService.deleteUserByEmail(email);
 
         return ResponseEntity.noContent().build();
 
     }
+
 
 
 }

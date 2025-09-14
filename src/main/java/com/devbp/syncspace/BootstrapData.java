@@ -28,7 +28,7 @@ public class BootstrapData implements CommandLineRunner {
                     .dateOfBirth(LocalDate.parse("1970-10-30"))
                     .address("1 down the rabbit hole, some forest")
                     .userType(UserType.CLIENT)
-                    .status(UserStatus.ACTIVE)
+                    .status(UserStatus.INACTIVE)
                     .build();
 
             User user2 = User.builder()
