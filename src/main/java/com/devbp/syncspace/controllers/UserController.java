@@ -69,13 +69,23 @@ public class UserController {
         return ResponseEntity.ok(userResponseDto);
     }
 
-    @PatchMapping("/{email}")
+    @PatchMapping("/activate/{email}")
     public ResponseEntity<UserResponseDto> activateUserStatus(@PathVariable String email){
 
         UserResponseDto userResponseDto = userMapper.toDto(userService.activateUserByEmail(email));
 
         return ResponseEntity.ok(userResponseDto);
     }
+
+    @PatchMapping("/deactivate/{email}")
+    public ResponseEntity<UserResponseDto> deactivateUserStatus(@PathVariable String email){
+
+        UserResponseDto userResponseDto = userMapper.toDto(userService.deactivateUserByEmail(email));
+
+        return ResponseEntity.ok(userResponseDto);
+    }
+
+
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {

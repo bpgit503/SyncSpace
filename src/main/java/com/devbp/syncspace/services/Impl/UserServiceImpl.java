@@ -111,4 +111,13 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User deactivateUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : " + email + "was not found"));
+
+        user.setStatus(UserStatus.INACTIVE);
+
+        return user;
+    }
+
 }

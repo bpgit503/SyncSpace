@@ -32,9 +32,9 @@ public interface UserService {
 
     void deleteUserByEmail(long id);
 
-    void deleteUserByEmail(String Email);
+    void deleteUserByEmail(String email);
 
-    User activateUserByEmail(String Email);
+    User activateUserByEmail(String email);
 
-
+    User deactivateUserByEmail(String email);
 }
