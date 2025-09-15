@@ -4,6 +4,7 @@ import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.UpdateUserRequest;
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
 import com.devbp.syncspace.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -88,7 +89,23 @@ class UserServiceImplTest {
             verify(userRepository, times(1)).save(any(User.class));
 
         }
+
+        @Test
+        @DisplayName("Should Throw EmailAlreadyExistsException when email already exists")
+        void shouldThrowExceptionWhenEmailAlreadyExists(){
+            //Given
+            when(userRepository.existsByEmail(createUserRequest.getEmail())).thenReturn(true);
+
+            //When & Then
+            EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () -> userService.createUser(createUserRequest));
+
+            assertEquals("Email already in use", exception.getMessage());
+            verify(userRepository, times(1)).existsByEmail(createUserRequest.getEmail());
+            verify(userRepository, never()).save(any(User.class));
+        }
     }
+
+
 
 
 }
