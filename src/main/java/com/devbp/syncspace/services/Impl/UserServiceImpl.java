@@ -22,6 +22,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     //todo create test cases
+    //todo refactor find user by email to a single method call
+
 
     @Override
     public List<User> getAllUsers() {
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(CreateUserRequest createUserRequestDto) {
 
         if (userRepository.existsByEmail(createUserRequestDto.getEmail())) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new EmailAlreadyExistsException("Email already in use");
         }
 
         User newUser = new User();
