@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
 
         return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with email : " + email));
+                .orElseThrow(() -> new EmailAlreadyExistsException("User not found with email : " + email));
     }
 
     @Transactional
