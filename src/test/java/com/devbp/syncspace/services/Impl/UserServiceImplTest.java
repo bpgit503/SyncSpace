@@ -2,10 +2,13 @@ package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
+import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.UserRepository;
+import jakarta.validation.constraints.AssertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +36,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     private User expectedUser;
+    private User updatedUser;
     private CreateUserRequest createUserRequest;
     private UpdateUserRequest updateUserRequest;
 
@@ -60,17 +65,35 @@ class UserServiceImplTest {
                 .address("123 street")
                 .userType(UserType.CLIENT)
                 .build();
+
+        this.updateUserRequest = UpdateUserRequest.builder()
+                .email("jane.doe@email.com")
+                .firstName("jane")
+                .lastName("doe")
+                .phoneNumber("987654321")
+                .dateOfBirth(LocalDate.parse("1995-06-09"))
+                .address("321 street")
+                .status(UserStatus.ACTIVE)
+                .build();
+
+        this.updatedUser = User.builder()
+                .email("jane.doe@email.com")
+                .firstName("jane")
+                .lastName("doe")
+                .phoneNumber("987654321")
+                .dateOfBirth(LocalDate.parse("1995-06-09"))
+                .address("321 street")
+                .status(UserStatus.ACTIVE)
+                .build();
     }
+
 
     @Nested
     @DisplayName("Create User Tests")
     class createUserTests {
 
-        /*** Test Scenarios:
-         * When User is created successfully
-         * when inputted email already exists in db
-         * check if given email is null
-         */
+        //TODO create test to see if json object is mapped correctly to DTO
+
 
         @Test
         @DisplayName("Should create user successfully when email doesn't exist")
@@ -92,7 +115,7 @@ class UserServiceImplTest {
 
         @Test
         @DisplayName("Should Throw EmailAlreadyExistsException when email already exists")
-        void shouldThrowExceptionWhenEmailAlreadyExists(){
+        void shouldThrowExceptionWhenEmailAlreadyExists() {
             //Given
             when(userRepository.existsByEmail(createUserRequest.getEmail())).thenReturn(true);
 
@@ -105,7 +128,84 @@ class UserServiceImplTest {
         }
     }
 
+    /*
+     * TODO create test to verify if all fields are update correctly
+     */
+
+    @Nested
+    @DisplayName("Update User Tests")
+    class updateUserTests {
+
+        @Test
+        @DisplayName("Should successfully updated a user when email is not changed")
+        void shouldUpdateUserSuccessfully_WhenEmailExists() {
+            //Given
+            Long id = 1L;
+            when(userRepository.findById(id)).thenReturn(Optional.of(expectedUser));
+            when(userRepository.save(any())).thenReturn(updatedUser);
+
+            //When
+            User newlyUpdatedUser = userService.updateUser(expectedUser.getId(), updateUserRequest);
+
+            //Then
+            assertEquals(newlyUpdatedUser, updatedUser);
+            assertEquals("jane", newlyUpdatedUser.getFirstName());
+            assertEquals("jane.doe@email.com", newlyUpdatedUser.getEmail());
+
+            verify(userRepository, times(1)).findById(id);
+            verify(userRepository, times(1)).save(any(User.class));
+        }
+
+        @Test
+        @DisplayName("Should successfully updated a user when email is available")
+        void shouldSuccessfullyUpdateUser_WhenChangingEmailToAvailableOne() {
+            when(userRepository.findById(1L)).thenReturn(Optional.of(expectedUser));
+            when(userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L)).thenReturn(false);
+            when(userRepository.save(any())).thenReturn(updatedUser);
+
+            User newlyUpdatedUser = userService.updateUser(1L, updateUserRequest);
+
+            assertEquals("jane.doe@email.com", newlyUpdatedUser.getEmail());
+            assertEquals("jane", newlyUpdatedUser.getFirstName());
+
+            verify(userRepository, times(1)).findById(1L);
+            verify(userRepository, times(1)).existsByEmailAndIdNot("jane.doe@email.com", 1L);
+            verify(userRepository, times(1)).save(any(User.class));
 
 
+        }
+
+        @Test
+        @DisplayName("Should Throw ResourceNotFoundException when user ID is not found")
+        void ShouldThrowResourceNotFoundException_WhenUserIsNotFound(){
+            Long nonExistentId = 999L;
+            when(userRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> userService.updateUser(nonExistentId, updateUserRequest));
+
+            assertEquals("User not found with ID: " + nonExistentId, exception.getMessage());
+
+            verify(userRepository, times(1)).findById(nonExistentId);
+            verify(userRepository, never()).save(any(User.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Should Throw EmailAlreadyExistsException when changing to existing email")
+    void ShouldThrowEmailAlreadyExistsException_WhenEmailAlreadyExists(){
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(expectedUser));
+        when(userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L)).thenReturn(true);
+
+        EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () -> userService.updateUser(1L, updateUserRequest));
+
+        assertEquals("Email is in use", exception.getMessage());
+
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L);
+        verify(userRepository, never()).save(any(User.class));
+
+
+    }
 
 }
