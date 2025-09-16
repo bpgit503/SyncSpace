@@ -52,22 +52,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User findUserById(Long id) {
 
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User findUserByEmail(String email) {
 
-        return userRepository.findUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        return userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with email : " + email));
     }
 
     @Transactional
     @Override
     public User updateUser(long id, UpdateUserRequest updateUserRequest) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+        User existingUser = findUserById(id);
 
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
 
@@ -91,34 +93,37 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUserByEmail(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID: " + id + "was not found"));
+        User user = findUserById(id);
 
         userRepository.delete(user);
     }
 
     @Override
     public void deleteUserByEmail(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : " + email + "was not found"));
+        User user = findUserByEmail(email);
 
         userRepository.delete(user);
     }
 
+    @Transactional
     @Override
     public User activateUserByEmail(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : " + email + "was not found"));
+        User user = findUserByEmail(email);
 
         user.setStatus(UserStatus.ACTIVE);
 
-        return user;
+        return userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public User deactivateUserByEmail(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email : " + email + "was not found"));
+        User user = findUserByEmail(email);
 
         user.setStatus(UserStatus.INACTIVE);
 
-        return user;
+        return userRepository.save(user);
     }
+
 
 }

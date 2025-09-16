@@ -94,7 +94,6 @@ class UserServiceImplTest {
 
         //TODO create test to see if json object is mapped correctly to DTO
 
-
         @Test
         @DisplayName("Should create user successfully when email doesn't exist")
         void shouldCreateUserSuccessfully() {
@@ -172,12 +171,11 @@ class UserServiceImplTest {
             verify(userRepository, times(1)).existsByEmailAndIdNot("jane.doe@email.com", 1L);
             verify(userRepository, times(1)).save(any(User.class));
 
-
         }
 
         @Test
         @DisplayName("Should Throw ResourceNotFoundException when user ID is not found")
-        void ShouldThrowResourceNotFoundException_WhenUserIsNotFound(){
+        void ShouldThrowResourceNotFoundException_WhenUserIsNotFound() {
             Long nonExistentId = 999L;
             when(userRepository.findById(nonExistentId)).thenReturn(Optional.empty());
 
@@ -192,7 +190,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Should Throw EmailAlreadyExistsException when changing to existing email")
-    void ShouldThrowEmailAlreadyExistsException_WhenEmailAlreadyExists(){
+    void ShouldThrowEmailAlreadyExistsException_WhenEmailAlreadyExists() {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(expectedUser));
         when(userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L)).thenReturn(true);
@@ -205,7 +203,8 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L);
         verify(userRepository, never()).save(any(User.class));
 
-
     }
+
+
 
 }

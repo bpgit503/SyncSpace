@@ -24,9 +24,9 @@ public interface UserService {
 
     User createUser(CreateUserRequest createUserRequestDto);
 
-    User getUserById(Long id);
+    User findUserById(Long id);
 
-    User getUserByEmail(String email);
+    User findUserByEmail(String email);
 
     User updateUser(long id, UpdateUserRequest userRequest);
 
@@ -37,4 +37,5 @@ public interface UserService {
     User activateUserByEmail(String email);
 
     User deactivateUserByEmail(String email);
+
 }

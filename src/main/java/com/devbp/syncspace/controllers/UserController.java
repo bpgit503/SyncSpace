@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/id/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
 
-        UserResponseDto userResponseDto = userMapper.toDto(userService.getUserById(id));
+        UserResponseDto userResponseDto = userMapper.toDto(userService.findUserById(id));
 
         return ResponseEntity.ok(userResponseDto);
     }
@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email) {
 
-        UserResponseDto userResponseDto = userMapper.toDto(userService.getUserByEmail(email));
+        UserResponseDto userResponseDto = userMapper.toDto(userService.findUserByEmail(email));
 
         return ResponseEntity.ok(userResponseDto);
     }
