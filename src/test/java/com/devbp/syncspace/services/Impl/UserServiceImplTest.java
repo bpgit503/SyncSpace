@@ -283,6 +283,7 @@ class UserServiceImplTest {
     }
 
 
+
     @Test
     @DisplayName("Should successfully change User Status to Active when user exists")
     void shouldSuccessfullyUpdateUserStatusToActive_WhenUserExists() {
@@ -299,6 +300,25 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).findUserByEmail(updatedUser.getEmail());
 
     }
+
+    @Test
+    @DisplayName("Should successfully change User Status to Inactive when user exists")
+    void shouldSuccessfullyUpdateUserStatusToInactive_WhenUserExists(){
+
+        when(userRepository.findUserByEmail(expectedUser.getEmail())).thenReturn(Optional.of(expectedUser));
+        when(userRepository.save(expectedUser)).thenReturn(expectedUser);
+
+        User newylUpdatedUser = userService.deactivateUserByEmail(expectedUser.getEmail());
+
+        assertNotNull(newylUpdatedUser);
+        assertEquals(expectedUser.getEmail(), newylUpdatedUser.getEmail());
+        assertEquals(UserStatus.INACTIVE, newylUpdatedUser.getStatus());
+
+        verify(userRepository, times(1)).findUserByEmail(expectedUser.getEmail());
+
+    }
+
+
 
 
 }
