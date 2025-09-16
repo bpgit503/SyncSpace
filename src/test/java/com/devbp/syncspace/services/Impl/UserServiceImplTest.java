@@ -9,6 +9,7 @@ import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.UserRepository;
 import jakarta.validation.constraints.AssertTrue;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 @DisplayName("User Service Implementation Unit Tests")
 class UserServiceImplTest {
@@ -73,7 +75,7 @@ class UserServiceImplTest {
                 .phoneNumber("987654321")
                 .dateOfBirth(LocalDate.parse("1995-06-09"))
                 .address("321 street")
-                .status(UserStatus.ACTIVE)
+                .status(UserStatus.INACTIVE)
                 .build();
 
         this.updatedUser = User.builder()
@@ -83,7 +85,7 @@ class UserServiceImplTest {
                 .phoneNumber("987654321")
                 .dateOfBirth(LocalDate.parse("1995-06-09"))
                 .address("321 street")
-                .status(UserStatus.ACTIVE)
+                .status(UserStatus.INACTIVE)
                 .build();
     }
 
@@ -277,6 +279,24 @@ class UserServiceImplTest {
             verify(userRepository, times(1)).findUserByEmail(email);
 
         }
+
+    }
+
+
+    @Test
+    @DisplayName("Should successfully change User Status to Active when user exists")
+    void shouldSuccessfullyUpdateUserStatusToActive_WhenUserExists() {
+
+        when(userRepository.findUserByEmail(updatedUser.getEmail())).thenReturn(Optional.of(updatedUser));
+        when(userRepository.save(updatedUser)).thenReturn(updatedUser);
+
+        User newylUpdatedUser = userService.activateUserByEmail(updatedUser.getEmail());
+
+        assertNotNull(newylUpdatedUser);
+        assertEquals(updatedUser.getEmail(), newylUpdatedUser.getEmail());
+        assertEquals(UserStatus.ACTIVE, newylUpdatedUser.getStatus());
+
+        verify(userRepository, times(1)).findUserByEmail(updatedUser.getEmail());
 
     }
 
