@@ -8,7 +8,6 @@ import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.UserRepository;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -131,6 +130,8 @@ class UserServiceImplTest {
 
     /*
      * TODO create test to verify if all fields are update correctly
+     *  TODO Learn Argument Captors
+     *  TODO create test to verify that all fields have been updated properly
      */
 
     @Nested
@@ -283,6 +284,34 @@ class UserServiceImplTest {
     }
 
 
+    @Nested
+    @DisplayName("Should Delete User By Email or Id")
+    class ShouldDeleteUserByEmailOrId {
+
+        @Test
+        @DisplayName("Should successfully Delete user by Id")
+        void shouldSuccessfullyDeleteUser_WhenExistsById() {
+            when(userRepository.findById(expectedUser.getId())).thenReturn(Optional.of(expectedUser));
+
+            userService.deleteUserById(expectedUser.getId());
+
+            verify(userRepository, times(1)).delete(expectedUser);
+        }
+
+        @Test
+        @DisplayName("Should successfully Delete user by Email")
+        void shouldSuccessfullyDeleteUser_WhenExistsByEmail() {
+
+            when(userRepository.findUserByEmail(expectedUser.getEmail())).thenReturn(Optional.of(expectedUser));
+
+            userService.deleteUserByEmail(expectedUser.getEmail());
+
+            verify(userRepository, times(1)).delete(expectedUser);
+
+        }
+
+
+    }
 
     @Test
     @DisplayName("Should successfully change User Status to Active when user exists")
@@ -303,7 +332,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Should successfully change User Status to Inactive when user exists")
-    void shouldSuccessfullyUpdateUserStatusToInactive_WhenUserExists(){
+    void shouldSuccessfullyUpdateUserStatusToInactive_WhenUserExists() {
 
         when(userRepository.findUserByEmail(expectedUser.getEmail())).thenReturn(Optional.of(expectedUser));
         when(userRepository.save(expectedUser)).thenReturn(expectedUser);
@@ -317,8 +346,6 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).findUserByEmail(expectedUser.getEmail());
 
     }
-
-
 
 
 }
