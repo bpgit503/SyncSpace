@@ -30,7 +30,7 @@ public interface UserService {
 
     User updateUser(long id, UpdateUserRequest userRequest);
 
-    void deleteUserByEmail(long id);
+    void deleteUserById(long id);
 
     void deleteUserByEmail(String email);
 

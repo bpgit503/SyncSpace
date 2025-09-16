@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUserByEmail(long id) {
+    public void deleteUserById(long id) {
         User user = findUserById(id);
 
         userRepository.delete(user);
