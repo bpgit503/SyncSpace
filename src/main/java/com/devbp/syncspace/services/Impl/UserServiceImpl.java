@@ -85,9 +85,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(updateUserRequest.getAddress());
         existingUser.setStatus(updateUserRequest.getStatus());
 
-
-        //todo create tests for its multiple use cases
-        return existingUser;
+        return userRepository.save(existingUser);
     }
 
     @Transactional
