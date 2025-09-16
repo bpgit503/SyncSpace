@@ -209,7 +209,7 @@ class UserServiceImplTest {
     @DisplayName("Find User By ID Tests")
     class FindUserByIdTests {
         @Test
-        @DisplayName("Should successfully return a user")
+        @DisplayName("Should successfully return a user when ID exists")
         void ShouldSuccessfullyReturnUser() {
             Long id = 1L;
             when(userRepository.findById(id)).thenReturn(Optional.of(expectedUser));
@@ -236,6 +236,46 @@ class UserServiceImplTest {
             assertEquals("User not found with id: " + nonExistentUserId, exception.getMessage());
 
             verify(userRepository, times(1)).findById(nonExistentUserId);
+        }
+
+    }
+
+
+    @Nested
+    @DisplayName("Find User By Email Tests")
+    class FindUserByEmailTests {
+
+        @Test
+        @DisplayName("Should successfully return a user when email exists")
+        void shouldSuccessfullyReturnUser_WhenEmailExists() {
+
+            when(userRepository.findUserByEmail(expectedUser.getEmail())).thenReturn(Optional.of(expectedUser));
+
+            User foundUser = userService.findUserByEmail(expectedUser.getEmail());
+
+            assertNotNull(foundUser);
+            assertEquals(expectedUser.getEmail(), foundUser.getEmail());
+            assertEquals(expectedUser.getId(), foundUser.getId());
+            assertEquals(expectedUser.getFirstName(), foundUser.getFirstName());
+
+            verify(userRepository, times(1)).findUserByEmail(expectedUser.getEmail());
+
+        }
+
+        @Test
+        @DisplayName("Should throw EmailNotFoundException when user does not exist")
+        void ShouldThrowResourceNotFoundException_WhenUserDoesNotExist() {
+            String email = "NonExistent@email.com";
+
+            when(userRepository.findUserByEmail(email)).thenReturn(Optional.empty());
+
+            EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () -> userService.findUserByEmail(email));
+
+
+            assertEquals("User not found with email : " + email, exception.getMessage());
+
+            verify(userRepository, times(1)).findUserByEmail(email);
+
         }
 
     }
