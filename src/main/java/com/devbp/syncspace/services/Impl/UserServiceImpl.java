@@ -22,8 +22,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     //todo create test cases
-    //todo refactor find user by email to a single method call
-
 
     @Override
     public List<User> getAllUsers() {

@@ -90,7 +90,7 @@ class UserServiceImplTest {
 
     @Nested
     @DisplayName("Create User Tests")
-    class createUserTests {
+    class CreateUserTests {
 
         //TODO create test to see if json object is mapped correctly to DTO
 
@@ -133,7 +133,7 @@ class UserServiceImplTest {
 
     @Nested
     @DisplayName("Update User Tests")
-    class updateUserTests {
+    class UpdateUserTests {
 
         @Test
         @DisplayName("Should successfully updated a user when email is not changed")
@@ -181,30 +181,64 @@ class UserServiceImplTest {
 
             ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> userService.updateUser(nonExistentId, updateUserRequest));
 
-            assertEquals("User not found with ID: " + nonExistentId, exception.getMessage());
+            assertEquals("User not found with id: " + nonExistentId, exception.getMessage());
 
             verify(userRepository, times(1)).findById(nonExistentId);
             verify(userRepository, never()).save(any(User.class));
         }
+
+        @Test
+        @DisplayName("Should Throw EmailAlreadyExistsException when changing to existing email")
+        void ShouldThrowEmailAlreadyExistsException_WhenEmailAlreadyExists() {
+
+            when(userRepository.findById(1L)).thenReturn(Optional.of(expectedUser));
+            when(userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L)).thenReturn(true);
+
+            EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () -> userService.updateUser(1L, updateUserRequest));
+
+            assertEquals("Email is in use", exception.getMessage());
+
+            verify(userRepository, times(1)).findById(1L);
+            verify(userRepository, times(1)).existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L);
+            verify(userRepository, never()).save(any(User.class));
+
+        }
     }
 
-    @Test
-    @DisplayName("Should Throw EmailAlreadyExistsException when changing to existing email")
-    void ShouldThrowEmailAlreadyExistsException_WhenEmailAlreadyExists() {
+    @Nested
+    @DisplayName("Find User By ID Tests")
+    class FindUserByIdTests {
+        @Test
+        @DisplayName("Should successfully return a user")
+        void ShouldSuccessfullyReturnUser() {
+            Long id = 1L;
+            when(userRepository.findById(id)).thenReturn(Optional.of(expectedUser));
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(expectedUser));
-        when(userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L)).thenReturn(true);
+            User foundUser = userService.findUserById(id);
 
-        EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () -> userService.updateUser(1L, updateUserRequest));
+            assertNotNull(foundUser);
+            assertEquals(expectedUser.getId(), foundUser.getId());
+            assertEquals(expectedUser.getFirstName(), foundUser.getFirstName());
+            assertEquals(expectedUser.getEmail(), foundUser.getEmail());
 
-        assertEquals("Email is in use", exception.getMessage());
+            verify(userRepository, times(1)).findById(1L);
 
-        verify(userRepository, times(1)).findById(1L);
-        verify(userRepository, times(1)).existsByEmailAndIdNot(updateUserRequest.getEmail(), 1L);
-        verify(userRepository, never()).save(any(User.class));
+        }
+
+        @Test
+        @DisplayName("Should throw ResourceNotFoundException when user does not exist")
+        void shouldThrowResourceNotFoundException_WhenUserDoesNotExist() {
+            Long nonExistentUserId = 999L;
+            when(userRepository.findById(nonExistentUserId)).thenReturn(Optional.empty());
+
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> userService.findUserById(nonExistentUserId));
+
+            assertEquals("User not found with id: " + nonExistentUserId, exception.getMessage());
+
+            verify(userRepository, times(1)).findById(nonExistentUserId);
+        }
 
     }
-
 
 
 }
