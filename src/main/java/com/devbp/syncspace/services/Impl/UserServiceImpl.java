@@ -38,14 +38,15 @@ public class UserServiceImpl implements UserService {
             throw new EmailAlreadyExistsException("Email already in use");
         }
 
-        User newUser = new User();
-        newUser.setEmail(createUserRequestDto.getEmail());
-        newUser.setFirstName(createUserRequestDto.getFirstName());
-        newUser.setLastName(createUserRequestDto.getLastName());
-        newUser.setPhoneNumber(createUserRequestDto.getPhoneNumber());
-        newUser.setDateOfBirth(createUserRequestDto.getDateOfBirth());
-        newUser.setAddress(createUserRequestDto.getAddress());
-        newUser.setUserType(createUserRequestDto.getUserType());
+        User newUser = User.builder()
+                .email(createUserRequestDto.getEmail())
+                .firstName(createUserRequestDto.getFirstName())
+                .lastName(createUserRequestDto.getLastName())
+                .phoneNumber(createUserRequestDto.getPhoneNumber())
+                .dateOfBirth(createUserRequestDto.getDateOfBirth())
+                .address(createUserRequestDto.getAddress())
+                .userType(createUserRequestDto.getUserType())
+                .build();
 
         return userRepository.save(newUser);
     }
