@@ -18,7 +18,7 @@ public class Trainer {
     private long id;
 
     @NotNull(message = "User id is required")
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private long userId;
 
     @Column(columnDefinition = "TEXT")
@@ -34,9 +34,13 @@ public class Trainer {
     @Column(name = "earnings_percentage")
     private double earningsPercentage;
 
+    @Column(name = "hourly_rate")
+    private double hourlyRate;
+
     @Column(columnDefinition = "TEXT")
     private String bio;
 
+    @Column(name = "experience_years")
     private int experienceYears;
 
     @Column(name = "is_available")
