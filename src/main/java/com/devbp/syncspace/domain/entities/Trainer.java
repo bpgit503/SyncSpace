@@ -30,7 +30,7 @@ public class Trainer {
     @Column(columnDefinition = "TEXT")
     private String certifications;
 
-    @Column(name = "contract_details",columnDefinition = "TEXT")
+    @Column(name = "contract_details", columnDefinition = "TEXT")
     private String contractDetails;
 
     @NotNull(message = "Earning Percentage is required")
@@ -49,7 +49,7 @@ public class Trainer {
     @Column(name = "is_available")
     private boolean isAvailable;
 
-    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Classes> classes = new ArrayList<>();
 
 

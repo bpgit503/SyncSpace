@@ -35,7 +35,7 @@ public class Classes {
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
-    @FutureOrPresent(message ="Scheduled date must be in the future or present")
+    @FutureOrPresent(message = "Scheduled date must be in the future or present")
     @NotNull(message = "Scheduled date is required")
     @Column(name = "scheduled_date", nullable = false)
     private LocalDate scheduledDate;
