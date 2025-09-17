@@ -16,6 +16,8 @@ import java.util.List;
 @Builder
 public class Trainer {
 
+    //TODO figure how TEXT[] fields map to jpa
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

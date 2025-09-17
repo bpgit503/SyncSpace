@@ -5,6 +5,7 @@ import com.devbp.syncspace.domain.PaymentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ public class Bookings {
     private BookingStatus bookingStatus = BookingStatus.CONFIRMED;
 
     @NotNull(message = "Paid price is required")
+    @PositiveOrZero
     @Column(name = "price_paid", nullable = false)
     private double pricePaid;
 
