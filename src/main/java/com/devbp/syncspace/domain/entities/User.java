@@ -67,6 +67,9 @@ public class User {
     @OneToMany(mappedBy = "client",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bookings> bookings =  new ArrayList<>();
 
+    @OneToMany(mappedBy = "client",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Invoices> invoices =  new ArrayList<>();
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
