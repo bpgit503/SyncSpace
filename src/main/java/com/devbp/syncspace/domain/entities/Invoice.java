@@ -3,13 +3,14 @@ package com.devbp.syncspace.domain.entities;
 import com.devbp.syncspace.domain.InvoiceStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "invoices")
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Invoices {
+public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +30,7 @@ public class Invoices {
     private User client;
 
     @NotNull(message = "Invoice number is required")
-    @Column(name = "invoice_number", nullable = false,  unique = true)
+    @Column(name = "invoice_number", nullable = false, unique = true)
     private String invoiceNumber;
 
     @CreationTimestamp
@@ -52,7 +53,7 @@ public class Invoices {
     @NotNull(message = "Invoice status is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private InvoiceStatus invoiceStatus;
+    private InvoiceStatus invoiceStatus = InvoiceStatus.PENDING;
 
     //check this sql timestamp mapped to what in java
     @Column(name = "payment_date")
@@ -61,12 +62,14 @@ public class Invoices {
     @Column(name = "payment_method")
     private String paymentMethod;
 
+    @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<InvoiceItems> items = new ArrayList<>();
+
     @Column()
     private String notes;
 
     @CreationTimestamp
     @Column(name = "created_At")
     private LocalDateTime createAt;
-
 
 }

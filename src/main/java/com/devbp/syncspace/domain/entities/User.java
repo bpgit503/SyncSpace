@@ -11,7 +11,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.awt.print.Book;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,11 +63,11 @@ public class User {
     @Column(name = "status", nullable = false)
     private UserStatus status = UserStatus.ACTIVE;
 
-    @OneToMany(mappedBy = "client",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Bookings> bookings =  new ArrayList<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Bookings> bookings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Invoices> invoices =  new ArrayList<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Invoice> invoices = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at")
