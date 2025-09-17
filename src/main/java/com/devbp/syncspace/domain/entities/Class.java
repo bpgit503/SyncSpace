@@ -18,7 +18,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Classes {
+public class Class {
 
     //A way to validate that the start time < end time?
 

@@ -17,9 +17,9 @@ public class Trainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "User id is required")
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private long userId;
+    private User user;
 
     @Column(columnDefinition = "TEXT")
     private String specializations;
