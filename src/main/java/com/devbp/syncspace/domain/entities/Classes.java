@@ -18,7 +18,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Class {
+public class Classes {
 
     //A way to validate that the start time < end time?
 
@@ -26,13 +26,14 @@ public class Class {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "Class Type Id is required")
-    @Column(name = "class_type_id", nullable = false) // joincolumn to classtype
-    private Long classTypeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_type_id", nullable = false)
+    private ClassType classType;
 
-    @NotNull(message = "Trainer Id is required")
-    @JoinColumn(name = "trainer_id", nullable = false) //bidirectional association
-    private long trainerId;
+    //bidirectional association: Classes know about it trainers
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trainer_id", nullable = false)
+    private Trainer trainer;
 
     @FutureOrPresent(message ="Scheduled date must be in the future or present")
     @NotNull(message = "Scheduled date is required")

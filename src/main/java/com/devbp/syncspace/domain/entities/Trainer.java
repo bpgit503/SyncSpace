@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "trainers")
 @Getter
@@ -45,6 +48,9 @@ public class Trainer {
 
     @Column(name = "is_available")
     private boolean isAvailable;
+
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    private List<Classes> classes = new ArrayList<>();
 
 
 }

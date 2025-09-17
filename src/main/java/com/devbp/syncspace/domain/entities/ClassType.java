@@ -30,7 +30,7 @@ public class ClassType {
 
     @NotNull(message = "Duration of class in minuets is required")
     @Column(name = "duration_minutes", nullable = false)
-    private int durationMinutes;
+    private int durationMinutes = 60;
 
     @NotNull(message = "Group class setting is required") //** find better wording
     @Column(name = "is_group_class", nullable = false)
@@ -39,8 +39,7 @@ public class ClassType {
     @NotNull(message = "Max capacity is required")
     @Positive
     @Column(name = "max_capacity", nullable = false)
-    private int maxCapacity;
-
+    private int maxCapacity = 15;
 
     @NotNull(message = "Base price is required")
     @Positive
