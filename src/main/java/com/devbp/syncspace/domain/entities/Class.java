@@ -31,7 +31,7 @@ public class Classes {
     private Long classTypeId;
 
     @NotNull(message = "Trainer Id is required")
-    @JoinColumn(name = "trainer_id", nullable = false)
+    @JoinColumn(name = "trainer_id", nullable = false) //bidirectional association
     private long trainerId;
 
     @FutureOrPresent(message ="Scheduled date must be in the future or present")
@@ -47,14 +47,14 @@ public class Classes {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @NotNull(message = "Capacity is required")
+    @NotNull(message = "Max capacity is required")
     @Positive
     @Column(name = "max_capacity", nullable = false)
-    private LocalTime maxCapacity;
+    private int maxCapacity;
 
     @PositiveOrZero
     @Column(name = "current_capacity")
-    private LocalTime currentCapacity;
+    private int currentCapacity = 0;
 
     @NotNull(message = "Class status is required")
     @Enumerated(EnumType.STRING)
