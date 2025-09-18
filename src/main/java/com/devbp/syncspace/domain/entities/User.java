@@ -100,6 +100,34 @@ public class User {
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Invoice> invoices = new ArrayList<>();
 
+    public void addInvoice(Invoice invoice){
+        if (invoice == null) {
+            throw new IllegalArgumentException("invoice cannot be null");
+        }
+
+        if (this.getStatus() != UserStatus.ACTIVE) {
+            throw new IllegalArgumentException("Cannot add invoice to inactive user");
+        }
+
+        if (!invoices.contains(invoice)){
+            invoices.add(invoice);
+            invoice.setClient(this);
+        }
+    }
+
+    public void removeInvoice(Invoice invoice){
+
+        if (invoice == null) {
+            throw new IllegalArgumentException("invoice cannot be null");
+        }
+
+        if (invoices.contains(invoice)){
+            invoices.remove(invoice);
+            invoice.setClient(null);
+        }
+
+    }
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

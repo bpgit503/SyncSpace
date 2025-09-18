@@ -77,11 +77,11 @@ public class Invoice {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
-        return id == invoice.id && Double.compare(totalAmount, invoice.totalAmount) == 0 && Double.compare(taxAmount, invoice.taxAmount) == 0 && Objects.equals(client, invoice.client) && Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(invoiceDate, invoice.invoiceDate) && Objects.equals(dueDate, invoice.dueDate) && invoiceStatus == invoice.invoiceStatus && Objects.equals(paymentDate, invoice.paymentDate) && Objects.equals(paymentMethod, invoice.paymentMethod) && Objects.equals(items, invoice.items) && Objects.equals(notes, invoice.notes) && Objects.equals(createAt, invoice.createAt);
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, client, invoiceNumber, invoiceDate, dueDate, totalAmount, taxAmount, invoiceStatus, paymentDate, paymentMethod, items, notes, createAt);
+        return Objects.hashCode(invoiceNumber);
     }
 }
