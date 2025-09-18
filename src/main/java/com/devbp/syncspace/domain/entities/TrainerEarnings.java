@@ -25,7 +25,6 @@ public class TrainerEarnings {
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
-    //TODO figure out if it should be uni or bi
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     private Classes clazz;

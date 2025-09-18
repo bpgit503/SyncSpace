@@ -54,10 +54,4 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Classes> classes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TrainerEarnings> trainerEarnings = new ArrayList<>();
-
-
-
-
 }
