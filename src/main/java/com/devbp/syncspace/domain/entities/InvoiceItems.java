@@ -46,11 +46,11 @@ public class InvoiceItems {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceItems that = (InvoiceItems) o;
-        return id == that.id && quantity == that.quantity && Double.compare(unitPrice, that.unitPrice) == 0 && Double.compare(totalPrice, that.totalPrice) == 0 && Objects.equals(invoice, that.invoice) && Objects.equals(bookings, that.bookings) && Objects.equals(description, that.description);
+        return Objects.equals(invoice, that.invoice) && Objects.equals(bookings, that.bookings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, invoice, bookings, description, quantity, unitPrice, totalPrice);
+        return Objects.hash(invoice, bookings);
     }
 }
