@@ -60,11 +60,11 @@ public class Bookings {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Bookings bookings = (Bookings) o;
-        return id == bookings.id && Double.compare(pricePaid, bookings.pricePaid) == 0 && Objects.equals(client, bookings.client) && Objects.equals(clazz, bookings.clazz) && Objects.equals(bookingDate, bookings.bookingDate) && bookingStatus == bookings.bookingStatus && paymentStatus == bookings.paymentStatus && Objects.equals(notes, bookings.notes);
+        return Objects.equals(client, bookings.client) && Objects.equals(clazz, bookings.clazz);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, client, clazz, bookingDate, bookingStatus, pricePaid, paymentStatus, notes);
+        return Objects.hash(client, clazz);
     }
 }

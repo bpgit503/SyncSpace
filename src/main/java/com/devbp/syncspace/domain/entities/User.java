@@ -1,5 +1,6 @@
 package com.devbp.syncspace.domain.entities;
 
+import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
 import jakarta.persistence.*;
@@ -67,6 +68,35 @@ public class User {
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bookings> bookings = new ArrayList<>();
 
+    public void addBooking(Bookings booking) {
+
+        if (booking == null) {
+            throw new IllegalArgumentException("Booking cannot be null");
+        }
+
+        if (this.getStatus() != UserStatus.ACTIVE) {
+            throw new IllegalArgumentException("Cannot add booking to inactive user");
+        }
+
+        if (!bookings.contains(booking)) {
+
+            bookings.add(booking);
+            booking.setClient(this);
+        }
+
+    }
+
+    public void removeBooking(Bookings booking) {
+        if (booking == null) {
+            throw new IllegalArgumentException("Booking cannot be null");
+        }
+
+        if (bookings.contains(booking)) {
+            bookings.remove(booking);
+            booking.setClient(null);
+        }
+    }
+
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Invoice> invoices = new ArrayList<>();
 
@@ -82,11 +112,23 @@ public class User {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(address, user.address) && userType == user.userType && status == user.status && Objects.equals(bookings, user.bookings) && Objects.equals(invoices, user.invoices) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, phoneNumber, dateOfBirth, address, userType, status, bookings, invoices, createdAt, updatedAt);
+        return Objects.hash(id, email);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", status=" + status +
+                ", userType=" + userType +
+                '}';
     }
 }
