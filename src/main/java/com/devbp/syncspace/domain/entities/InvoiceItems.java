@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "invoice_items") // add unique constraint for client and class id?
 @Getter
@@ -40,5 +42,15 @@ public class InvoiceItems {
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        InvoiceItems that = (InvoiceItems) o;
+        return id == that.id && quantity == that.quantity && Double.compare(unitPrice, that.unitPrice) == 0 && Double.compare(totalPrice, that.totalPrice) == 0 && Objects.equals(invoice, that.invoice) && Objects.equals(bookings, that.bookings) && Objects.equals(description, that.description);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, invoice, bookings, description, quantity, unitPrice, totalPrice);
+    }
 }

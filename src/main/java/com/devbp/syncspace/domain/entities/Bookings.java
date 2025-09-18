@@ -9,6 +9,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "bookings") // add unique constraint for client and class id?
@@ -54,4 +55,16 @@ public class Bookings {
 
     @Column(columnDefinition = "TEXT")
     private String notes;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Bookings bookings = (Bookings) o;
+        return id == bookings.id && Double.compare(pricePaid, bookings.pricePaid) == 0 && Objects.equals(client, bookings.client) && Objects.equals(clazz, bookings.clazz) && Objects.equals(bookingDate, bookings.bookingDate) && bookingStatus == bookings.bookingStatus && paymentStatus == bookings.paymentStatus && Objects.equals(notes, bookings.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, client, clazz, bookingDate, bookingStatus, pricePaid, paymentStatus, notes);
+    }
 }

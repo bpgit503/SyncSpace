@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "trainers")
@@ -54,4 +55,16 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Classes> classes = new ArrayList<>();
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Trainer trainer = (Trainer) o;
+        return id == trainer.id && Double.compare(earningsPercentage, trainer.earningsPercentage) == 0 && Double.compare(hourlyRate, trainer.hourlyRate) == 0 && experienceYears == trainer.experienceYears && isAvailable == trainer.isAvailable && Objects.equals(user, trainer.user) && Objects.equals(specializations, trainer.specializations) && Objects.equals(certifications, trainer.certifications) && Objects.equals(contractDetails, trainer.contractDetails) && Objects.equals(bio, trainer.bio) && Objects.equals(classes, trainer.classes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, specializations, certifications, contractDetails, earningsPercentage, hourlyRate, bio, experienceYears, isAvailable, classes);
+    }
 }

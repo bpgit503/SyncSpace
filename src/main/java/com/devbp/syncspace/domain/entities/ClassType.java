@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "class_types")
@@ -54,4 +55,15 @@ public class ClassType {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ClassType classType = (ClassType) o;
+        return durationMinutes == classType.durationMinutes && isGroupClass == classType.isGroupClass && maxCapacity == classType.maxCapacity && Double.compare(basePrice, classType.basePrice) == 0 && isActive == classType.isActive && Objects.equals(id, classType.id) && Objects.equals(className, classType.className) && Objects.equals(description, classType.description) && Objects.equals(createdAt, classType.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, className, description, durationMinutes, isGroupClass, maxCapacity, basePrice, isActive, createdAt);
+    }
 }
