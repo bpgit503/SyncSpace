@@ -53,16 +53,15 @@ public class TrainerEarnings {
     @Column(name = "calculated_at")
     private LocalDateTime calculatedAt;
 
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TrainerEarnings that = (TrainerEarnings) o;
-        return id == that.id && Double.compare(baseAmount, that.baseAmount) == 0 && Double.compare(earningPercentage, that.earningPercentage) == 0 && Double.compare(earningAmount, that.earningAmount) == 0 && Objects.equals(trainer, that.trainer) && Objects.equals(clazz, that.clazz) && paymentStatus == that.paymentStatus && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(calculatedAt, that.calculatedAt);
+        return Objects.equals(trainer, that.trainer) && Objects.equals(clazz, that.clazz);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, trainer, clazz, baseAmount, earningPercentage, earningAmount, paymentStatus, paymentDate, calculatedAt);
+        return Objects.hash(trainer, clazz);
     }
 }

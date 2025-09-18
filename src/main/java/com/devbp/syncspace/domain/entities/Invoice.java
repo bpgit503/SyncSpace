@@ -66,25 +66,25 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<InvoiceItems> items = new ArrayList<>();
 
-    public void addInvoiceItem(InvoiceItems invoiceItem){
+    public void addInvoiceItem(InvoiceItems invoiceItem) {
         if (invoiceItem == null) {
             throw new IllegalArgumentException("Invoice Items cannot be null");
         }
 
-        if (!items.contains(invoiceItem)){
+        if (!items.contains(invoiceItem)) {
             items.add(invoiceItem);
             invoiceItem.setInvoice(this);
         }
 
     }
 
-    public void removeInvoiceItem(InvoiceItems invoiceItem){
+    public void removeInvoiceItem(InvoiceItems invoiceItem) {
 
         if (invoiceItem == null) {
             throw new IllegalArgumentException("Invoice Items cannot be null");
         }
 
-        if (items.remove(invoiceItem)){
+        if (items.remove(invoiceItem)) {
             invoiceItem.setInvoice(null);
         }
 

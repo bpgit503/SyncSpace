@@ -31,7 +31,6 @@ public class Classes {
     @JoinColumn(name = "class_type_id", nullable = false)
     private ClassType classType;
 
-    //bidirectional association: Classes know about it trainers
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;

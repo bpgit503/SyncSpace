@@ -20,8 +20,6 @@ import java.util.Objects;
 @Builder
 public class Bookings {
 
-    //TODO understand helper messages for bidirectional associations
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
