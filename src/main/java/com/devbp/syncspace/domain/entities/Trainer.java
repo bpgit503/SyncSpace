@@ -1,5 +1,6 @@
 package com.devbp.syncspace.domain.entities;
 
+import com.devbp.syncspace.domain.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -55,16 +56,45 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Classes> classes = new ArrayList<>();
 
+    public void addClass(Classes clazz) {
+
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
+        if (this.getUser().getStatus() != UserStatus.ACTIVE) {
+            throw new IllegalArgumentException("Cannot add class to inactive user");
+        }
+
+        if (!classes.contains(clazz)) {
+            classes.add(clazz);
+            clazz.setTrainer(this);
+        }
+
+    }
+
+    public void removeClass(Classes clazz) {
+
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
+        if (classes.contains(clazz)) {
+            classes.remove(clazz);
+            clazz.setTrainer(null);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Trainer trainer = (Trainer) o;
-        return id == trainer.id && Double.compare(earningsPercentage, trainer.earningsPercentage) == 0 && Double.compare(hourlyRate, trainer.hourlyRate) == 0 && experienceYears == trainer.experienceYears && isAvailable == trainer.isAvailable && Objects.equals(user, trainer.user) && Objects.equals(specializations, trainer.specializations) && Objects.equals(certifications, trainer.certifications) && Objects.equals(contractDetails, trainer.contractDetails) && Objects.equals(bio, trainer.bio) && Objects.equals(classes, trainer.classes);
+        return id == trainer.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, specializations, certifications, contractDetails, earningsPercentage, hourlyRate, bio, experienceYears, isAvailable, classes);
+        return Objects.hashCode(id);
     }
 }

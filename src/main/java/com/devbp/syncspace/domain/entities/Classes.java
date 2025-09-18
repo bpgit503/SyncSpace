@@ -79,11 +79,11 @@ public class Classes {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Classes classes = (Classes) o;
-        return id == classes.id && maxCapacity == classes.maxCapacity && currentCapacity == classes.currentCapacity && Objects.equals(classType, classes.classType) && Objects.equals(trainer, classes.trainer) && Objects.equals(scheduledDate, classes.scheduledDate) && Objects.equals(startTime, classes.startTime) && Objects.equals(endTime, classes.endTime) && classStatus == classes.classStatus && Objects.equals(notes, classes.notes) && Objects.equals(createdAt, classes.createdAt) && Objects.equals(updatedAt, classes.updatedAt);
+        return id == classes.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, classType, trainer, scheduledDate, startTime, endTime, maxCapacity, currentCapacity, classStatus, notes, createdAt, updatedAt);
+        return Objects.hashCode(id);
     }
 }
