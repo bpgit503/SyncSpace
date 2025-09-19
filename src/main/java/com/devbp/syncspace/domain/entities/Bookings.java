@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "bookings") // add unique constraint for client and class id?
+@Table(name = "bookings",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "class_id"}))// add unique constraint for client and class id?
 @Getter
 @Setter
 @AllArgsConstructor

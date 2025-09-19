@@ -5,12 +5,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import javax.lang.model.element.QualifiedNameable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "trainer_earnings")
+@Table(name = "trainer_earnings",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"trainer_id", "class_id"}))
 @Getter
 @Setter
 @AllArgsConstructor
