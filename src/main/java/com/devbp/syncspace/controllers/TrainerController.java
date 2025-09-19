@@ -22,9 +22,9 @@ public class TrainerController {
     private final TrainerMapper trainerMapper;
 
     @PostMapping
-    public ResponseEntity<TrainerResponseDto> createTrainer(@Valid @RequestBody CreateTrainerRequest createTrainerRequest) {
+    public ResponseEntity<TrainerResponseDto> createTrainer(@Valid String email, @RequestBody CreateTrainerRequest createTrainerRequest) {
 
-        TrainerResponseDto dto = trainerMapper.toDto(trainerService.addTrainer(createTrainerRequest));
+        TrainerResponseDto dto = trainerMapper.toDto(trainerService.addTrainer(email, createTrainerRequest));
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
