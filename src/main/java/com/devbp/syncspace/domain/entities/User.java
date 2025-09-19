@@ -59,7 +59,6 @@ public class User {
     @Column(name = "user_type", nullable = false)
     private UserType userType;
 
-
     @NotNull(message = "User status is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -67,6 +66,9 @@ public class User {
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bookings> bookings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Invoice> invoices = new ArrayList<>();
 
     public void addBooking(Bookings booking) {
 
@@ -97,10 +99,7 @@ public class User {
         }
     }
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Invoice> invoices = new ArrayList<>();
-
-    public void addInvoice(Invoice invoice){
+    public void addInvoice(Invoice invoice) {
         if (invoice == null) {
             throw new IllegalArgumentException("invoice cannot be null");
         }
@@ -109,19 +108,19 @@ public class User {
             throw new IllegalArgumentException("Cannot add invoice to inactive user");
         }
 
-        if (!invoices.contains(invoice)){
+        if (!invoices.contains(invoice)) {
             invoices.add(invoice);
             invoice.setClient(this);
         }
     }
 
-    public void removeInvoice(Invoice invoice){
+    public void removeInvoice(Invoice invoice) {
 
         if (invoice == null) {
             throw new IllegalArgumentException("invoice cannot be null");
         }
 
-        if (invoices.contains(invoice)){
+        if (invoices.contains(invoice)) {
             invoices.remove(invoice);
             invoice.setClient(null);
         }

@@ -18,8 +18,6 @@ import java.util.Objects;
 @Builder
 public class Trainer {
 
-    //TODO figure how TEXT[] fields map to jpa
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -29,10 +27,10 @@ public class Trainer {
     private User user;
 
     @Column(columnDefinition = "TEXT")
-    private String specializations;
+    private List<String> specializations;
 
     @Column(columnDefinition = "TEXT")
-    private String certifications;
+    private List<String> certifications;
 
     @Column(name = "contract_details", columnDefinition = "TEXT")
     private String contractDetails;
