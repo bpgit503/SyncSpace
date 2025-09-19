@@ -1,6 +1,7 @@
 package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.UserType;
+import com.devbp.syncspace.domain.dtos.CreateTrainerRequest;
 import com.devbp.syncspace.domain.entities.Trainer;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.TrainerRepository;
@@ -17,7 +18,7 @@ public class TrainerServiceImpl implements TrainerService {
     private final UserRepository userRepository;
 
     @Override
-    public Trainer addTrainer(Trainer trainer) {
+    public Trainer addTrainer(CreateTrainerRequest trainer) {
         if (!userRepository.existsById(trainer.getUser().getId())) {
             throw new ResourceNotFoundException("User not found with id: " + trainer.getUser().getId());
         }
