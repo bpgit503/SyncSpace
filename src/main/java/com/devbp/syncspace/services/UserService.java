@@ -6,29 +6,24 @@ import com.devbp.syncspace.domain.entities.User;
 
 import java.util.List;
 
-//CRUD
-
-/*** TODO: Create the ff
- * get user by id
- * get user by email
- * get list users by first/last name or email - search function;
- * Update User update userDTO
- * Delete User by email and id
- * get user by type
- * activate/deactivate user user
- */
 public interface UserService {
 
     List<User> getAllUsers();
 
     User createUser(CreateUserRequest createUserRequestDto);
 
-    User getUserById(Long id);
+    User findUserById(Long id);
 
-    User getUserByEmail(String email);
+    User findUserByEmail(String email);
 
     User updateUser(long id, UpdateUserRequest userRequest);
 
+    void deleteUserById(long id);
 
+    void deleteUserByEmail(String email);
+
+    User activateUserByEmail(String email);
+
+    User deactivateUserByEmail(String email);
 
 }

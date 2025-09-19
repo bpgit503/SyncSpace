@@ -2,7 +2,10 @@ package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.CreateUserRequest;
 import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
+import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +21,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    //todo create test cases
+
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -28,44 +33,48 @@ public class UserServiceImpl implements UserService {
     public User createUser(CreateUserRequest createUserRequestDto) {
 
         if (userRepository.existsByEmail(createUserRequestDto.getEmail())) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new EmailAlreadyExistsException("Email already in use");
         }
 
-        User newUser = new User();
-        newUser.setEmail(createUserRequestDto.getEmail());
-        newUser.setFirstName(createUserRequestDto.getFirstName());
-        newUser.setLastName(createUserRequestDto.getLastName());
-        newUser.setPhoneNumber(createUserRequestDto.getPhoneNumber());
-        newUser.setDateOfBirth(createUserRequestDto.getDateOfBirth());
-        newUser.setAddress(createUserRequestDto.getAddress());
-        newUser.setUserType(createUserRequestDto.getUserType());
+        User newUser = User.builder()
+                .email(createUserRequestDto.getEmail())
+                .firstName(createUserRequestDto.getFirstName())
+                .lastName(createUserRequestDto.getLastName())
+                .phoneNumber(createUserRequestDto.getPhoneNumber())
+                .dateOfBirth(createUserRequestDto.getDateOfBirth())
+                .address(createUserRequestDto.getAddress())
+                .userType(createUserRequestDto.getUserType())
+                .build();
 
         return userRepository.save(newUser);
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User findUserById(Long id) {
 
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User findUserByEmail(String email) {
 
-        return userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
+        return userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EmailAlreadyExistsException("User not found with email : " + email));
     }
 
+    @Transactional
     @Override
     public User updateUser(long id, UpdateUserRequest updateUserRequest) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The user with ID: " + id + " doesn't not exist"));
+        User existingUser = findUserById(id);
 
-        //check if id and emails match
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
-            //must check if email already exists within the system
+
             if (userRepository.existsByEmailAndIdNot(updateUserRequest.getEmail(), id)) {
-                // creat email already exists exception and throw it
-                throw new IllegalArgumentException("Email is in use");
+
+                throw new EmailAlreadyExistsException("Email is in use");
+
             } else existingUser.setEmail(updateUserRequest.getEmail());
         }
 
@@ -76,7 +85,43 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(updateUserRequest.getAddress());
         existingUser.setStatus(updateUserRequest.getStatus());
 
-
-        return null;
+        return userRepository.save(existingUser);
     }
+
+    @Transactional
+    @Override
+    public void deleteUserById(long id) {
+        User user = findUserById(id);
+
+        userRepository.delete(user);
+    }
+
+    @Override
+    public void deleteUserByEmail(String email) {
+        User user = findUserByEmail(email);
+
+        userRepository.delete(user);
+    }
+
+    @Transactional
+    @Override
+    public User activateUserByEmail(String email) {
+        User user = findUserByEmail(email);
+
+        user.setStatus(UserStatus.ACTIVE);
+
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public User deactivateUserByEmail(String email) {
+        User user = findUserByEmail(email);
+
+        user.setStatus(UserStatus.INACTIVE);
+
+        return userRepository.save(user);
+    }
+
+
 }
