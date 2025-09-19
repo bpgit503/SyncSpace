@@ -2,6 +2,8 @@ package com.devbp.syncspace.domain.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,16 +17,16 @@ import java.util.List;
 @Builder
 public class CreateTrainerRequest {
 
-    @NotBlank(message = "certifications are required")
-    private List<String> certifications;
+    @NotEmpty(message = "certifications list cannot be empty")
+    private List< @NotBlank(message = "certifications cannot be blank")String> certifications;
 
-    @NotBlank(message = "Specializations are required")
+    @NotEmpty(message = "Specializations are required")
     private List<String> specializations;
 
-    @NotBlank(message = "Contract details are required")
+    @NotBlank(message = "Contract Details are required")
     private String contractDetails;
 
-    @NotBlank(message = "Earning percentage is required")
+    @NotNull(message = "Earning percentage is required")
     private double earningsPercentage;
     private double hourlyRate;
     private String bio;
