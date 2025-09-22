@@ -1,6 +1,5 @@
 package com.devbp.syncspace.domain.dtos;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -31,6 +30,6 @@ public class CreateTrainerRequest {
     private double hourlyRate;
     private String bio;
     private int experienceYears = 0;
-    private boolean isAvailable = true;
+    private boolean isAvailable;
 
 }

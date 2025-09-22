@@ -9,6 +9,7 @@ import com.devbp.syncspace.repositories.TrainerRepository;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.TrainerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TrainerServiceImpl implements TrainerService {
 
     private final TrainerRepository trainerRepository;
@@ -46,7 +48,7 @@ public class TrainerServiceImpl implements TrainerService {
                 .hourlyRate(trainer.getHourlyRate())
                 .bio(trainer.getBio())
                 .experienceYears(trainer.getExperienceYears())
-                .isAvailable(trainer.isAvailable())
+                .isAvailable(true)
                 .build();
 
         return trainerRepository.save(newTrainer);
