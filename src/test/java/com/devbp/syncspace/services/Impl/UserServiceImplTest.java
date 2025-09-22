@@ -1,9 +1,9 @@
 package com.devbp.syncspace.services.Impl;
 
-import com.devbp.syncspace.domain.CreateUserRequest;
-import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.dtos.CreateUserRequest;
 import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
+import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
@@ -39,7 +39,7 @@ class UserServiceImplTest {
     private User expectedUser;
     private User updatedUser;
     private CreateUserRequest createUserRequest;
-    private UpdateUserRequest updateUserRequest;
+    private UserResponseDto.UpdateUserRequest updateUserRequest;
 
 
     @BeforeEach
@@ -67,7 +67,7 @@ class UserServiceImplTest {
                 .userType(UserType.CLIENT)
                 .build();
 
-        this.updateUserRequest = UpdateUserRequest.builder()
+        this.updateUserRequest = UserResponseDto.UpdateUserRequest.builder()
                 .email("jane.doe@email.com")
                 .firstName("jane")
                 .lastName("doe")

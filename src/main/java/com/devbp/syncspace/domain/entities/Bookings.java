@@ -9,17 +9,17 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-@Table(name = "bookings") // add unique constraint for client and class id?
+@Table(name = "bookings",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "class_id"}))// add unique constraint for client and class id?
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Bookings {
-
-    //TODO understand helper messages for bidirectional associations
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,4 +54,16 @@ public class Bookings {
 
     @Column(columnDefinition = "TEXT")
     private String notes;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Bookings bookings = (Bookings) o;
+        return Objects.equals(client, bookings.client) && Objects.equals(clazz, bookings.clazz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(client, clazz);
+    }
 }

@@ -1,6 +1,5 @@
 package com.devbp.syncspace.domain.mappers;
 
-import com.devbp.syncspace.domain.UpdateUserRequest;
 import com.devbp.syncspace.domain.dtos.UpdateUserRequestDto;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.entities.User;
@@ -16,6 +15,6 @@ public interface UserMapper {
     @Mapping(target = "updatedAt", source = "updatedAt")
     UserResponseDto toDto(User user);
 
-    UpdateUserRequest toUpdateUserRequest(UpdateUserRequestDto updateUserRequestDto);
+    UserResponseDto.UpdateUserRequest toUpdateUserRequest(UpdateUserRequestDto updateUserRequestDto);
 
 }

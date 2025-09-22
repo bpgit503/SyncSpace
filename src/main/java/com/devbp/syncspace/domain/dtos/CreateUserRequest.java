@@ -1,5 +1,6 @@
-package com.devbp.syncspace.domain;
+package com.devbp.syncspace.domain.dtos;
 
+import com.devbp.syncspace.domain.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

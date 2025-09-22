@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "invoices")
@@ -65,6 +66,30 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<InvoiceItems> items = new ArrayList<>();
 
+    public void addInvoiceItem(InvoiceItems invoiceItem) {
+        if (invoiceItem == null) {
+            throw new IllegalArgumentException("Invoice Items cannot be null");
+        }
+
+        if (!items.contains(invoiceItem)) {
+            items.add(invoiceItem);
+            invoiceItem.setInvoice(this);
+        }
+
+    }
+
+    public void removeInvoiceItem(InvoiceItems invoiceItem) {
+
+        if (invoiceItem == null) {
+            throw new IllegalArgumentException("Invoice Items cannot be null");
+        }
+
+        if (items.remove(invoiceItem)) {
+            invoiceItem.setInvoice(null);
+        }
+
+    }
+
     @Column()
     private String notes;
 
@@ -72,4 +97,15 @@ public class Invoice {
     @Column(name = "created_At")
     private LocalDateTime createAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Invoice invoice = (Invoice) o;
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(invoiceNumber);
+    }
 }
