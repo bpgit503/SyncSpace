@@ -55,5 +55,13 @@ public class TrainerController {
         return ResponseEntity.ok(dto);
     }
 
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> deleteTrainer(@PathVariable String email) {
+
+        trainerService.deleteTrainerByEmail(email);
+
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

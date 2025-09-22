@@ -87,7 +87,8 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Trainer deleteTrainerByEmail(String email) {
-        return null;
+    public void deleteTrainerByEmail(String email) {
+
+        trainerRepository.delete(getTrainerByEmail(email));
     }
 }

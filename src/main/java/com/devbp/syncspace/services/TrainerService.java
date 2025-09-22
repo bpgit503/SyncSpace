@@ -6,7 +6,9 @@ import com.devbp.syncspace.domain.dtos.UpdateTrainerRequestDto;
 import com.devbp.syncspace.domain.entities.Trainer;
 
 import java.util.List;
-
+/*
+method to set toggle trainer isAvaliable on/off
+ */
 public interface TrainerService {
 
     List<Trainer> getAllTrainers();
@@ -19,5 +21,5 @@ public interface TrainerService {
 
     Trainer updateTrainer(String email, UpdateTrainerRequestDto updateTrainerRequestDto);
 
-    Trainer deleteTrainerByEmail(String email);
+    void deleteTrainerByEmail(String email);
 }
