@@ -69,9 +69,21 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerRepository.save(newTrainer);
     }
 
+    @Transactional
     @Override
     public Trainer updateTrainer(String email, UpdateTrainerRequestDto updateTrainerRequestDto) {
-        return null;
+        Trainer existingtrainer = getTrainerByEmail(email);
+
+        existingtrainer.setSpecializations(updateTrainerRequestDto.getSpecializations());
+         existingtrainer.setCertifications(updateTrainerRequestDto.getCertifications());
+        existingtrainer.setContractDetails(updateTrainerRequestDto.getContractDetails());
+        existingtrainer.setEarningsPercentage(updateTrainerRequestDto.getEarningsPercentage());
+        existingtrainer.setHourlyRate(updateTrainerRequestDto.getHourlyRate());
+        existingtrainer.setBio(updateTrainerRequestDto.getBio());
+        existingtrainer.setExperienceYears(updateTrainerRequestDto.getExperienceYears());
+        existingtrainer.setAvailable(updateTrainerRequestDto.isAvailable());
+
+        return trainerRepository.save(existingtrainer);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.devbp.syncspace.controllers;
 
 import com.devbp.syncspace.domain.dtos.CreateTrainerRequest;
 import com.devbp.syncspace.domain.dtos.TrainerResponseDto;
+import com.devbp.syncspace.domain.dtos.UpdateTrainerRequestDto;
 import com.devbp.syncspace.domain.mappers.TrainerMapper;
 import com.devbp.syncspace.services.Impl.TrainerServiceImpl;
 import jakarta.validation.Valid;
@@ -40,13 +41,19 @@ public class TrainerController {
 
 
     @PostMapping("/{email}")
-    public ResponseEntity<TrainerResponseDto> createTrainer(@PathVariable String email, @Valid  @RequestBody CreateTrainerRequest createTrainerRequest) {
+    public ResponseEntity<TrainerResponseDto> createTrainer(@PathVariable String email, @Valid @RequestBody CreateTrainerRequest createTrainerRequest) {
 
         TrainerResponseDto dto = trainerMapper.toDto(trainerService.addTrainer(email, createTrainerRequest));
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{email}")
+    public ResponseEntity<TrainerResponseDto> updateTrainer(@PathVariable String email, @Valid @RequestBody UpdateTrainerRequestDto updateTrainerRequestDto) {
+        TrainerResponseDto dto = trainerMapper.toDto(trainerService.updateTrainer(email, updateTrainerRequestDto));
+
+        return ResponseEntity.ok(dto);
+    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.devbp.syncspace.controllers;
 
-import com.devbp.syncspace.domain.CreateUserRequest;
-import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.dtos.CreateUserRequest;
 import com.devbp.syncspace.domain.dtos.UpdateUserRequestDto;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.mappers.UserMapper;
@@ -62,7 +61,7 @@ public class UserController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<UserResponseDto> updateUser(@PathVariable long id, @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
 
-        UpdateUserRequest updateUserRequest = userMapper.toUpdateUserRequest(updateUserRequestDto);
+        UserResponseDto.UpdateUserRequest updateUserRequest = userMapper.toUpdateUserRequest(updateUserRequestDto);
 
         UserResponseDto userResponseDto = userMapper.toDto(userService.updateUser(id, updateUserRequest));
 
