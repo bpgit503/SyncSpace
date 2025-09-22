@@ -42,6 +42,7 @@ public class BootstrapData implements CommandLineRunner {
                     .status(UserStatus.ACTIVE)
                     .build();
 
+
             User user3 = new User();
             user3.setEmail("cheshire.cat@example.com");
             user3.setFirstName("Cheshire");
@@ -62,10 +63,24 @@ public class BootstrapData implements CommandLineRunner {
             user4.setUserType(UserType.CLIENT);
             user4.setStatus(UserStatus.ACTIVE);
 
+            User user5 = User.builder()
+                    .email("FitJim@com")
+                    .firstName("Slim")
+                    .lastName("Shaddy")
+                    .phoneNumber("000000000")
+                    .dateOfBirth(LocalDate.parse("1969-06-09"))
+                    .address("69 shaddy Ave")
+                    .userType(UserType.TRAINER)
+                    .status(UserStatus.ACTIVE)
+                    .build();
+
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
             userRepository.save(user4);
+            userRepository.save(user5);
+
+
         }
     }
 }

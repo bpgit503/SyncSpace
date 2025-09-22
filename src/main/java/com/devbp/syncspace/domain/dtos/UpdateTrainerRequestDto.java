@@ -1,4 +1,4 @@
 package com.devbp.syncspace.domain.dtos;
 
-public class UpdateTrainerRequest {
+public class UpdateTrainerRequestDto {
 }

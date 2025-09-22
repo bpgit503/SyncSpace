@@ -2,6 +2,7 @@ package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.dtos.CreateTrainerRequest;
+import com.devbp.syncspace.domain.dtos.UpdateTrainerRequestDto;
 import com.devbp.syncspace.domain.entities.Trainer;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
@@ -29,6 +30,16 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    public Trainer getTrainerByEmail(String email) {
+        return trainerRepository.findByUser_Email(email);
+    }
+
+    @Override
+    public Trainer getTrainerById(Long id) {
+        return null;
+    }
+
+    @Override
     public Trainer addTrainer(String email, CreateTrainerRequest trainer) {
 
         User existingUser = userRepository.findUserByEmail(email)
@@ -52,5 +63,15 @@ public class TrainerServiceImpl implements TrainerService {
                 .build();
 
         return trainerRepository.save(newTrainer);
+    }
+
+    @Override
+    public Trainer updateTrainer(String email, UpdateTrainerRequestDto updateTrainerRequestDto) {
+        return null;
+    }
+
+    @Override
+    public Trainer deleteTrainerByEmail(String email) {
+        return null;
     }
 }
