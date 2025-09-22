@@ -1,11 +1,13 @@
 package com.devbp.syncspace.domain.entities;
 
+import com.devbp.syncspace.domain.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "trainers")
@@ -16,8 +18,6 @@ import java.util.List;
 @Builder
 public class Trainer {
 
-    //TODO figure how TEXT[] fields map to jpa
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,10 +27,10 @@ public class Trainer {
     private User user;
 
     @Column(columnDefinition = "TEXT")
-    private String specializations;
+    private List<String> specializations;
 
     @Column(columnDefinition = "TEXT")
-    private String certifications;
+    private List<String> certifications;
 
     @Column(name = "contract_details", columnDefinition = "TEXT")
     private String contractDetails;
@@ -49,15 +49,50 @@ public class Trainer {
     private int experienceYears;
 
     @Column(name = "is_available")
-    private boolean isAvailable;
+    private boolean isAvailable = true;
 
     @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Classes> classes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TrainerEarnings> trainerEarnings = new ArrayList<>();
+    public void addClass(Classes clazz) {
+
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
+        if (this.getUser().getStatus() != UserStatus.ACTIVE) {
+            throw new IllegalArgumentException("Cannot add class to inactive user");
+        }
+
+        if (!classes.contains(clazz)) {
+            classes.add(clazz);
+            clazz.setTrainer(this);
+        }
+
+    }
+
+    public void removeClass(Classes clazz) {
+
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
+        if (classes.contains(clazz)) {
+            classes.remove(clazz);
+            clazz.setTrainer(null);
+        }
+    }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Trainer trainer = (Trainer) o;
+        return id == trainer.id;
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

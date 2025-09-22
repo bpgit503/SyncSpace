@@ -5,11 +5,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import javax.lang.model.element.QualifiedNameable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-@Table(name = "trainer_earnings")
+@Table(name = "trainer_earnings",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"trainer_id", "class_id"}))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,7 +26,6 @@ public class TrainerEarnings {
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
-    //TODO figure out if it should be uni or bi
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     private Classes clazz;
@@ -53,4 +53,15 @@ public class TrainerEarnings {
     @Column(name = "calculated_at")
     private LocalDateTime calculatedAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TrainerEarnings that = (TrainerEarnings) o;
+        return Objects.equals(trainer, that.trainer) && Objects.equals(clazz, that.clazz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trainer, clazz);
+    }
 }

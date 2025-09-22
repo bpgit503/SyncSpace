@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "classes")
@@ -30,7 +31,6 @@ public class Classes {
     @JoinColumn(name = "class_type_id", nullable = false)
     private ClassType classType;
 
-    //bidirectional association: Classes know about it trainers
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
@@ -74,4 +74,15 @@ public class Classes {
     private LocalDateTime updatedAt;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Classes classes = (Classes) o;
+        return id == classes.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

@@ -1,14 +1,13 @@
 package com.devbp.syncspace.services.Impl;
 
-import com.devbp.syncspace.domain.CreateUserRequest;
-import com.devbp.syncspace.domain.UpdateUserRequest;
+import com.devbp.syncspace.domain.dtos.CreateUserRequest;
 import com.devbp.syncspace.domain.UserStatus;
+import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User updateUser(long id, UpdateUserRequest updateUserRequest) {
+    public User updateUser(long id, UserResponseDto.UpdateUserRequest updateUserRequest) {
         User existingUser = findUserById(id);
 
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
