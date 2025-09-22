@@ -9,12 +9,12 @@ import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.TrainerRepository;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.TrainerService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,16 +31,20 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer getTrainerByEmail(String email) {
-        return trainerRepository.findByUser_Email(email);
+        return trainerRepository.findByUser_Email(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Trainer not found with email: " + email));
     }
 
     @Override
     public Trainer getTrainerById(Long id) {
-        return null;
+        return trainerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Trainer not found with id: " + id));
     }
 
+    @Transactional
     @Override
     public Trainer addTrainer(String email, CreateTrainerRequest trainer) {
+        //TODO create a check to see if new Trainer has been already added before
 
         User existingUser = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
