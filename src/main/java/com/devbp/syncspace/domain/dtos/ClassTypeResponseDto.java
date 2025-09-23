@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ClassTypeResponseDto {
 
+    private long id;
     private String className;
     private String description;
     private int durationMinutes = 60;

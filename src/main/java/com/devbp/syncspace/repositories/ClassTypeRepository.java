@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ClassTypeRepository extends JpaRepository<ClassType, Long> {
     Optional<ClassType> findByClassName(String className);
+
+    boolean existsClassTypeByClassName(String className);
 }

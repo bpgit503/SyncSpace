@@ -15,9 +15,9 @@ public interface ClassTypeService {
     //Create search function in REPO that return all similar names
     ClassType getClassTypeByName(String name);
 
-    ClassType addClassType(CreateClassTypeRequest createClassTypeRequest);
+    ClassType createClassType(CreateClassTypeRequest createClassTypeRequest);
 
-    ClassType updateClassType(UpdateClassTypeRequest updateClassTypeRequest);
+    ClassType updateClassType(long id, UpdateClassTypeRequest updateClassTypeRequest);
 
     void deleteClassTypeBy(Long id);
 }
