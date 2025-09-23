@@ -7,6 +7,7 @@ import com.devbp.syncspace.exceptions.ClassTypeAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.ClassTypeRepository;
 import com.devbp.syncspace.services.ClassTypeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class ClassTypeServiceImpl implements ClassTypeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Class Type not found with class name: " + name));
     }
 
+    @Transactional
     @Override
     public ClassType createClassType(CreateClassTypeRequest createClassTypeRequest) {
         if (classTypeRepository.existsClassTypeByClassName(createClassTypeRequest.getClassName())) {
@@ -53,6 +55,7 @@ public class ClassTypeServiceImpl implements ClassTypeService {
         return classTypeRepository.save(newClassType);
     }
 
+    @Transactional
     @Override
     public ClassType updateClassType(long id, UpdateClassTypeRequest updateClassTypeRequest) {
         ClassType existingClassType = getClassTypeById(id);
@@ -72,9 +75,11 @@ public class ClassTypeServiceImpl implements ClassTypeService {
 
         return classTypeRepository.save(existingClassType);
     }
-
+    @Transactional
     @Override
-    public void deleteClassTypeBy(Long id) {
+    public void deleteClassTypeById(Long id) {
+        ClassType classType = getClassTypeById(id);
+        classTypeRepository.delete(classType);
 
     }
 }

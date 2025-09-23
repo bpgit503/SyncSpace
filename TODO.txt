@@ -1,3 +1,8 @@
+##General
+- Have both soft delete and hard delete functions
+- as soft delete by making said entities inactive or turned off.
+    --As it is better to keep the data in db for future reference
+
 ## Invoice
 a way to automatically generate unique invoice numbers
 
@@ -6,7 +11,7 @@ a way to validate that start time < end time and total time cant be over 2 hours
 
 
 ## Class Types
-Make sure classname is immutable for equals safety
+Make classname is immutable for equals safety
  check unique db constraints on tables ex. invoice items
 
 
