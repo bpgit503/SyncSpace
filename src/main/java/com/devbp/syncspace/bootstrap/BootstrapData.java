@@ -2,8 +2,10 @@ package com.devbp.syncspace.bootstrap;
 
 import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
+import com.devbp.syncspace.domain.entities.ClassType;
 import com.devbp.syncspace.domain.entities.Trainer;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.repositories.ClassTypeRepository;
 import com.devbp.syncspace.repositories.TrainerRepository;
 import com.devbp.syncspace.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class BootstrapData implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
+    private final ClassTypeRepository classTypeRepository;
 
 
     @Override
@@ -107,6 +110,30 @@ public class BootstrapData implements CommandLineRunner {
 
         }
 
+        if (classTypeRepository.count() == 0) {
+            ClassType classType1 = ClassType.builder()
+                    .className("GetMassive")
+                    .description("Come and get absolutely massive with massive Bob")
+                    .durationMinutes(45)
+                    .isGroupClass(true)
+                    .maxCapacity(15)
+                    .basePrice(10)
+                    .isActive(true)
+                    .build();
+
+            ClassType classType2 = ClassType.builder()
+                    .className("Get Slim")
+                    .description("Come and slim down with slim Jim")
+                    .durationMinutes(60)
+                    .isGroupClass(true)
+                    .maxCapacity(20)
+                    .basePrice(12)
+                    .isActive(true)
+                    .build();
+
+            classTypeRepository.save(classType1);
+            classTypeRepository.save(classType2);
+        }
 
     }
 }
