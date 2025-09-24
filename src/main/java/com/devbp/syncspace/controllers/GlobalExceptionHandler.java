@@ -1,7 +1,9 @@
 package com.devbp.syncspace.controllers;
 
 import com.devbp.syncspace.domain.dtos.ErrorResponse;
+import com.devbp.syncspace.exceptions.ClassTypeAlreadyExistsException;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
+import com.devbp.syncspace.exceptions.InvalidUserTypeException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EmailAlreadyExistsException ex) {
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
 
         log.error("Email already exists : {}", ex.getMessage());
 
@@ -44,6 +46,38 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidUserTypeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidUserTypeException(InvalidUserTypeException ex){
+
+        log.error(" Invalid User Type provided: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .time(LocalDateTime.now())
+                .message("INVALID_USER_TYPE")
+                .details("The user that you have entered is not of the correct type")
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+
+    @ExceptionHandler(ClassTypeAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleClassTypeAlreadyExistsException(ClassTypeAlreadyExistsException ex){
+
+        log.error("Class Type already exists: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .time(LocalDateTime.now())
+                .message("CLASS_TYPE_ALREADY_EXISTS")
+                .details("The class type you have entered already exists")
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
 
 
 }

@@ -6,9 +6,5 @@ public class ClassTypeAlreadyExistsException extends RuntimeException {
         super(message);
     }
 
-    public ClassTypeAlreadyExistsException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
 
 }
