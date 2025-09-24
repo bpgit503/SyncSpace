@@ -5,6 +5,7 @@ import com.devbp.syncspace.domain.dtos.CreateTrainerRequest;
 import com.devbp.syncspace.domain.dtos.UpdateTrainerRequestDto;
 import com.devbp.syncspace.domain.entities.Trainer;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.InvalidUserTypeException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.TrainerRepository;
 import com.devbp.syncspace.repositories.UserRepository;
@@ -50,8 +51,7 @@ public class TrainerServiceImpl implements TrainerService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
         if (existingUser.getUserType() != UserType.TRAINER) {
-            //TODO should I create custom exception method for this?
-            throw new IllegalStateException("User is not of type TRAINER");
+            throw new InvalidUserTypeException("User is not of type TRAINER");
         }
 
         Trainer newTrainer = Trainer.builder()
@@ -75,7 +75,7 @@ public class TrainerServiceImpl implements TrainerService {
         Trainer existingtrainer = getTrainerByEmail(email);
 
         existingtrainer.setSpecializations(updateTrainerRequestDto.getSpecializations());
-         existingtrainer.setCertifications(updateTrainerRequestDto.getCertifications());
+        existingtrainer.setCertifications(updateTrainerRequestDto.getCertifications());
         existingtrainer.setContractDetails(updateTrainerRequestDto.getContractDetails());
         existingtrainer.setEarningsPercentage(updateTrainerRequestDto.getEarningsPercentage());
         existingtrainer.setHourlyRate(updateTrainerRequestDto.getHourlyRate());
