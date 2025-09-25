@@ -1,8 +1,6 @@
 package com.devbp.syncspace.domain.dtos;
 
 import com.devbp.syncspace.domain.ClassStatus;
-import com.devbp.syncspace.domain.entities.ClassType;
-import com.devbp.syncspace.domain.entities.Trainer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +17,8 @@ import java.time.LocalTime;
 public class ClassResponseDto {
 
     private long id;
-    private ClassType classType;
-    private Trainer trainer;
+    private ClassTypeResponseDto classType;
+    private TrainerResponseDto trainer;
     private LocalDate scheduledDate;
     private LocalTime startTime;
     private LocalTime endTime;
