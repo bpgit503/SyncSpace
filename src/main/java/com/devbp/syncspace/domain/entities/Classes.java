@@ -2,7 +2,10 @@ package com.devbp.syncspace.domain.entities;
 
 import com.devbp.syncspace.domain.ClassStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,7 +24,6 @@ import java.util.Objects;
 @Builder
 public class Classes {
 
-    //A way to validate that the start time < end time?
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
