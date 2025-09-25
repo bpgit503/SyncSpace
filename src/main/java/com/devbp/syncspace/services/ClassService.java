@@ -33,7 +33,7 @@ public interface ClassService {
 
     //Needs Trainer id/email and classtype id/name
     //validate start time and end time s is before e and total time is !> 2hours
-    Classes createClass(CreateClassRequest createClassRequest);
+    Classes createClass(long classTypeId, long trainerId, CreateClassRequest createClassRequest);
 
     //create checks when updating trainer and class
     // should not be able to update class to the past

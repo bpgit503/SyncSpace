@@ -1,10 +1,13 @@
 package com.devbp.syncspace.bootstrap;
 
+import com.devbp.syncspace.domain.ClassStatus;
 import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.entities.ClassType;
+import com.devbp.syncspace.domain.entities.Classes;
 import com.devbp.syncspace.domain.entities.Trainer;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.repositories.ClassRepository;
 import com.devbp.syncspace.repositories.ClassTypeRepository;
 import com.devbp.syncspace.repositories.TrainerRepository;
 import com.devbp.syncspace.repositories.UserRepository;
@@ -13,6 +16,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +27,7 @@ public class BootstrapData implements CommandLineRunner {
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
     private final ClassTypeRepository classTypeRepository;
+    private final ClassRepository classRepository;
 
 
     @Override
@@ -77,12 +84,12 @@ public class BootstrapData implements CommandLineRunner {
             user4.setStatus(UserStatus.ACTIVE);
 
             user5 = User.builder()
-                    .email("FitJim@com")
+                    .email("slimJim@slimming.com")
                     .firstName("Slim")
-                    .lastName("Shaddy")
+                    .lastName("Jim")
                     .phoneNumber("000000000")
                     .dateOfBirth(LocalDate.parse("1969-06-09"))
-                    .address("69 shaddy Ave")
+                    .address("69 slim Ave")
                     .userType(UserType.TRAINER)
                     .status(UserStatus.ACTIVE)
                     .build();
@@ -93,24 +100,35 @@ public class BootstrapData implements CommandLineRunner {
             userRepository.save(user4);
             userRepository.save(user5);
 
-            if (trainerRepository.count() == 0) {
-                Trainer trainer1 = Trainer.builder()
-                        .user(user2)
-                        .earningsPercentage(0.4)
-                        .build();
 
-                Trainer trainer2 = Trainer.builder()
-                        .user(user5)
-                        .earningsPercentage(0.4)
-                        .build();
+            Trainer trainer1 = Trainer.builder()
+                    .user(user2)
+                    .specializations(List.of("Massive Specializations", "More Massive Specializations"))
+                    .certifications(List.of("Massive Certification", "Greater Massive Certifications"))
+                    .contractDetails("Sample Contract")
+                    .earningsPercentage(0.4)
+                    .hourlyRate(1)
+                    .bio("A Massive coach of massive standards who specialty is to get people to become massive in both mind and body")
+                    .experienceYears(10)
+                    .isAvailable(true)
+                    .build();
 
-                trainerRepository.save(trainer1);
-                trainerRepository.save(trainer2);
-            }
+            Trainer trainer2 = Trainer.builder()
+                    .user(user5)
+                    .specializations(List.of("Slimming Specializations", "More Slimming Specializations"))
+                    .certifications(List.of("Slimming Certification", "Greater Slimming Certifications"))
+                    .contractDetails("Sample Contract")
+                    .earningsPercentage(0.4)
+                    .hourlyRate(1)
+                    .bio("A Slim coach of slim standards who specialty is to get people to become slim in both mind and body")
+                    .experienceYears(10)
+                    .isAvailable(true)
+                    .build();
 
-        }
+            trainerRepository.save(trainer1);
+            trainerRepository.save(trainer2);
 
-        if (classTypeRepository.count() == 0) {
+
             ClassType classType1 = ClassType.builder()
                     .className("GetMassive")
                     .description("Come and get absolutely massive with massive Bob")
@@ -133,6 +151,40 @@ public class BootstrapData implements CommandLineRunner {
 
             classTypeRepository.save(classType1);
             classTypeRepository.save(classType2);
+
+
+            Classes classes1 = Classes.builder()
+                    .id(1L)
+                    .classType(classType1)
+                    .trainer(trainer1)
+                    .scheduledDate(LocalDate.of(2025, 10, 15))
+                    .startTime(LocalTime.of(9, 0))
+                    .endTime(LocalTime.of(10, 0))
+                    .maxCapacity(20)
+                    .currentCapacity(12)
+                    .classStatus(ClassStatus.SCHEDULED)
+                    .notes("Morning slimming session")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+
+
+            Classes classes2 = Classes.builder()
+                    .id(2L)
+                    .classType(classType2)
+                    .trainer(trainer2)
+                    .scheduledDate(LocalDate.of(2025, 10, 20))
+                    .startTime(LocalTime.of(18, 30))
+                    .endTime(LocalTime.of(20, 0))
+                    .maxCapacity(15)
+                    .currentCapacity(15)
+                    .classStatus(ClassStatus.SCHEDULED)
+                    .notes("Evening Massive gainer")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+
+
         }
 
     }

@@ -2,10 +2,7 @@ package com.devbp.syncspace.domain.entities;
 
 import com.devbp.syncspace.domain.ClassStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -74,6 +71,11 @@ public class Classes {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @AssertTrue(message = "Start time must be before end time")
+    public boolean isValidTimeRange() {
+        return startTime.isBefore(endTime);
+    }
 
 
     @Override
