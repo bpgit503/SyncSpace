@@ -3,6 +3,7 @@ package com.devbp.syncspace.domain.dtos;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -15,5 +16,6 @@ public class ErrorResponse {
     private LocalDateTime time;
     private String message;
     private String details;
+    private Map<String, String> fieldErrors;
 
 }

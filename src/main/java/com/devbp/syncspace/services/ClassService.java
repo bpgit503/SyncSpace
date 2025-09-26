@@ -40,6 +40,8 @@ public interface ClassService {
     //make a date log in notes for whenever a change is made
     Classes updateClass(long id, UpdateClassRequest updateClassRequest);
 
+    Classes partialUpdateClass( long id, UpdateClassRequest updateClassRequest);
+
     void cancelClass(long id);
 
 

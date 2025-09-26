@@ -72,11 +72,6 @@ public class Classes {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @AssertTrue(message = "Start time must be before end time")
-    public boolean isValidTimeRange() {
-        return startTime.isBefore(endTime);
-    }
-
 
     @Override
     public boolean equals(Object o) {

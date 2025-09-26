@@ -4,6 +4,7 @@ import com.devbp.syncspace.domain.dtos.ClassResponseDto;
 import com.devbp.syncspace.domain.dtos.CreateClassRequest;
 import com.devbp.syncspace.domain.mappers.ClassMapper;
 import com.devbp.syncspace.services.ClassService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -39,7 +40,7 @@ public class ClassController {
     }
 
     @PostMapping("/{classId}/{trainerId}")
-    public ResponseEntity<ClassResponseDto> createClass(@PathVariable Long classId, @PathVariable Long trainerId, @RequestBody CreateClassRequest createClassRequest) {
+    public ResponseEntity<ClassResponseDto> createClass(@PathVariable Long classId, @PathVariable Long trainerId, @Valid @RequestBody CreateClassRequest createClassRequest) {
 
         ClassResponseDto dto = classMapper.toDto(classService.createClass(classId, trainerId, createClassRequest));
 

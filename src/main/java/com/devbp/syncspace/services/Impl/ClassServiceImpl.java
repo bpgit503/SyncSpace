@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -42,19 +44,9 @@ public class ClassServiceImpl implements ClassService {
         ClassType existingClassType = classTypeRepository.findById(classTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Class Type not found with id: " + classTypeId));
 
-        log.warn(existingClassType.getClassName());
-
         Trainer existingTrainer = trainerRepository.findById(trainerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Trainer not found with id: " + trainerId));
 
-        log.warn(String.valueOf(existingTrainer.getId()));
-
-        Classes newClass = getClasses(createClassRequest, existingClassType, existingTrainer);
-
-        return classRepository.save(newClass);
-    }
-
-    private static Classes getClasses(CreateClassRequest createClassRequest, ClassType existingClassType, Trainer existingTrainer) {
         Classes newClass = new Classes();
         newClass.setClassType(existingClassType);
         newClass.setTrainer(existingTrainer);
@@ -64,11 +56,61 @@ public class ClassServiceImpl implements ClassService {
         newClass.setMaxCapacity(createClassRequest.getMaxCapacity());
         newClass.setCurrentCapacity(createClassRequest.getCurrentCapacity());
         newClass.setNotes(createClassRequest.getNotes());
-        return newClass;
+
+        return classRepository.save(newClass);
     }
 
     @Override
     public Classes updateClass(long id, UpdateClassRequest updateClassRequest) {
+        Classes existingClass = getClassById(id);
+        String trainerEmail = updateClassRequest.getTrainerEmail();
+        Long trainerId = updateClassRequest.getTrainerId();
+        String className = updateClassRequest.getClassTypeName();
+        Trainer newTrainer = new Trainer();
+        ClassType newClassType = new ClassType();
+
+        if (trainerId != null || trainerEmail != null) {
+            newTrainer = trainerRepository.findByUser_EmailOrId(trainerEmail, trainerId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Trainer not found with id : " + trainerId
+                            + "or email: " + trainerEmail));
+            existingClass.setTrainer(newTrainer);
+        }
+
+        if (className != null) {
+            newClassType = classTypeRepository.findByClassName(className)
+                    .orElseThrow(() -> new ResourceNotFoundException("Class name not found :" + className));
+            existingClass.setClassType(newClassType);
+        }
+
+        if (updateClassRequest.getScheduledDate() != null) {
+            existingClass.setScheduledDate(updateClassRequest.getScheduledDate());
+        }
+
+        if (updateClassRequest.getStartTime() != null) {
+            existingClass.setStartTime(updateClassRequest.getStartTime());
+        }
+        if (updateClassRequest.getEndTime() != null) {
+            existingClass.setEndTime(updateClassRequest.getEndTime());
+        }
+        if (updateClassRequest.getMaxCapacity() > 0) {
+            existingClass.setMaxCapacity(updateClassRequest.getMaxCapacity());
+        }
+        if (updateClassRequest.getCurrentCapacity() > 0) {
+            existingClass.setCurrentCapacity(updateClassRequest.getCurrentCapacity());
+        }
+
+        if (updateClassRequest.getClassStatus() != null) {
+            existingClass.setClassStatus(updateClassRequest.getClassStatus());
+        }
+
+        existingClass.setNotes(existingClass.getNotes() + "\n" + updateClassRequest.getNotes());
+
+
+        return classRepository.save(existingClass);
+    }
+
+    @Override
+    public Classes partialUpdateClass(long id, UpdateClassRequest updateClassRequest) {
         return null;
     }
 

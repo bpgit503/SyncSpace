@@ -19,6 +19,12 @@ public class UpdateClassRequest {
     @FutureOrPresent(message = "Scheduled date must be in the future or present")
     private LocalDate scheduledDate;
 
+    private String classTypeName;
+
+    private Long trainerId;
+
+    private String trainerEmail;
+
     private LocalTime startTime;
 
     private LocalTime endTime;
@@ -33,4 +39,11 @@ public class UpdateClassRequest {
 
     @NotBlank(message = "Add a note stating the reason for the updated")
     private String notes;
+
+    @AssertTrue(message = "Start time must be before end time")
+    public boolean isValidTimeRange() {
+        if(startTime == null || endTime == null) return true;
+        return startTime.isBefore(endTime);
+    }
+
 }

@@ -8,6 +8,8 @@ a way to automatically generate unique invoice numbers
 
 ## Classes
 a way to validate that start time < end time and total time cant be over 2 hours
+when updating a class' trainer admin may be able to enter
+(id,trainer full name or trainer email) to be able to update the class' trainer
 
 
 ## Class Types

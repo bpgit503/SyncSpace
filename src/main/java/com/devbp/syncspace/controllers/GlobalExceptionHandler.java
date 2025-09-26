@@ -8,10 +8,13 @@ import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
@@ -48,7 +51,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidUserTypeException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidUserTypeException(InvalidUserTypeException ex){
+    public ResponseEntity<ErrorResponse> handleInvalidUserTypeException(InvalidUserTypeException ex) {
 
         log.error(" Invalid User Type provided: {}", ex.getMessage());
 
@@ -64,7 +67,7 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(ClassTypeAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleClassTypeAlreadyExistsException(ClassTypeAlreadyExistsException ex){
+    public ResponseEntity<ErrorResponse> handleClassTypeAlreadyExistsException(ClassTypeAlreadyExistsException ex) {
 
         log.error("Class Type already exists: {}", ex.getMessage());
 
@@ -78,6 +81,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        log.warn("Validation Error of type: {}", ex.getMessage());
+
+        Map<String, String> fieldErrors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                fieldErrors.put(error.getField(), error.getDefaultMessage()));
+
+        ex.getBindingResult().getGlobalErrors().forEach(error ->
+                fieldErrors.put(error.getObjectName(), error.getDefaultMessage()));
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .time(LocalDateTime.now())
+                .message("FAILED_VALIDATION")
+                .details("The input data does not match the validation constraints")
+                .fieldErrors(fieldErrors)
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 }

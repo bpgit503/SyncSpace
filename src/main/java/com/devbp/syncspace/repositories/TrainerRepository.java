@@ -13,7 +13,9 @@ public interface TrainerRepository extends JpaRepository<Trainer, Long> {
 
     Optional<Trainer> findByUser_Email(String email);
 
-    @Query(value = "Select t.*, u.email FROM trainers t JOIN users u ON u.id=t.user_id where u.email =?", nativeQuery = true)
+    @Query(value = "Select t.*, u.email FROM trainers t JOIN users u ON u.id=t.user_id where u.email =? ", nativeQuery = true)
     Trainer findTrainerByEmail(@Param("email") String email);
+
+    Optional<Trainer> findByUser_EmailOrId(String email, Long id);
 }
 
