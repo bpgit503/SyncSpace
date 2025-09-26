@@ -57,6 +57,8 @@ public class ClassServiceImpl implements ClassService {
         newClass.setCurrentCapacity(createClassRequest.getCurrentCapacity());
         newClass.setNotes(createClassRequest.getNotes());
 
+        existingTrainer.addClass(newClass);
+
         return classRepository.save(newClass);
     }
 
@@ -67,14 +69,17 @@ public class ClassServiceImpl implements ClassService {
         String trainerEmail = updateClassRequest.getTrainerEmail();
         Long trainerId = updateClassRequest.getTrainerId();
         String className = updateClassRequest.getClassTypeName();
-        Trainer newTrainer = new Trainer();
-        ClassType newClassType = new ClassType();
+        Trainer oldTrainer = existingClass.getTrainer();
+        Trainer newTrainer;
+        ClassType newClassType;
 
         if (trainerId != null || trainerEmail != null) {
             newTrainer = trainerRepository.findByUser_EmailOrId(trainerEmail, trainerId)
                     .orElseThrow(() -> new ResourceNotFoundException("Trainer not found with id : " + trainerId
                             + "or email: " + trainerEmail));
+            oldTrainer.removeClass(existingClass);
             existingClass.setTrainer(newTrainer);
+            newTrainer.addClass(existingClass);
         }
 
         if (className != null) {

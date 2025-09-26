@@ -2,12 +2,12 @@ package com.devbp.syncspace.controllers;
 
 import com.devbp.syncspace.domain.dtos.ClassResponseDto;
 import com.devbp.syncspace.domain.dtos.CreateClassRequest;
+import com.devbp.syncspace.domain.dtos.UpdateClassRequest;
 import com.devbp.syncspace.domain.mappers.ClassMapper;
 import com.devbp.syncspace.services.ClassService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,4 +48,33 @@ public class ClassController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClassResponseDto> updateClass(@PathVariable Long id, @Valid @RequestBody UpdateClassRequest updateClassRequest) {
+
+        ClassResponseDto dto = classMapper.toDto(classService.updateClass(id, updateClassRequest));
+
+        return ResponseEntity.ok(dto);
+
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClassResponseDto> updateClassStatusToCancelled(@PathVariable Long id) {
+
+        ClassResponseDto dto = classMapper.toDto(classService.cancelClass(id));
+
+        return ResponseEntity.ok(dto);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ClassResponseDto> deleteClassById(@PathVariable Long id) {
+
+        classService.deleteClassById(id);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+
 }

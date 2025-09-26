@@ -154,7 +154,6 @@ public class BootstrapData implements CommandLineRunner {
 
 
             Classes classes1 = Classes.builder()
-                    .id(1L)
                     .classType(classType1)
                     .trainer(trainer1)
                     .scheduledDate(LocalDate.of(2025, 10, 15))
@@ -164,13 +163,10 @@ public class BootstrapData implements CommandLineRunner {
                     .currentCapacity(12)
                     .classStatus(ClassStatus.SCHEDULED)
                     .notes("Morning slimming session")
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
                     .build();
 
 
             Classes classes2 = Classes.builder()
-                    .id(2L)
                     .classType(classType2)
                     .trainer(trainer2)
                     .scheduledDate(LocalDate.of(2025, 10, 20))
@@ -180,9 +176,11 @@ public class BootstrapData implements CommandLineRunner {
                     .currentCapacity(15)
                     .classStatus(ClassStatus.SCHEDULED)
                     .notes("Evening Massive gainer")
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
                     .build();
+
+
+            classRepository.save(classes1);
+            classRepository.save(classes2);
 
 
         }
