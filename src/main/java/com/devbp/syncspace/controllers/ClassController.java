@@ -40,7 +40,8 @@ public class ClassController {
     }
 
     @PostMapping("/{classId}/{trainerId}")
-    public ResponseEntity<ClassResponseDto> createClass(@PathVariable Long classId, @PathVariable Long trainerId, @Valid @RequestBody CreateClassRequest createClassRequest) {
+    public ResponseEntity<ClassResponseDto> createClass(@PathVariable Long classId, @PathVariable Long trainerId, @Valid
+    @RequestBody CreateClassRequest createClassRequest) {
 
         ClassResponseDto dto = classMapper.toDto(classService.createClass(classId, trainerId, createClassRequest));
 

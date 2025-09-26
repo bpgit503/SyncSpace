@@ -10,6 +10,21 @@ a way to automatically generate unique invoice numbers
 a way to validate that start time < end time and total time cant be over 2 hours
 when updating a class' trainer admin may be able to enter
 (id,trainer full name or trainer email) to be able to update the class' trainer
+Class status should be automatically updated to completed once localtime.now is > endTime and
+    ClassStatus is != Canceled and Class status != completed;
+ADDITIONAL:
+// should not be able to update class date to the past
+    //should not be able to update a class which has happened over 7 days ago
+    //make a date log in notes for whenever a change is made
+
+- SECURITY what is a business approach for handling updaating record of classes that happened in the past?
+    cannot update classes whose dates are older than 7 days
+
+SEARCH: Seould I create a search function to fetch class by the ff:
+    get all classes by class type
+    get all classes by trainer
+    get all classes by class status
+    get all classes by date range - day, wek
 
 
 ## Class Types

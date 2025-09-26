@@ -1,5 +1,6 @@
 package com.devbp.syncspace.services.Impl;
 
+import com.devbp.syncspace.domain.ClassStatus;
 import com.devbp.syncspace.domain.dtos.CreateClassRequest;
 import com.devbp.syncspace.domain.dtos.UpdateClassRequest;
 import com.devbp.syncspace.domain.entities.ClassType;
@@ -16,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +60,7 @@ public class ClassServiceImpl implements ClassService {
         return classRepository.save(newClass);
     }
 
+    @Transactional
     @Override
     public Classes updateClass(long id, UpdateClassRequest updateClassRequest) {
         Classes existingClass = getClassById(id);
@@ -109,18 +110,19 @@ public class ClassServiceImpl implements ClassService {
         return classRepository.save(existingClass);
     }
 
+    @Transactional
     @Override
-    public Classes partialUpdateClass(long id, UpdateClassRequest updateClassRequest) {
-        return null;
-    }
+    public Classes cancelClass(long id) {
+        Classes existingClass = getClassById(id);
+        existingClass.setClassStatus(ClassStatus.CANCELLED);
 
-    @Override
-    public void cancelClass(long id) {
-
+        return classRepository.save(existingClass);
     }
 
     @Override
     public void deleteClassById(long id) {
+
+        classRepository.delete(getClassById(id));
 
     }
 }
