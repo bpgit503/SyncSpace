@@ -6,6 +6,7 @@ import com.devbp.syncspace.domain.dtos.UpdateBookingRequest;
 import com.devbp.syncspace.domain.entities.Booking;
 import com.devbp.syncspace.domain.entities.Classes;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.EntityAlreadyExistsException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.BookingRepository;
 import com.devbp.syncspace.repositories.ClassRepository;
@@ -37,16 +38,21 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
     }
 
-    //user and classtype are active
-    //do check that client cant book a class twice
     @Transactional
     @Override
     public Booking createBooking(CreateBookingRequest createBookingRequest) {
-        User bookingClient = userRepository.findActiveClientById(createBookingRequest.getClientId())
-                .orElseThrow(() -> new ResourceNotFoundException("No Active Client found with id: " + createBookingRequest.getClientId()));
+        long clientId = createBookingRequest.getClientId();
+        long classId = createBookingRequest.getClassId();
 
-        Classes classToBeBooked = classRepository.findClassesById_AndIsActive(createBookingRequest.getClassId())
-                .orElseThrow(() -> new ResourceNotFoundException("No Active Class found with id: " + createBookingRequest.getClassId()));
+        if (bookingRepository.existsByClient_IdAndClazz_Id(clientId, classId)) {
+            throw new EntityAlreadyExistsException("Booking already exists with client id: " + clientId + " class id: " + classId, " Booking Error");
+        }
+
+        User bookingClient = userRepository.findActiveClientById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("No Active Client found with id: " + clientId));
+
+        Classes classToBeBooked = classRepository.findClassesById_AndIsActive(classId)
+                .orElseThrow(() -> new ResourceNotFoundException("No Active Class found with id: " + classId));
 
         Booking newBooking = new Booking();
         newBooking.setClient(bookingClient);
