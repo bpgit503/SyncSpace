@@ -43,6 +43,9 @@ Get booking by FF: CLinet (id,name,email) and CLass(id, name)
 # CREATE checks for the following
 - ONLY ACTIVE CLIENTS AND TRAINERS CAN BOOK CLASSES
 - ONLY ACTIVE CLASS types CAN HAVE CLASSES BOOKED
+- When CLASS is booked modify current capacity accordingly
+- When class is fully booked modify field accordimgly
+- handle when trying to insert same booking twice
 
 
 
