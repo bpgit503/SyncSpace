@@ -19,7 +19,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Bookings {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,8 +58,8 @@ public class Bookings {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Bookings bookings = (Bookings) o;
-        return Objects.equals(client, bookings.client) && Objects.equals(clazz, bookings.clazz);
+        Booking booking = (Booking) o;
+        return Objects.equals(client, booking.client) && Objects.equals(clazz, booking.clazz);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.devbp.syncspace.domain.entities;
 
-import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
 import jakarta.persistence.*;
@@ -65,12 +64,12 @@ public class User {
     private UserStatus status = UserStatus.ACTIVE;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Bookings> bookings = new ArrayList<>();
+    private List<Booking> bookings = new ArrayList<>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Invoice> invoices = new ArrayList<>();
 
-    public void addBooking(Bookings booking) {
+    public void addBooking(Booking booking) {
 
         if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null");
@@ -88,7 +87,7 @@ public class User {
 
     }
 
-    public void removeBooking(Bookings booking) {
+    public void removeBooking(Booking booking) {
         if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null");
         }

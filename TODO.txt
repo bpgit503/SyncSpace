@@ -31,5 +31,9 @@ SEARCH: Seould I create a search function to fetch class by the ff:
 Make classname is immutable for equals safety
  check unique db constraints on tables ex. invoice items
 
+ ##Booking Class
+ add special logic where needed when a class is cancelled, noshow, completed, etc
+
+
 
 

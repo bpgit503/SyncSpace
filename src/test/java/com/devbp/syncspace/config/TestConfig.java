@@ -5,14 +5,12 @@ import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.dtos.CreateTrainerRequest;
 import com.devbp.syncspace.domain.dtos.CreateUserRequest;
 import com.devbp.syncspace.domain.dtos.UpdateTrainerRequestDto;
-import com.devbp.syncspace.domain.dtos.UserResponseDto;
-import com.devbp.syncspace.domain.dtos.UserResponseDto.UpdateUserRequest;
+import com.devbp.syncspace.domain.dtos.UpdateUserRequest;
 import com.devbp.syncspace.domain.entities.ClassType;
 import com.devbp.syncspace.domain.entities.Trainer;
 import com.devbp.syncspace.domain.entities.User;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestConfig {

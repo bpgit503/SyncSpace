@@ -2,6 +2,7 @@ package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.dtos.CreateUserRequest;
 import com.devbp.syncspace.domain.UserStatus;
+import com.devbp.syncspace.domain.dtos.UpdateUserRequest;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User updateUser(long id, UserResponseDto.UpdateUserRequest updateUserRequest) {
+    public User updateUser(long id, UpdateUserRequest updateUserRequest) {
         User existingUser = findUserById(id);
 
         if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(existingUser.getEmail())) {
