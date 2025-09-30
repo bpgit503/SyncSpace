@@ -72,11 +72,34 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking updateBooking(long id, UpdateBookingRequest updateBookingRequest) {
-        return null;
+
+        long clientId = updateBookingRequest.getClientId();
+        long classId = updateBookingRequest.getClassId();
+
+        if (!bookingRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Booking not found with client id: " + clientId + " class id: " + classId, " Booking Error");
+        }
+        Booking exsitingBooking = getBookingById(id);
+
+        Optional.ofNullable(updateBookingRequest.getBookingStatus())
+                .ifPresent(exsitingBooking::setBookingStatus);
+
+        Optional.of(updateBookingRequest.getPricePaid())
+                .ifPresent(exsitingBooking::setPricePaid);
+
+        Optional.of(updateBookingRequest.getPaymentStatus())
+                .ifPresent(exsitingBooking::setPaymentStatus);
+
+        Optional.ofNullable(updateBookingRequest.getNotes())
+                .ifPresent(exsitingBooking::setNotes);
+
+        return bookingRepository.save(exsitingBooking);
     }
 
     @Override
     public Booking confirmBookingStatus(long id, BookingStatus bookingStatus) {
+
+
         return null;
     }
 
