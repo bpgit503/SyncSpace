@@ -142,8 +142,19 @@ public class BootstrapData implements CommandLineRunner {
                     .isActive(true)
                     .build();
 
+            ClassType classType3 = ClassType.builder()
+                    .className("PrivatePilates")
+                    .description("One on one pilates class")
+                    .durationMinutes(60)
+                    .isGroupClass(false)
+                    .maxCapacity(1)
+                    .basePrice(150)
+                    .isActive(true)
+                    .build();
+
             classTypeRepository.save(classType1);
             classTypeRepository.save(classType2);
+            classTypeRepository.save(classType3);
 
 
             Classes classes1 = Classes.builder()

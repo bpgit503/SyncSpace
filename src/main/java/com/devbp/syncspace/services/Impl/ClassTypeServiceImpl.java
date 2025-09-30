@@ -47,7 +47,12 @@ public class ClassTypeServiceImpl implements ClassTypeService {
         newClassType.setDescription(createClassTypeRequest.getDescription());
         newClassType.setDurationMinutes(createClassTypeRequest.getDurationMinutes());
         newClassType.setGroupClass(createClassTypeRequest.isGroupClass());
-        newClassType.setMaxCapacity(createClassTypeRequest.getMaxCapacity());
+
+        if(newClassType.isGroupClass()){
+
+            newClassType.setMaxCapacity(createClassTypeRequest.getMaxCapacity());
+        } else newClassType.setMaxCapacity(1);
+
         newClassType.setBasePrice(createClassTypeRequest.getBasePrice());
         newClassType.setActive(createClassTypeRequest.isActive());
 

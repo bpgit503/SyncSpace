@@ -11,6 +11,7 @@ import com.devbp.syncspace.repositories.BookingRepository;
 import com.devbp.syncspace.repositories.ClassRepository;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.BookingService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class BookingServiceImpl implements BookingService {
 
     //user and classtype are active
     //do check that client cant book a class twice
+    @Transactional
     @Override
     public Booking createBooking(CreateBookingRequest createBookingRequest) {
         User bookingClient = userRepository.findActiveClientById(createBookingRequest.getClientId())
@@ -55,6 +57,7 @@ public class BookingServiceImpl implements BookingService {
                 .ifPresent(newBooking::setPaymentStatus);
 
         bookingClient.addBooking(newBooking);
+        classToBeBooked.setCurrentCapacity(classToBeBooked.getCurrentCapacity()+1);
 
         return bookingRepository.save(newBooking);
     }
