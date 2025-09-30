@@ -5,11 +5,13 @@ import com.devbp.syncspace.domain.dtos.CreateBookingRequest;
 import com.devbp.syncspace.domain.dtos.UpdateBookingRequest;
 import com.devbp.syncspace.domain.entities.Booking;
 
+import java.util.List;
+
 public interface BookingService {
 
-    Booking findAllBookings();
+    List<Booking> getAllBookings();
 
-    Booking getBookingById();
+    Booking getBookingById(long id);
 
     Booking createBooking( CreateBookingRequest createBookingRequest);
 

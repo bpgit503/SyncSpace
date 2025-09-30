@@ -33,7 +33,7 @@ Make classname is immutable for equals safety
 
  ##Booking Class
  add special logic where needed when a class is cancelled, noshow, completed, etc
-
+Get booking by FF: CLinet (id,name,email) and CLass(id, name)
 
 
 
