@@ -52,12 +52,14 @@ public class BookingServiceImpl implements BookingService {
         newBooking.setClient(bookingClient);
         newBooking.setClazz(classToBeBooked);
         newBooking.setPricePaid(createBookingRequest.getPricePaid());
+        newBooking.setNotes(createBookingRequest.getNotes());
 
         Optional.ofNullable(createBookingRequest.getPaymentStatus())
                 .ifPresent(newBooking::setPaymentStatus);
 
         bookingClient.addBooking(newBooking);
-        classToBeBooked.setCurrentCapacity(classToBeBooked.getCurrentCapacity()+1);
+
+        classToBeBooked.setCurrentCapacity(classToBeBooked.getCurrentCapacity() + 1);
 
         return bookingRepository.save(newBooking);
     }

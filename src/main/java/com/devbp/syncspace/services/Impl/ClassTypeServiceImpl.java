@@ -46,16 +46,13 @@ public class ClassTypeServiceImpl implements ClassTypeService {
         newClassType.setClassName(createClassTypeRequest.getClassName());
         newClassType.setDescription(createClassTypeRequest.getDescription());
         newClassType.setDurationMinutes(createClassTypeRequest.getDurationMinutes());
-        newClassType.setGroupClass(createClassTypeRequest.isGroupClass());
-
-        if(newClassType.isGroupClass()){
-
-            newClassType.setMaxCapacity(createClassTypeRequest.getMaxCapacity());
-        } else newClassType.setMaxCapacity(1);
-
         newClassType.setBasePrice(createClassTypeRequest.getBasePrice());
         newClassType.setActive(createClassTypeRequest.isActive());
 
+        newClassType.setGroupClass(createClassTypeRequest.isGroupClass());
+        if (newClassType.isGroupClass()) {
+            newClassType.setMaxCapacity(createClassTypeRequest.getMaxCapacity());
+        } else newClassType.setMaxCapacity(1);
 
         return classTypeRepository.save(newClassType);
     }
@@ -80,6 +77,7 @@ public class ClassTypeServiceImpl implements ClassTypeService {
 
         return classTypeRepository.save(existingClassType);
     }
+
     @Transactional
     @Override
     public void deleteClassTypeById(Long id) {

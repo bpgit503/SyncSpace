@@ -53,14 +53,13 @@ public class ClassServiceImpl implements ClassService {
         newClass.setScheduledDate(createClassRequest.getScheduledDate());
         newClass.setStartTime(createClassRequest.getStartTime());
         newClass.setEndTime(createClassRequest.getEndTime());
-
-        if(existingClassType.isGroupClass()){
-            newClass.setMaxCapacity(createClassRequest.getMaxCapacity());
-
-        } else newClass.setMaxCapacity(1);
-
         newClass.setCurrentCapacity(0);
         newClass.setNotes(createClassRequest.getNotes());
+
+        if (existingClassType.isGroupClass()) {
+            newClass.setMaxCapacity(createClassRequest.getMaxCapacity());
+        } else newClass.setMaxCapacity(1);
+
 
         existingTrainer.addClass(newClass);
 
