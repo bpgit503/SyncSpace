@@ -129,7 +129,7 @@ public class BootstrapData implements CommandLineRunner {
                     .isGroupClass(true)
                     .maxCapacity(15)
                     .basePrice(10)
-                    .isActive(true)
+                    .isActive(false)
                     .build();
 
             ClassType classType2 = ClassType.builder()

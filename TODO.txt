@@ -40,7 +40,10 @@ Get booking by FF: CLinet (id,name,email) and CLass(id, name)
     A spot in the class will be opened
 -ex client is a noShow then booking status will be updated to noshow
 
-# ONLY ACTIVE CLIENTS CAN BOOK CLASSES CR8 CHECK
+# CREATE checks for the following
+- ONLY ACTIVE CLIENTS AND TRAINERS CAN BOOK CLASSES
+- ONLY ACTIVE CLASS types CAN HAVE CLASSES BOOKED
+
 
 
 

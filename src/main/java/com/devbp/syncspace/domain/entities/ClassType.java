@@ -47,7 +47,7 @@ public class ClassType {
     @Column(name = "base_price", nullable = false)
     private double basePrice;
 
-    @NotNull(message = "Group class setting is required") //** find better wording
+    @NotNull(message = "Class Activity setting is required") //** find better wording
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 

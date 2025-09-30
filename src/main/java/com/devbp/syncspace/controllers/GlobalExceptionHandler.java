@@ -25,11 +25,14 @@ public class GlobalExceptionHandler {
 
         log.error("Resource not found: {}", ex.getMessage());
 
+        ex.addFieldError("", ex.getMessage());
+
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(HttpStatus.NOT_FOUND.value())
                 .time(LocalDateTime.now())
                 .message("RESOURCE_NOT_FOUND")
                 .details("The Resource that your are searching for does not exist")
+                .fieldErrors(ex.getFieldErrors())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -45,6 +48,7 @@ public class GlobalExceptionHandler {
                 .time(LocalDateTime.now())
                 .message("EMAIL_ALREADY_EXISTS")
                 .details("The email that you have entered already exists")
+                .fieldErrors(Map.of("",ex.getMessage()))
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -60,6 +64,7 @@ public class GlobalExceptionHandler {
                 .time(LocalDateTime.now())
                 .message("INVALID_USER_TYPE")
                 .details("The user that you have entered is not of the correct type")
+                .fieldErrors(Map.of("", ex.getMessage()))
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
@@ -76,6 +81,7 @@ public class GlobalExceptionHandler {
                 .time(LocalDateTime.now())
                 .message("CLASS_TYPE_ALREADY_EXISTS")
                 .details("The class type you have entered already exists")
+                .fieldErrors(Map.of("", ex.getMessage()))
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);

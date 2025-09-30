@@ -4,19 +4,26 @@ import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.dtos.CreateBookingRequest;
 import com.devbp.syncspace.domain.dtos.UpdateBookingRequest;
 import com.devbp.syncspace.domain.entities.Booking;
+import com.devbp.syncspace.domain.entities.Classes;
+import com.devbp.syncspace.domain.entities.User;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.BookingRepository;
+import com.devbp.syncspace.repositories.ClassRepository;
+import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final ClassRepository classRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<Booking> getAllBookings() {
@@ -29,9 +36,27 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
     }
 
+    //user and classtype are active
+    //do check that client cant book a class twice
     @Override
     public Booking createBooking(CreateBookingRequest createBookingRequest) {
-        return null;
+        User bookingClient = userRepository.findActiveClientById(createBookingRequest.getClientId())
+                .orElseThrow(() -> new ResourceNotFoundException("No Active Client found with id: " + createBookingRequest.getClientId()));
+
+        Classes classToBeBooked = classRepository.findClassesById_AndIsActive(createBookingRequest.getClassId())
+                .orElseThrow(() -> new ResourceNotFoundException("No Active Class found with id: " + createBookingRequest.getClassId()));
+
+        Booking newBooking = new Booking();
+        newBooking.setClient(bookingClient);
+        newBooking.setClazz(classToBeBooked);
+        newBooking.setPricePaid(createBookingRequest.getPricePaid());
+
+        Optional.ofNullable(createBookingRequest.getPaymentStatus())
+                .ifPresent(newBooking::setPaymentStatus);
+
+        bookingClient.addBooking(newBooking);
+
+        return bookingRepository.save(newBooking);
     }
 
     @Override
