@@ -7,6 +7,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -33,8 +34,8 @@ public class Booking {
     @JoinColumn(name = "class_id", nullable = false)
     private Classes clazz;
 
-    @FutureOrPresent(message = "Bookings can be only made in the future or present")
-    @Column(name = "booking_date")
+    @CreationTimestamp
+    @Column(name = "booking_date", nullable = false)
     private LocalDateTime bookingDate;
 
     @NotNull(message = "Booking Status is required")

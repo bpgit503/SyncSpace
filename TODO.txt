@@ -20,7 +20,7 @@ ADDITIONAL:
 - SECURITY what is a business approach for handling updaating record of classes that happened in the past?
     cannot update classes whose dates are older than 7 days
 
-SEARCH: Seould I create a search function to fetch class by the ff:
+SEARCH: Should I create a search function to fetch class by the ff:
     get all classes by class type
     get all classes by trainer
     get all classes by class status
@@ -34,6 +34,13 @@ Make classname is immutable for equals safety
  ##Booking Class
  add special logic where needed when a class is cancelled, noshow, completed, etc
 Get booking by FF: CLinet (id,name,email) and CLass(id, name)
+-ex if client cancels and it before 24 hours before the class start time (refund Policy)
+    then money will be refunded
+    booking status will change to null and price paid 0
+    A spot in the class will be opened
+-ex client is a noShow then booking status will be updated to noshow
+
+# ONLY ACTIVE CLIENTS CAN BOOK CLASSES CR8 CHECK
 
 
 

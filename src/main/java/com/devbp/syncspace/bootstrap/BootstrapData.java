@@ -1,16 +1,8 @@
 package com.devbp.syncspace.bootstrap;
 
-import com.devbp.syncspace.domain.ClassStatus;
-import com.devbp.syncspace.domain.UserStatus;
-import com.devbp.syncspace.domain.UserType;
-import com.devbp.syncspace.domain.entities.ClassType;
-import com.devbp.syncspace.domain.entities.Classes;
-import com.devbp.syncspace.domain.entities.Trainer;
-import com.devbp.syncspace.domain.entities.User;
-import com.devbp.syncspace.repositories.ClassRepository;
-import com.devbp.syncspace.repositories.ClassTypeRepository;
-import com.devbp.syncspace.repositories.TrainerRepository;
-import com.devbp.syncspace.repositories.UserRepository;
+import com.devbp.syncspace.domain.*;
+import com.devbp.syncspace.domain.entities.*;
+import com.devbp.syncspace.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -28,6 +20,7 @@ public class BootstrapData implements CommandLineRunner {
     private final TrainerRepository trainerRepository;
     private final ClassTypeRepository classTypeRepository;
     private final ClassRepository classRepository;
+    private final BookingRepository bookingRepository;
 
 
     @Override
@@ -182,6 +175,29 @@ public class BootstrapData implements CommandLineRunner {
             classRepository.save(classes1);
             classRepository.save(classes2);
 
+
+            Booking booking1 = Booking.builder()
+                    .client(user1)
+                    .clazz(classes1)
+                    .bookingDate(LocalDateTime.now())
+                    .bookingStatus(BookingStatus.CONFIRMED)
+                    .pricePaid(100.0)
+                    .paymentStatus(PaymentStatus.PENDING)
+                    .notes("First booking - morning class")
+                    .build();
+
+            Booking booking2 = Booking.builder()
+                    .client(user3)
+                    .clazz(classes2)
+                    .bookingDate(LocalDateTime.now())
+                    .bookingStatus(BookingStatus.CANCELLED)
+                    .pricePaid(0.0)
+                    .paymentStatus(PaymentStatus.REFUNDED)
+                    .notes("Cancelled booking - refund issued")
+                    .build();
+
+            bookingRepository.save(booking1);
+            bookingRepository.save(booking2);
 
         }
 
