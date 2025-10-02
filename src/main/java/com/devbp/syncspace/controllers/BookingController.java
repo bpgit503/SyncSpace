@@ -1,9 +1,6 @@
 package com.devbp.syncspace.controllers;
 
-import com.devbp.syncspace.domain.dtos.BookingResponseDto;
-import com.devbp.syncspace.domain.dtos.ClassResponseDto;
-import com.devbp.syncspace.domain.dtos.CreateBookingRequest;
-import com.devbp.syncspace.domain.dtos.CreateClassRequest;
+import com.devbp.syncspace.domain.dtos.*;
 import com.devbp.syncspace.domain.mappers.BookingMapper;
 import com.devbp.syncspace.services.BookingService;
 import jakarta.validation.Valid;
@@ -49,4 +46,15 @@ public class BookingController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BookingResponseDto> updatedBookingById(@PathVariable Long id, @Valid @RequestBody UpdateBookingRequest updateBookingRequest) {
+
+        BookingResponseDto dto = bookingMapper.toDto(bookingService.updateBooking(id, updateBookingRequest));
+
+        return ResponseEntity.ok(dto);
+
+    }
+
+
 }

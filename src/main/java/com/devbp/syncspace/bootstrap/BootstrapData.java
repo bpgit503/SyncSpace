@@ -128,8 +128,8 @@ public class BootstrapData implements CommandLineRunner {
                     .durationMinutes(45)
                     .isGroupClass(true)
                     .maxCapacity(15)
-                    .basePrice(10)
-                    .isActive(false)
+                    .basePrice(40)
+                    .isActive(true)
                     .build();
 
             ClassType classType2 = ClassType.builder()
@@ -138,7 +138,7 @@ public class BootstrapData implements CommandLineRunner {
                     .durationMinutes(60)
                     .isGroupClass(true)
                     .maxCapacity(20)
-                    .basePrice(12)
+                    .basePrice(25)
                     .isActive(true)
                     .build();
 
@@ -166,7 +166,7 @@ public class BootstrapData implements CommandLineRunner {
                     .maxCapacity(20)
                     .currentCapacity(12)
                     .classStatus(ClassStatus.SCHEDULED)
-                    .notes("Morning slimming session")
+                    .notes("Massive Morning session")
                     .build();
 
 
@@ -179,7 +179,7 @@ public class BootstrapData implements CommandLineRunner {
                     .maxCapacity(15)
                     .currentCapacity(15)
                     .classStatus(ClassStatus.SCHEDULED)
-                    .notes("Evening Massive gainer")
+                    .notes("Evening Slimming session")
                     .build();
 
 
@@ -188,23 +188,23 @@ public class BootstrapData implements CommandLineRunner {
 
 
             Booking booking1 = Booking.builder()
-                    .client(user1)
+                    .client(user3)
                     .clazz(classes1)
                     .bookingDate(LocalDateTime.now())
                     .bookingStatus(BookingStatus.CONFIRMED)
-                    .pricePaid(100.0)
+                    .pricePaid(40)
                     .paymentStatus(PaymentStatus.PENDING)
                     .notes("First booking - morning class")
                     .build();
 
             Booking booking2 = Booking.builder()
-                    .client(user3)
+                    .client(user4)
                     .clazz(classes2)
                     .bookingDate(LocalDateTime.now())
-                    .bookingStatus(BookingStatus.CANCELLED)
-                    .pricePaid(0.0)
-                    .paymentStatus(PaymentStatus.REFUNDED)
-                    .notes("Cancelled booking - refund issued")
+                    .bookingStatus(BookingStatus.CONFIRMED)
+                    .pricePaid(25)
+                    .paymentStatus(PaymentStatus.PAID)
+                    .notes("Paid and Confirmed booking - payment received")
                     .build();
 
             bookingRepository.save(booking1);

@@ -14,6 +14,7 @@ import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.BookingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
@@ -70,14 +72,15 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(newBooking);
     }
 
+    @Transactional
     @Override
     public Booking updateBooking(long id, UpdateBookingRequest updateBookingRequest) {
 
         long clientId = updateBookingRequest.getClientId();
         long classId = updateBookingRequest.getClassId();
 
-        if (!bookingRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Booking not found with client id: " + clientId + " class id: " + classId, " Booking Error");
+        if (!bookingRepository.existsBookingByIdAndClientIdAndClazzId(id, clientId, classId)) {
+            throw new ResourceNotFoundException("Booking not found with booking id: " + id + " client id: " + clientId + " class id: " + classId, "Booking Error");
         }
         Booking exsitingBooking = getBookingById(id);
 
@@ -91,7 +94,11 @@ public class BookingServiceImpl implements BookingService {
                 .ifPresent(exsitingBooking::setPaymentStatus);
 
         Optional.ofNullable(updateBookingRequest.getNotes())
-                .ifPresent(exsitingBooking::setNotes);
+                .ifPresent(newNotes -> {
+                    String existing = Optional.ofNullable(exsitingBooking.getNotes()).orElse("");
+                    String updated = existing.isEmpty() ? newNotes : existing + "\n" + newNotes;
+                    exsitingBooking.setNotes(updated);
+                });
 
         return bookingRepository.save(exsitingBooking);
     }
