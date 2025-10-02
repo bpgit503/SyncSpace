@@ -56,7 +56,6 @@ public class Invoice {
     @Column(name = "status")
     private InvoiceStatus invoiceStatus = InvoiceStatus.PENDING;
 
-    //check this sql timestamp mapped to what in java
     @Column(name = "payment_date")
     private LocalDateTime paymentDate;
 
@@ -65,6 +64,13 @@ public class Invoice {
 
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<InvoiceItems> items = new ArrayList<>();
+
+    @Column()
+    private String notes;
+
+    @CreationTimestamp
+    @Column(name = "created_At")
+    private LocalDateTime createAt;
 
     public void addInvoiceItem(InvoiceItems invoiceItem) {
         if (invoiceItem == null) {
@@ -89,13 +95,6 @@ public class Invoice {
         }
 
     }
-
-    @Column()
-    private String notes;
-
-    @CreationTimestamp
-    @Column(name = "created_At")
-    private LocalDateTime createAt;
 
     @Override
     public boolean equals(Object o) {

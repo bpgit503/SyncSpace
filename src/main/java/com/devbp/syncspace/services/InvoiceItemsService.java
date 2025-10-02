@@ -1,7 +1,7 @@
 package com.devbp.syncspace.services;
 
-import com.devbp.syncspace.domain.CreateInvoiceItemRequest;
-import com.devbp.syncspace.domain.UpdateInvoiceItemRequest;
+import com.devbp.syncspace.domain.dtos.CreateInvoiceItemRequest;
+import com.devbp.syncspace.domain.dtos.UpdateInvoiceItemRequest;
 import com.devbp.syncspace.domain.entities.InvoiceItems;
 
 import java.util.List;
