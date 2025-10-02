@@ -15,7 +15,6 @@ import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.BookingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,12 +52,12 @@ public class BookingServiceImpl implements BookingService {
         User bookingClient = userRepository.findActiveClientById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("No Active Client found with id: " + clientId));
 
-        Classes classToBeBooked = classRepository.findClassesById_AndIsActive(classId)
+        Classes clazz = classRepository.findClassesById_AndIsActive(classId)
                 .orElseThrow(() -> new ResourceNotFoundException("No Active Class found with id: " + classId));
 
         Booking newBooking = new Booking();
         newBooking.setClient(bookingClient);
-        newBooking.setClazz(classToBeBooked);
+        newBooking.setClazz(clazz);
         newBooking.setPricePaid(createBookingRequest.getPricePaid());
         newBooking.setNotes(createBookingRequest.getNotes());
 
@@ -67,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
 
         bookingClient.addBooking(newBooking);
 
-        classToBeBooked.setCurrentCapacity(classToBeBooked.getCurrentCapacity() + 1);
+        clazz.setCurrentCapacity(clazz.getCurrentCapacity() + 1);
 
         return bookingRepository.save(newBooking);
     }
@@ -81,25 +80,25 @@ public class BookingServiceImpl implements BookingService {
 
         checkIfBookingExists(id, clientId, classId);
 
-        Booking exsitingBooking = getBookingById(id);
+        Booking existingBooking = getBookingById(id);
 
         Optional.ofNullable(updateBookingRequest.getBookingStatus())
-                .ifPresent(exsitingBooking::setBookingStatus);
+                .ifPresent(existingBooking::setBookingStatus);
 
         Optional.of(updateBookingRequest.getPricePaid())
-                .ifPresent(exsitingBooking::setPricePaid);
+                .ifPresent(existingBooking::setPricePaid);
 
         Optional.of(updateBookingRequest.getPaymentStatus())
-                .ifPresent(exsitingBooking::setPaymentStatus);
+                .ifPresent(existingBooking::setPaymentStatus);
 
         Optional.ofNullable(updateBookingRequest.getNotes())
                 .ifPresent(newNotes -> {
-                    String existing = Optional.ofNullable(exsitingBooking.getNotes()).orElse("");
+                    String existing = Optional.ofNullable(existingBooking.getNotes()).orElse("");
                     String updated = existing.isEmpty() ? newNotes : existing + "\n" + newNotes;
-                    exsitingBooking.setNotes(updated);
+                    existingBooking.setNotes(updated);
                 });
 
-        return bookingRepository.save(exsitingBooking);
+        return bookingRepository.save(existingBooking);
     }
 
     @Transactional
@@ -112,19 +111,9 @@ public class BookingServiceImpl implements BookingService {
 
         Booking existingBooking = getBookingById(id);
 
-        switch (bookingStatus){
+        existingBooking.setBookingStatus(bookingStatus);
 
-            case CONFIRMED ->  existingBooking.setBookingStatus(BookingStatus.CONFIRMED);
-
-            case CANCELLED ->  existingBooking.setBookingStatus(BookingStatus.CANCELLED);
-
-            case COMPLETED ->  existingBooking.setBookingStatus(BookingStatus.COMPLETED);
-
-            case NO_SHOW -> existingBooking.setBookingStatus(BookingStatus.NO_SHOW);
-
-         }
-
-        return existingBooking;
+        return bookingRepository.save(existingBooking);
     }
 
     @Override

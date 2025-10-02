@@ -56,5 +56,21 @@ public class BookingController {
 
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<BookingResponseDto> updatedBookingStatus(@PathVariable Long id, @Valid @RequestBody UpdateBookingStatusRequestDto updateBookingStatusRequestDto) {
+
+        BookingResponseDto dto = bookingMapper.toDto(bookingService.updateBookingStatus(id, updateBookingStatusRequestDto));
+
+        return ResponseEntity.ok(dto);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable long id){
+        bookingService.deleteBooking(id);
+
+        return  ResponseEntity.noContent().build();
+    }
+
 
 }
