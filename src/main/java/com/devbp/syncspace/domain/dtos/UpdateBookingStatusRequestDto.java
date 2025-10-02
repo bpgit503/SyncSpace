@@ -23,4 +23,7 @@ public class UpdateBookingStatusRequestDto {
     @NotNull(message = "Booking Status is required")
     private BookingStatus bookingStatus;
 
+    @NotNull(message = "Notes is required")
+    private String notes;
+
 }

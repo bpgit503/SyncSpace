@@ -112,6 +112,7 @@ public class BookingServiceImpl implements BookingService {
         Booking existingBooking = getBookingById(id);
 
         existingBooking.setBookingStatus(bookingStatus);
+        existingBooking.setNotes(existingBooking.getNotes() +"\n"+ updateBookingStatusRequestDto.getNotes());
 
         return bookingRepository.save(existingBooking);
     }
