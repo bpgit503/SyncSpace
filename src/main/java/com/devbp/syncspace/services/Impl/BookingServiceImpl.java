@@ -3,6 +3,7 @@ package com.devbp.syncspace.services.Impl;
 import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.dtos.CreateBookingRequest;
 import com.devbp.syncspace.domain.dtos.UpdateBookingRequest;
+import com.devbp.syncspace.domain.dtos.UpdateBookingStatusRequestDto;
 import com.devbp.syncspace.domain.entities.Booking;
 import com.devbp.syncspace.domain.entities.Classes;
 import com.devbp.syncspace.domain.entities.User;
@@ -22,7 +23,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
@@ -79,9 +79,8 @@ public class BookingServiceImpl implements BookingService {
         long clientId = updateBookingRequest.getClientId();
         long classId = updateBookingRequest.getClassId();
 
-        if (!bookingRepository.existsBookingByIdAndClientIdAndClazzId(id, clientId, classId)) {
-            throw new ResourceNotFoundException("Booking not found with booking id: " + id + " client id: " + clientId + " class id: " + classId, "Booking Error");
-        }
+        checkIfBookingExists(id, clientId, classId);
+
         Booking exsitingBooking = getBookingById(id);
 
         Optional.ofNullable(updateBookingRequest.getBookingStatus())
@@ -103,25 +102,45 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(exsitingBooking);
     }
 
+    @Transactional
     @Override
-    public Booking confirmBookingStatus(long id, BookingStatus bookingStatus) {
+    public Booking updateBookingStatus(long id, UpdateBookingStatusRequestDto updateBookingStatusRequestDto) {
 
+        checkIfBookingExists(id, updateBookingStatusRequestDto.getClientId(), updateBookingStatusRequestDto.getClassId());
 
-        return null;
-    }
+        BookingStatus bookingStatus = updateBookingStatusRequestDto.getBookingStatus();
 
-    @Override
-    public Booking cancelBookingStatus(long id, BookingStatus bookingStatus) {
-        return null;
-    }
+        Booking existingBooking = getBookingById(id);
 
-    @Override
-    public Booking completeBookingStatus(long id, BookingStatus bookingStatus) {
-        return null;
+        switch (bookingStatus){
+
+            case CONFIRMED ->  existingBooking.setBookingStatus(BookingStatus.CONFIRMED);
+
+            case CANCELLED ->  existingBooking.setBookingStatus(BookingStatus.CANCELLED);
+
+            case COMPLETED ->  existingBooking.setBookingStatus(BookingStatus.COMPLETED);
+
+            case NO_SHOW -> existingBooking.setBookingStatus(BookingStatus.NO_SHOW);
+
+         }
+
+        return existingBooking;
     }
 
     @Override
     public void deleteBooking(long id) {
 
+        bookingRepository.delete(getBookingById(id));
     }
+
+    @Override
+    public boolean checkIfBookingExists(long bookingId, long clientId, long classId) {
+
+        if (!bookingRepository.existsBookingByIdAndClientIdAndClazzId(bookingId, clientId, classId)) {
+            throw new ResourceNotFoundException("Booking not found with booking id: " + bookingId + " client id: " + clientId + " class id: " + classId, "Booking Error");
+        }
+        return true;
+    }
+
+
 }

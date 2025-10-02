@@ -7,11 +7,12 @@
 a way to automatically generate unique invoice numbers
 
 ## Classes
-a way to validate that start time < end time and total time cant be over 2 hours
-when updating a class' trainer admin may be able to enter
+- when updating a class' trainer admin may be able to enter
 (id,trainer full name or trainer email) to be able to update the class' trainer
-Class status should be automatically updated to completed once localtime.now is > endTime and
-    ClassStatus is != Canceled and Class status != completed;
+
+- Class status should be automatically updated to completed once localtime.now is > endTime and
+    ClassStatus is != Canceled and Class status != completed/noshow;
+
 ADDITIONAL:
 // should not be able to update class date to the past
     //should not be able to update a class which has happened over 7 days ago
@@ -46,6 +47,10 @@ Get booking by FF: CLinet (id,name,email) and CLass(id, name)
 - When CLASS is booked modify current capacity accordingly
 - When class is fully booked modify field accordimgly
 - handle when trying to insert same booking twice
+
+- - Booking status should be automatically updated to completed once localtime.now is > endTime and
+      Booking Status is != Canceled and Class status != completed/noshow;
+
 
 
 
