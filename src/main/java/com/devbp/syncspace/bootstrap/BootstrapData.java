@@ -21,6 +21,7 @@ public class BootstrapData implements CommandLineRunner {
     private final ClassTypeRepository classTypeRepository;
     private final ClassRepository classRepository;
     private final BookingRepository bookingRepository;
+    private final InvoiceRepository invoiceRepository;
 
 
     @Override
@@ -209,6 +210,37 @@ public class BootstrapData implements CommandLineRunner {
 
             bookingRepository.save(booking1);
             bookingRepository.save(booking2);
+
+            Invoice invoice1 = Invoice.builder()
+                    .client(user3)
+                    .invoiceNumber("INV-2025-00001")
+                    .invoiceDate(LocalDate.now())
+                    .dueDate(LocalDate.now().plusDays(30))
+                    .totalAmount(50)
+                    .taxAmount(0)
+                    .invoiceStatus(InvoiceStatus.PENDING)
+                    .paymentMethod(null)
+                    .items(null)
+                    .notes("Sample Invoice")
+                    .build();
+
+            Invoice invoice2 = Invoice.builder()
+                    .client(user2)
+                    .invoiceNumber("INV-2025-002")
+                    .invoiceDate(LocalDate.now())
+                    .dueDate(LocalDate.now().plusDays(15))
+                    .totalAmount(50)
+                    .taxAmount(0)
+                    .invoiceStatus(InvoiceStatus.PAID)
+                    .paymentDate(LocalDateTime.now())
+                    .paymentMethod("Credit Card")
+                    .items(null)
+                    .notes("Slimming session")
+                    .build();
+
+            invoiceRepository.save(invoice1);
+            invoiceRepository.save(invoice2);
+
 
         }
 
