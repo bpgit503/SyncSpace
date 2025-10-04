@@ -12,7 +12,10 @@ import java.util.Optional;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
-    @Query("SELECT i FROM Invoice i WHERE i.invoiceNumber LIKE concat(:invoiceNumber, '%') ORDER BY i.invoiceNumber DESC")
+    @Query("SELECT i FROM Invoice i " +
+            "WHERE i.invoiceNumber " +
+            "LIKE concat(:invoiceNumber, '%') " +
+            "ORDER BY i.invoiceNumber DESC")
     Optional<Invoice> findLatestInvoiceNumber(@Param("invoiceNumber") String invoiceNumber);
 
 }

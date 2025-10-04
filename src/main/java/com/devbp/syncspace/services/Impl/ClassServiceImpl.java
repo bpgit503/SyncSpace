@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -113,7 +114,7 @@ public class ClassServiceImpl implements ClassService {
             existingClass.setClassStatus(updateClassRequest.getClassStatus());
         }
 
-        existingClass.setNotes(existingClass.getNotes() + "\n" + updateClassRequest.getNotes());
+        existingClass.setNotes(existingClass.getNotes() + "\n" + LocalDate.now() + " : " + updateClassRequest.getNotes());
 
 
         return classRepository.save(existingClass);
