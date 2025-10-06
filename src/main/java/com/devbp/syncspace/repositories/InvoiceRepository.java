@@ -18,4 +18,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
             "ORDER BY i.invoiceNumber DESC")
     Optional<Invoice> findLatestInvoiceNumber(@Param("invoiceNumber") String invoiceNumber);
 
+    boolean existsInvoiceByInvoiceNumber(@NotNull(message = "Invoice number is required") String invoiceNumber);
 }
