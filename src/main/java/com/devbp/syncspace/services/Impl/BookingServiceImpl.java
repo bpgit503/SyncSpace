@@ -49,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
             throw new EntityAlreadyExistsException("Booking already exists with client id: " + clientId + " class id: " + classId, " Booking Error");
         }
 
-        User bookingClient = userRepository.findActiveClientById(clientId)
+        User bookingClient = userRepository.findClientWithStatusActiveAndTypeClient(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("No Active Client found with id: " + clientId));
 
         Classes clazz = classRepository.findClassesById_AndIsActive(classId)

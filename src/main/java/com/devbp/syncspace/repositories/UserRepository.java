@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByEmail(String email);
 
     @Query(value = "Select * from users where status = 'ACTIVE' AND user_type = 'CLIENT' and id = ?", nativeQuery = true)
-    Optional<User> findActiveClientById(@Param("id") long id);
+    Optional<User> findClientWithStatusActiveAndTypeClient(@Param("id") long id);
 
     @Query("Select u from User u where " +
             "Lower(u.firstName) LIKE lower(concat( '%', :searchTerm, '%')) OR " +
