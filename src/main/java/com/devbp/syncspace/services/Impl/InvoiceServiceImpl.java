@@ -1,8 +1,11 @@
 package com.devbp.syncspace.services.Impl;
 
+import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.dtos.CreateInvoiceRequest;
 import com.devbp.syncspace.domain.dtos.UpdateInvoiceRequest;
 import com.devbp.syncspace.domain.entities.Invoice;
+import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.InvalidUserTypeException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
 import com.devbp.syncspace.repositories.InvoiceItemsRepository;
 import com.devbp.syncspace.repositories.InvoiceRepository;
@@ -55,7 +58,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
      */
     @Override
-    public Invoice createInvoice(CreateInvoiceRequest createInvoiceRequest) {
+    public Invoice createInvoice(CreateInvoiceRequest creatDto) {
+
+        User user = userRepository.findById(creatDto.getClientId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + creatDto.getClientId(), "User"));
+
+        if(user.getUserType() != UserType.CLIENT){
+            throw new InvalidUserTypeException("User is not a client");
+        }
+
+
 
 
 
