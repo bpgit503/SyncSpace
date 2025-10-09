@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -216,8 +217,8 @@ public class BootstrapData implements CommandLineRunner {
                     .invoiceNumber("INV-2025-00001")
                     .invoiceDate(LocalDate.now())
                     .dueDate(LocalDate.now().plusDays(30))
-                    .totalAmount(50)
-                    .taxAmount(0)
+                    .totalAmount(new BigDecimal(50))
+                    .taxAmount(new BigDecimal("0.08"))
                     .invoiceStatus(InvoiceStatus.PENDING)
                     .paymentMethod(null)
                     .items(null)
@@ -229,8 +230,8 @@ public class BootstrapData implements CommandLineRunner {
                     .invoiceNumber("INV-2025-002")
                     .invoiceDate(LocalDate.now())
                     .dueDate(LocalDate.now().plusDays(15))
-                    .totalAmount(50)
-                    .taxAmount(0)
+                    .totalAmount(new BigDecimal(50))
+                    .taxAmount(new BigDecimal("0.08"))
                     .invoiceStatus(InvoiceStatus.PAID)
                     .paymentDate(LocalDateTime.now())
                     .paymentMethod("Credit Card")

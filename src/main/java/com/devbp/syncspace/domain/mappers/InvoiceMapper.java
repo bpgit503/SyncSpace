@@ -10,7 +10,13 @@ import org.mapstruct.ReportingPolicy;
         uses = {UserMapper.class, InvoiceItemsMapper.class})
 public interface InvoiceMapper {
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "dueDate", target = "dueDate")
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "dueDate", source = "dueDate")
+    @Mapping(target = "clientId", source = "client.id")
+    @Mapping(target = "clientName",
+            expression = "java(invoice.getClient().getFirstName() + \" \" + invoice.getClient().getLastName())")
+    @Mapping(target = "clientEmail", source = "client.email")
+    @Mapping(target = "items", source = "items")
+    @Mapping(target = "createdAt", source = "createdAt")
     InvoiceResponseDto toDto(Invoice invoice);
 }

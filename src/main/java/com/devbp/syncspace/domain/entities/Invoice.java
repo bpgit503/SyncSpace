@@ -71,7 +71,7 @@ public class Invoice {
 
     @CreationTimestamp
     @Column(name = "created_At")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     public void addInvoiceItem(InvoiceItems invoiceItem) {
         if (invoiceItem == null) {

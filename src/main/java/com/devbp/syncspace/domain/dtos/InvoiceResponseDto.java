@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 public class InvoiceResponseDto {
 
     private long id;
-    private UserResponseDto client;
+//    private UserResponseDto client;
     private String invoiceNumber;
     private String invoiceDate;
     private LocalDate dueDate;
@@ -25,7 +26,13 @@ public class InvoiceResponseDto {
     private InvoiceStatus invoiceStatus;
     private LocalDateTime paymentDate;
     private String paymentMethod;
-    private InvoiceItemsResponseDto invoiceItemsResponseDto;
+//    private InvoiceItemsResponseDto invoiceItemsResponseDto;
     private String notes;
     private LocalDateTime createdAt;
+
+    private Long clientId;
+    private String clientName;
+    private String clientEmail;
+
+    private List<InvoiceResponseDto> items;
 }
