@@ -1,10 +1,7 @@
 package com.devbp.syncspace.controllers;
 
 import com.devbp.syncspace.domain.dtos.ErrorResponse;
-import com.devbp.syncspace.exceptions.ClassTypeAlreadyExistsException;
-import com.devbp.syncspace.exceptions.EmailAlreadyExistsException;
-import com.devbp.syncspace.exceptions.InvalidUserTypeException;
-import com.devbp.syncspace.exceptions.ResourceNotFoundException;
+import com.devbp.syncspace.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +79,24 @@ public class GlobalExceptionHandler {
                 .message("CLASS_TYPE_ALREADY_EXISTS")
                 .details("The class type you have entered already exists")
                 .fieldErrors(Map.of("", ex.getMessage()))
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidInvoiceException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidInvoiceException(InvalidInvoiceException ex) {
+
+        log.error("Invalid Request: {}", ex.getMessage());
+
+        ex.addFieldError("", ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .time(LocalDateTime.now())
+                .message("INVALID_INVOICE_REQUEST")
+                .details("An issue has occurred with the data the has been inputted")
+                .fieldErrors(ex.getFieldErrors())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);

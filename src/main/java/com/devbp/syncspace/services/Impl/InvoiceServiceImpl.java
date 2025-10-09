@@ -1,28 +1,33 @@
 package com.devbp.syncspace.services.Impl;
 
+import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.dtos.CreateInvoiceRequest;
 import com.devbp.syncspace.domain.dtos.UpdateInvoiceRequest;
+import com.devbp.syncspace.domain.entities.Booking;
 import com.devbp.syncspace.domain.entities.Invoice;
 import com.devbp.syncspace.domain.entities.User;
+import com.devbp.syncspace.exceptions.InvalidInvoiceException;
 import com.devbp.syncspace.exceptions.InvalidUserTypeException;
 import com.devbp.syncspace.exceptions.ResourceNotFoundException;
+import com.devbp.syncspace.repositories.BookingRepository;
 import com.devbp.syncspace.repositories.InvoiceItemsRepository;
 import com.devbp.syncspace.repositories.InvoiceRepository;
 import com.devbp.syncspace.repositories.UserRepository;
-import com.devbp.syncspace.services.InvoiceNumberGenerator;
 import com.devbp.syncspace.services.InvoiceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
-    private final InvoiceNumberGenerator invoiceNumberGenerator;
+    private final BookingRepository bookingRepository;
     private final InvoiceItemsRepository invoiceItemsRepository;
     private final UserRepository userRepository;
 
@@ -63,12 +68,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         User user = userRepository.findById(creatDto.getClientId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + creatDto.getClientId(), "User"));
 
-        if(user.getUserType() != UserType.CLIENT){
+        if (user.getUserType() != UserType.CLIENT) {
             throw new InvalidUserTypeException("User is not a client");
         }
 
-
-
+        validateAndFetchBookings(creatDto.getBookingIds(), user);
 
 
         return invoiceRepository.save(null);
@@ -82,5 +86,27 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void deleteInvoiceById(long id) {
 
+    }
+
+    private List<Booking> validateAndFetchBookings(List<Long> bookingIds, User client) {
+        if (bookingIds == null || bookingIds.isEmpty()) {
+            throw new InvalidInvoiceException("At Least one booking must be included", "Invoice");
+        }
+
+        List<Booking> bookings = bookingRepository.findAllById(bookingIds);
+
+        if (bookings.size() != bookingIds.size()) {
+            throw new ResourceNotFoundException("One or more bookings not found", "Invoice - Fetch and Validate Bookings");
+        }
+
+        List<Booking> invalidBookings = bookings.stream()
+                .filter(b -> b.getClient().getId().equals(client.getId()))
+                .toList();
+
+        if (!invalidBookings.isEmpty()) {
+            throw new InvalidInvoiceException("Bookings do not belong to the specified client", "Invoice - Fetch and Validate Bookings");
+        }
+
+        return bookings;
     }
 }
