@@ -40,6 +40,8 @@ Make classname is immutable for equals safety
         booking status will change to null and price paid 0
         A spot in the class will be opened
     -ex client is a noShow then booking status will be updated to noshow
+    update booking logic so that when a class is booking its payment status = pending
+        only when invoice status= paid booking status follows
 
 # CREATE checks for the following
     - ONLY ACTIVE CLIENTS AND TRAINERS CAN BOOK CLASSES

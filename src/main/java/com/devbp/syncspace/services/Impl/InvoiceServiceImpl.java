@@ -1,6 +1,7 @@
 package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.InvoiceStatus;
+import com.devbp.syncspace.domain.PaymentStatus;
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.dtos.CreateInvoiceRequest;
 import com.devbp.syncspace.domain.dtos.UpdateInvoiceRequest;
@@ -47,27 +48,6 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with ID: " + id, "Invoice"));
     }
 
-    /* Invoice Flow
-    Fetch user
-    validatie User = type client
-    validate and fetch bookings - method
-        check if booking != null || empty
-        find all bookings by ids
-        found booking size = booking ids.size
-        filter for invalid bookings = clients bookings
-        check if empty
-        filter for non completed bookings
-        warn
-
-     Validate the given bookings have not been invoice already
-        sql check to if inovice already exists
-     cr8 invoice
-     cr8 invoiceItems and set them
-     calulate total amount through invoice items
-     update booking payment status
-     save invoice
-
-     */
     @Override
     public Invoice createInvoice(CreateInvoiceRequest creatDto) {
 
@@ -99,8 +79,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         calculateInvoiceTotals(invoice);
 
+        updateBookingPaymentStatus(bookings);
 
-        return invoiceRepository.save(null);
+
+        return invoiceRepository.save(invoice);
     }
 
     private void calculateInvoiceTotals(Invoice invoice) {
@@ -203,6 +185,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
         return invoiceItems;
+    }
+
+    private void updateBookingPaymentStatus(List<Booking> bookings) {
+        for (Booking booking : bookings) {
+            booking.setPaymentStatus(PaymentStatus.PENDING);
+        }
+        bookingRepository.saveAll(bookings);
     }
 
 }
