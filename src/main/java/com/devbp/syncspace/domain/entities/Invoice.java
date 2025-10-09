@@ -32,7 +32,7 @@ public class Invoice {
     private User client;
 
     @NotNull(message = "Invoice number is required")
-    @Column(name = "invoice_number", nullable = false, unique = true)
+    @Column(name = "invoice_number", nullable = false, unique = true, updatable = false)
     private String invoiceNumber;
 
     @CreationTimestamp

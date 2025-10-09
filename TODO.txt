@@ -1,4 +1,11 @@
+##General Questions
+In invoice update can you update invoice itmes?
+how to create events for certain methods to be automaticalled called?
+    ex - time to class has passed and change to classes status has happened so class status = completed
+    Booking status becomes completed unless modified( no-show etc)
+    when class has been completed and payment is pending then payment status = over due send email etc
 ##General
+
 - Have both soft delete and hard delete functions
 - as soft delete by making said entities inactive or turned off.
     --As it is better to keep the data in db for future reference

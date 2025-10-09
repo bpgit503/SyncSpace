@@ -14,6 +14,7 @@ import com.devbp.syncspace.repositories.InvoiceItemsRepository;
 import com.devbp.syncspace.repositories.InvoiceRepository;
 import com.devbp.syncspace.repositories.UserRepository;
 import com.devbp.syncspace.services.InvoiceService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with ID: " + id, "Invoice"));
     }
 
+    @Transactional
     @Override
     public Invoice createInvoice(CreateInvoiceRequest creatDto) {
 
@@ -100,13 +102,40 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     }
 
+    @Transactional
     @Override
-    public Invoice updateInvoice(UpdateInvoiceRequest updateInvoiceRequest) {
-        return null;
+    public Invoice updateInvoice(UpdateInvoiceRequest updateDto) {
+        Invoice invoice = getInvoiceById(updateDto.getId());
+
+        if (updateDto.getInvoiceNumber() != null || invoice.getInvoiceNumber() != updateDto.getInvoiceNumber()) {
+            throw new InvalidInvoiceException("Invoice numbers do not match");
+        }
+
+        invoice.setDueDate(updateDto.getDueDate() != null
+                ? updateDto.getDueDate()
+                : invoice.getDueDate());
+
+        invoice.setInvoiceStatus(updateDto.getInvoiceStatus() != null
+                ? updateDto.getInvoiceStatus()
+                : invoice.getInvoiceStatus());
+
+        invoice.setPaymentDate(updateDto.getPaymentDate() != null
+                ? updateDto.getPaymentDate()
+                : invoice.getPaymentDate());
+
+        invoice.setPaymentMethod(updateDto.getPaymentMethod() != null
+                ? updateDto.getPaymentMethod()
+                : invoice.getPaymentMethod());
+
+        invoice.setNotes(updateDto.getNotes());
+
+        return invoiceRepository.save(invoice);
     }
 
     @Override
     public void deleteInvoiceById(long id) {
+        Invoice invoice = getInvoiceById(id);
+        invoiceRepository.delete(invoice);
 
     }
 
