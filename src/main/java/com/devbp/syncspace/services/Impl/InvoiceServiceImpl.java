@@ -1,6 +1,5 @@
 package com.devbp.syncspace.services.Impl;
 
-import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.UserType;
 import com.devbp.syncspace.domain.dtos.CreateInvoiceRequest;
 import com.devbp.syncspace.domain.dtos.UpdateInvoiceRequest;
@@ -55,6 +54,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         warn
 
      Validate the given bookings have not been invoice already
+        sql check to if inovice already exists
      cr8 invoice
      cr8 invoiceItems and set them
      calulate total amount through invoice items
@@ -72,7 +72,9 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new InvalidUserTypeException("User is not a client");
         }
 
-        validateAndFetchBookings(creatDto.getBookingIds(), user);
+        List<Booking> bookings = validateAndFetchBookings(creatDto.getBookingIds(), user);
+
+        checkBookingsNotAlreadyInvoiced(bookings);
 
 
         return invoiceRepository.save(null);
@@ -109,4 +111,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         return bookings;
     }
+
+    private void checkBookingsNotAlreadyInvoiced(List<Booking> bookings) {
+        List<Long> bookingIds = bookings.stream()
+                .map(Booking::getId)
+                .toList();
+
+        List<Long> alreadyInvoicedBookingIds = invoiceItemsRepository.findAlreadyInvoiceBookings(bookingIds);
+
+        if (!alreadyInvoicedBookingIds.isEmpty()) {
+            throw new InvalidInvoiceException(
+                    "The following bookings are already invoiced: " + alreadyInvoicedBookingIds);
+        }
+    }
+
 }

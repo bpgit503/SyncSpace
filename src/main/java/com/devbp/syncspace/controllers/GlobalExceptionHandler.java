@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
                 .time(LocalDateTime.now())
                 .message("EMAIL_ALREADY_EXISTS")
                 .details("The email that you have entered already exists")
-                .fieldErrors(Map.of("",ex.getMessage()))
+                .fieldErrors(Map.of("", ex.getMessage()))
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
