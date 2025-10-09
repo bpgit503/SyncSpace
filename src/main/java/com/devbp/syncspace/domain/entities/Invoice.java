@@ -7,6 +7,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,11 +46,11 @@ public class Invoice {
     @NotNull(message = "Total amount is required")
     @PositiveOrZero
     @Column(name = "total_amount", nullable = false)
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     @PositiveOrZero
     @Column(name = "tax_amount")
-    private double taxAmount = 0.0;
+    private BigDecimal taxAmount = new BigDecimal(0);
 
     @NotNull(message = "Invoice status is required")
     @Enumerated(EnumType.STRING)
