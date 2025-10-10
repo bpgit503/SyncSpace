@@ -87,6 +87,19 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceRepository.save(invoice);
     }
 
+    @Transactional
+    @Override
+    public Invoice createInvoiceForSingleBooking(long id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with ID: " + id));
+
+        CreateInvoiceRequest createDto = new CreateInvoiceRequest();
+        createDto.setClientId(booking.getClient().getId());
+        createDto.setBookingIds(List.of(booking.getId()));
+
+        return createInvoice(createDto);
+    }
+
     private void calculateInvoiceTotals(Invoice invoice) {
         BigDecimal invoiceTotal = new BigDecimal(0);
 

@@ -12,6 +12,7 @@ how to create events for certain methods to be automaticalled called?
 
 ## Invoice
 a way to automatically generate unique invoice numbers
+//create invoice for all upaid Bookings
 
 ## Classes
 - when updating a class' trainer admin may be able to enter

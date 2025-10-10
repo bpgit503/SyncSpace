@@ -15,6 +15,8 @@ public interface InvoiceService {
 
     Invoice createInvoice(CreateInvoiceRequest createInvoiceRequest);
 
+    Invoice createInvoiceForSingleBooking(long id);
+
     Invoice updateInvoice(UpdateInvoiceRequest updateInvoiceRequest);
 
     void deleteInvoiceById(long id);
