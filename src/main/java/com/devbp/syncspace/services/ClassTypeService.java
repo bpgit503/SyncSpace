@@ -19,5 +19,9 @@ public interface ClassTypeService {
 
     ClassType updateClassType(long id, UpdateClassTypeRequest updateClassTypeRequest);
 
+    ClassType activateClassType(long id);
+
+    ClassType deActivateClassType(long id);
+
     void deleteClassTypeById(Long id);
 }

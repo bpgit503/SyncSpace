@@ -77,6 +77,20 @@ public class ClassTypeServiceImpl implements ClassTypeService {
         return classTypeRepository.save(existingClassType);
     }
 
+    @Override
+    public ClassType activateClassType(long id) {
+        ClassType classType = getClassTypeById(id);
+        classType.setActive(true);
+        return classType;
+    }
+
+    @Override
+    public ClassType deActivateClassType(long id) {
+        ClassType classType = getClassTypeById(id);
+        classType.setActive(false);
+        return classType;
+    }
+
     @Transactional
     @Override
     public void deleteClassTypeById(Long id) {
