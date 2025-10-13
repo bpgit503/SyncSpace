@@ -1,6 +1,5 @@
 package com.devbp.syncspace.domain.dtos;
 
-import com.devbp.syncspace.domain.entities.Trainer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

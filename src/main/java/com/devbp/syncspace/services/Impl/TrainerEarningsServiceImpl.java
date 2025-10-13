@@ -2,6 +2,7 @@ package com.devbp.syncspace.services.Impl;
 
 import com.devbp.syncspace.domain.ClassStatus;
 import com.devbp.syncspace.domain.PaymentStatus;
+import com.devbp.syncspace.domain.TrainerPaymentStatus;
 import com.devbp.syncspace.domain.dtos.CreateTrainerEarningRequest;
 import com.devbp.syncspace.domain.dtos.UpdateTrainerEarningRequest;
 import com.devbp.syncspace.domain.entities.Booking;
@@ -55,16 +56,6 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
                 .orElseThrow(() -> new ResourceNotFoundException("Trainer earnings not found with id: " + id));
     }
 
-    /*
-    check if trainer and CLASS exists
-    check if class status is of type completed ? proceed : throw exce
-    check if all client payment status = paid if not throw error
-    create  trainer earnings;
-    calculate total class price * earning percentage = amount
-    set payment status, date and calculated at
-
-    create function to update payment date and payment when trainer has been paid
-     */
     @Transactional
     @Override
     public TrainerEarnings createTrainerEarning(CreateTrainerEarningRequest requestDto) {
@@ -96,7 +87,7 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
                 ? requestDto.getEarningPercentage()
                 : trainer.getEarningsPercentage());
 
-        trainerEarnings.setPaymentStatus(PaymentStatus.PENDING);
+        trainerEarnings.setPaymentStatus(TrainerPaymentStatus.PENDING);
 
         calculateTotalEarningAmount(clazz, trainerEarnings);
         trainerEarnings.setCalculatedAt(LocalDateTime.now());
@@ -105,12 +96,34 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
     }
 
     @Override
+    public TrainerEarnings recalculateTrainersEarning(long id) {
+        TrainerEarnings trainerEarning = getTrainerEarningById(id);
+
+        trainerEarning.setPaymentStatus(TrainerPaymentStatus.PAID);
+        trainerEarning.setPaymentDate(LocalDateTime.now());
+
+        return trainerEarningsRepository.save(trainerEarning);
+    }
+
+    @Transactional
+    @Override
     public TrainerEarnings updateTrainerEarning(UpdateTrainerEarningRequest requestDto) {
-        return null;
+        TrainerEarnings trainerEarning = getTrainerEarningById(requestDto.getTrainerEarningsId());
+        Classes clazz = classRepository.findById(trainerEarning.getClazz().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Class not found with id: " + trainerEarning.getClazz().getId(), "TrainerEarnings"));
+
+        trainerEarning.setEarningPercentage(requestDto.getEarningPercentage());
+        calculateTotalEarningAmount(clazz, trainerEarning);
+
+        return trainerEarningsRepository.save(trainerEarning);
     }
 
     @Override
     public void deleteTrainerEarningById(long id) {
+
+        TrainerEarnings trainerEarnings = getTrainerEarningById(id);
+
+        trainerEarningsRepository.delete(trainerEarnings);
 
     }
 
