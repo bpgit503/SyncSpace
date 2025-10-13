@@ -104,7 +104,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         BigDecimal invoiceTotal = new BigDecimal(0);
 
         for (InvoiceItems ii : invoice.getItems()) {
-            invoiceTotal = invoiceTotal.add(BigDecimal.valueOf(ii.getTotalPrice()));
+            invoiceTotal = invoiceTotal.add(ii.getTotalPrice());
         }
 
         BigDecimal taxAmount = invoiceTotal.multiply(TAX_RATE)

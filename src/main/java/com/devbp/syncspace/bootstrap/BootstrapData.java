@@ -194,7 +194,7 @@ public class BootstrapData implements CommandLineRunner {
                     .clazz(classes1)
                     .bookingDate(LocalDateTime.now())
                     .bookingStatus(BookingStatus.CONFIRMED)
-                    .pricePaid(40)
+                    .pricePaid(BigDecimal.valueOf(40))
                     .paymentStatus(PaymentStatus.PENDING)
                     .notes("First booking - morning class")
                     .build();
@@ -204,7 +204,7 @@ public class BootstrapData implements CommandLineRunner {
                     .clazz(classes2)
                     .bookingDate(LocalDateTime.now())
                     .bookingStatus(BookingStatus.CONFIRMED)
-                    .pricePaid(25)
+                    .pricePaid(BigDecimal.valueOf(25))
                     .paymentStatus(PaymentStatus.PAID)
                     .notes("Paid and Confirmed booking - payment received")
                     .build();

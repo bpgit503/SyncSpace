@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -36,11 +37,11 @@ public class InvoiceItems {
 
     @NotNull
     @Column(name = "unit_price", nullable = false)
-    private double unitPrice;
+    private BigDecimal unitPrice;
 
     @NotNull
     @Column(name = "total_price", nullable = false)
-    private double totalPrice;
+    private BigDecimal totalPrice;
 
     @Override
     public boolean equals(Object o) {

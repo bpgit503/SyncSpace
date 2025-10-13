@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class CreateBookingRequest {
     private BookingStatus bookingStatus;
 
     @PositiveOrZero
-    private double pricePaid;
+    private BigDecimal pricePaid;
 
     private PaymentStatus paymentStatus;
 
