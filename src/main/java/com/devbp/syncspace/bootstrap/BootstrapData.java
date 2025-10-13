@@ -23,6 +23,7 @@ public class BootstrapData implements CommandLineRunner {
     private final ClassRepository classRepository;
     private final BookingRepository bookingRepository;
     private final InvoiceRepository invoiceRepository;
+    private final TrainerEarningsRepository trainerEarningsRepository;
 
 
     @Override
@@ -175,12 +176,12 @@ public class BootstrapData implements CommandLineRunner {
             Classes classes2 = Classes.builder()
                     .classType(classType2)
                     .trainer(trainer2)
-                    .scheduledDate(LocalDate.of(2025, 10, 20))
+                    .scheduledDate(LocalDate.of(2025, 10, 14))
                     .startTime(LocalTime.of(18, 30))
                     .endTime(LocalTime.of(20, 0))
                     .maxCapacity(15)
                     .currentCapacity(15)
-                    .classStatus(ClassStatus.SCHEDULED)
+                    .classStatus(ClassStatus.COMPLETED)
                     .notes("Evening Slimming session")
                     .build();
 
@@ -241,6 +242,17 @@ public class BootstrapData implements CommandLineRunner {
 
             invoiceRepository.save(invoice1);
             invoiceRepository.save(invoice2);
+
+
+            TrainerEarnings earnings1 = TrainerEarnings.builder()
+                    .trainer(trainer2)
+                    .clazz(classes2)
+                    .baseAmount(0)
+                    .earningPercentage(0.40)
+                    .paymentStatus(TrainerPaymentStatus.PENDING)
+                    .build();
+
+            trainerEarningsRepository.save(earnings1);
 
 
         }
