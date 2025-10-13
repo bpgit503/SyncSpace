@@ -23,7 +23,7 @@ public class ClassType {
     private Long id;
 
     @NotNull(message = "Class name is required")
-    @Column(name = "name", nullable = false, unique = true, columnDefinition = "varchar(100)")
+    @Column(name = "name", nullable = false, unique = true, updatable = false, columnDefinition = "varchar(100)")
     private String className;
 
     @Column(columnDefinition = "TEXT")

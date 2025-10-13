@@ -43,7 +43,6 @@ public class ClassTypeServiceImpl implements ClassTypeService {
             throw new ClassTypeAlreadyExistsException("Class type already exists with name: " + createClassTypeRequest.getClassName());
         }
         ClassType newClassType = new ClassType();
-        newClassType.setClassName(createClassTypeRequest.getClassName());
         newClassType.setDescription(createClassTypeRequest.getDescription());
         newClassType.setDurationMinutes(createClassTypeRequest.getDurationMinutes());
         newClassType.setBasePrice(createClassTypeRequest.getBasePrice());

@@ -11,8 +11,7 @@ how to create events for certain methods to be automaticalled called?
     --As it is better to keep the data in db for future reference
 
 ## Invoice
-a way to automatically generate unique invoice numbers
-//create invoice for all upaid Bookings
+create invoice for all unpaid Bookings
 -Add Booking to Invoice hint use helper method
 -remove Booking from Invoice hint use helper method
 
@@ -35,7 +34,7 @@ SEARCH: Should I create a search function to fetch class by the ff:
     get all classes by class type
     get all classes by trainer
     get all classes by class status
-    get all classes by date range - day, wek
+    get all classes by date range - day, week
 
 
 ## Class Types
