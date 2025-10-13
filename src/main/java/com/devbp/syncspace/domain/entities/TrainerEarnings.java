@@ -39,8 +39,7 @@ public class TrainerEarnings {
     @Column(name = "earnings_percentage", nullable = false)
     private double earningPercentage;
 
-    @NotNull(message = "Earning amount is required")
-    @Column(name = "earnings_amount", nullable = false)
+    @Column(name = "earnings_amount")
     private BigDecimal earningAmount;
 
     @NotNull(message = "Payment Status is required")

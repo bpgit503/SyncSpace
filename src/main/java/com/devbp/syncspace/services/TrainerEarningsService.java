@@ -18,9 +18,9 @@ public interface TrainerEarningsService {
 
     TrainerEarnings createTrainerEarning(CreateTrainerEarningRequest requestDto);
 
-    TrainerEarnings recalculateTrainersEarning(long id);
+    TrainerEarnings updateTrainerEarningPaymentStatus(long id);
 
-    TrainerEarnings updateTrainerEarning(UpdateTrainerEarningRequest requestDto);
+    TrainerEarnings recalculateTrainerEarningPercentage(UpdateTrainerEarningRequest requestDto);
 
     void deleteTrainerEarningById(long id);
 }

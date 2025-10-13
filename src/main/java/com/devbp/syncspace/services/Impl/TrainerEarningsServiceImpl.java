@@ -96,7 +96,7 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
     }
 
     @Override
-    public TrainerEarnings recalculateTrainersEarning(long id) {
+    public TrainerEarnings updateTrainerEarningPaymentStatus(long id) {
         TrainerEarnings trainerEarning = getTrainerEarningById(id);
 
         trainerEarning.setPaymentStatus(TrainerPaymentStatus.PAID);
@@ -107,7 +107,7 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
 
     @Transactional
     @Override
-    public TrainerEarnings updateTrainerEarning(UpdateTrainerEarningRequest requestDto) {
+    public TrainerEarnings recalculateTrainerEarningPercentage(UpdateTrainerEarningRequest requestDto) {
         TrainerEarnings trainerEarning = getTrainerEarningById(requestDto.getTrainerEarningsId());
         Classes clazz = classRepository.findById(trainerEarning.getClazz().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Class not found with id: " + trainerEarning.getClazz().getId(), "TrainerEarnings"));
