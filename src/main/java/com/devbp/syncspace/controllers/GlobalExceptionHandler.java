@@ -102,6 +102,24 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InvalidTrainerEarningsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTrainerEarningsException(InvalidTrainerEarningsException ex) {
+
+        log.error("Invalid Request: {}", ex.getMessage());
+
+        ex.addFieldError("", ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .time(LocalDateTime.now())
+                .message("INVALID_TRAINER_EARNING_REQUEST")
+                .details("An issue has occurred with the inputted data")
+                .fieldErrors(ex.getFieldErrors())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.warn("Validation Error of type: {}", ex.getMessage());
