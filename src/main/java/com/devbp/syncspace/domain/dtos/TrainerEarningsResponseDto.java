@@ -15,16 +15,18 @@ import java.time.LocalDateTime;
 @Builder
 public class TrainerEarningsResponseDto {
 
-    private long trainerId;
-    private String trainerName;
 
-    private long clazzId;
-    private String clazzName;
-
+    private long id;
     private double baseAmount;
     private double earningPercentage;
     private BigDecimal earningAmount;
     private TrainerPaymentStatus paymentStatus;
     private LocalDateTime paymentDate;
     private LocalDateTime calculatedAt;
+
+    private long trainerId;
+    private String trainerName;
+
+    private long clazzId;
+    private String clazzName;
 }

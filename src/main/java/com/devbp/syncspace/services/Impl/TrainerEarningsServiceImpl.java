@@ -56,6 +56,7 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
                 .orElseThrow(() -> new ResourceNotFoundException("Trainer earnings not found with id: " + id));
     }
 
+    // create check if class id and trainer id have been done before
     @Transactional
     @Override
     public TrainerEarnings createTrainerEarning(CreateTrainerEarningRequest requestDto) {
