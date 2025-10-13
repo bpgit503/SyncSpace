@@ -78,6 +78,8 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
             throw new InvalidTrainerEarningsException("Class is not completed yet", "TrainerEarnings");
         }
 
+        checkTrainerEarningsNotAlreadyProcessed(trainer.getId(), clazz.getId());
+
         TrainerEarnings trainerEarnings = new TrainerEarnings();
         trainerEarnings.setTrainer(trainer);
         trainerEarnings.setClazz(clazz);
@@ -94,6 +96,12 @@ public class TrainerEarningsServiceImpl implements TrainerEarningsService {
         trainerEarnings.setCalculatedAt(LocalDateTime.now());
 
         return trainerEarningsRepository.save(trainerEarnings);
+    }
+
+    private void checkTrainerEarningsNotAlreadyProcessed(long trainerId, long clazzId) {
+        if (trainerEarningsRepository.findTrainerEarningsByTrainerIdAndClazzId(trainerId, clazzId).isPresent()){
+            throw new InvalidTrainerEarningsException("Trainer Earning already exists", "Trainer Earning");
+        }
     }
 
     @Override
