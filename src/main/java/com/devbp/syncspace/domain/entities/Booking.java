@@ -3,18 +3,19 @@ package com.devbp.syncspace.domain.entities;
 import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.PaymentStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "bookings",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "class_id"}))// add unique constraint for client and class id?
+        uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "class_id"}))
+// add unique constraint for client and class id?
 @Getter
 @Setter
 @AllArgsConstructor
@@ -46,7 +47,7 @@ public class Booking {
     @NotNull(message = "Paid price is required")
     @PositiveOrZero
     @Column(name = "price_paid", nullable = false)
-    private double pricePaid;
+    private BigDecimal pricePaid;
 
     @NotNull(message = "Payment Status is required")
     @Enumerated(EnumType.STRING)

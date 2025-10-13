@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class TrainerEarnings {
 
     @NotNull(message = "Earning amount is required")
     @Column(name = "earnings_amount", nullable = false)
-    private double earningAmount;
+    private BigDecimal earningAmount;
 
     @NotNull(message = "Payment Status is required")
     @Enumerated(EnumType.STRING)
