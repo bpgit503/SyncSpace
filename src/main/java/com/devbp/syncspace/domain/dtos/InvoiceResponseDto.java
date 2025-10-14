@@ -17,7 +17,7 @@ import java.util.List;
 public class InvoiceResponseDto {
 
     private long id;
-//    private UserResponseDto client;
+
     private String invoiceNumber;
     private String invoiceDate;
     private LocalDate dueDate;
@@ -26,7 +26,7 @@ public class InvoiceResponseDto {
     private InvoiceStatus invoiceStatus;
     private LocalDateTime paymentDate;
     private String paymentMethod;
-//    private InvoiceItemsResponseDto invoiceItemsResponseDto;
+
     private String notes;
     private LocalDateTime createdAt;
 
@@ -34,5 +34,5 @@ public class InvoiceResponseDto {
     private String clientName;
     private String clientEmail;
 
-    private List<InvoiceResponseDto> items;
+    private List<InvoiceItemsResponseDto> items;
 }

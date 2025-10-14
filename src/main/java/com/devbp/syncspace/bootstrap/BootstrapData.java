@@ -23,6 +23,7 @@ public class BootstrapData implements CommandLineRunner {
     private final ClassRepository classRepository;
     private final BookingRepository bookingRepository;
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceItemsRepository invoiceItemsRepository;
     private final TrainerEarningsRepository trainerEarningsRepository;
 
 
@@ -185,9 +186,22 @@ public class BootstrapData implements CommandLineRunner {
                     .notes("Evening Slimming session")
                     .build();
 
+            Classes classes2Copy = Classes.builder()
+                    .classType(classType2)
+                    .trainer(trainer2)
+                    .scheduledDate(LocalDate.of(2025, 10, 15))
+                    .startTime(LocalTime.of(20, 30))
+                    .endTime(LocalTime.of(21, 15))
+                    .maxCapacity(15)
+                    .currentCapacity(15)
+                    .classStatus(ClassStatus.COMPLETED)
+                    .notes("Late Night Class slimming")
+                    .build();
+
 
             classRepository.save(classes1);
             classRepository.save(classes2);
+            classRepository.save(classes2Copy);
 
 
             Booking booking1 = Booking.builder()
@@ -210,8 +224,19 @@ public class BootstrapData implements CommandLineRunner {
                     .notes("Paid and Confirmed booking - payment received")
                     .build();
 
+            Booking booking2Copy = Booking.builder()
+                    .client(user4)
+                    .clazz(classes2Copy)
+                    .bookingDate(LocalDateTime.now())
+                    .bookingStatus(BookingStatus.CONFIRMED)
+                    .pricePaid(BigDecimal.valueOf(25))
+                    .paymentStatus(PaymentStatus.PAID)
+                    .notes("Paid and Confirmed booking - payment received")
+                    .build();
+
             bookingRepository.save(booking1);
             bookingRepository.save(booking2);
+            bookingRepository.save(booking2Copy);
 
             Invoice invoice1 = Invoice.builder()
                     .client(user3)
@@ -236,12 +261,35 @@ public class BootstrapData implements CommandLineRunner {
                     .invoiceStatus(InvoiceStatus.PAID)
                     .paymentDate(LocalDateTime.now())
                     .paymentMethod("Credit Card")
-                    .items(null)
+                    .items(null) // will be set once invoiceItem has been created
                     .notes("Slimming session")
                     .build();
 
             invoiceRepository.save(invoice1);
             invoiceRepository.save(invoice2);
+
+            InvoiceItems invoiceItems1 = InvoiceItems.builder()
+                    .invoice(invoice2)
+                    .booking(booking2)
+                    .description(classType2.getClassName() +" "+ classes2.getScheduledDate() +" "+ classes2.getStartTime())
+                    .quantity(1)
+                    .unitPrice(BigDecimal.valueOf(25))
+                    .totalPrice(BigDecimal.valueOf(25))
+                    .build();
+
+            InvoiceItems invoiceItems2 = InvoiceItems.builder()
+                    .invoice(invoice2)
+                    .booking(booking2Copy)
+                    .description(classType2.getClassName() +" "+ classes2Copy.getScheduledDate() +" "+ classes2Copy.getStartTime())
+                    .quantity(1)
+                    .unitPrice(BigDecimal.valueOf(25))
+                    .totalPrice(BigDecimal.valueOf(25))
+                    .build();
+
+            invoiceItemsRepository.save(invoiceItems1);
+            invoiceItemsRepository.save(invoiceItems2);
+
+            invoice2.setItems(List.of(invoiceItems1, invoiceItems2));
 
 
             TrainerEarnings earnings1 = TrainerEarnings.builder()
