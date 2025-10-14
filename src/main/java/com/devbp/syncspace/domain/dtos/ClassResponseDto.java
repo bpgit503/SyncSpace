@@ -18,7 +18,6 @@ public class ClassResponseDto {
 
     private long id;
     private ClassTypeResponseDto classType;
-    private TrainerResponseDto trainer;
     private LocalDate scheduledDate;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -28,4 +27,10 @@ public class ClassResponseDto {
     private String notes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
+    private long trainerId;
+    private String trainerName; //expression
+    private String bio;
+    private boolean isAvailable;
 }
