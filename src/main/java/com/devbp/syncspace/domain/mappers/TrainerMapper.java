@@ -13,6 +13,7 @@ public interface TrainerMapper {
     @Mapping(target = "email", source = "trainer.user.email")
     @Mapping(target = "phoneNumber", source = "trainer.user.phoneNumber")
     @Mapping(target = "trainerName", expression = "java(trainer.getUser().getFirstName() + \" \" + trainer.getUser().getLastName())")
-    @Mapping(source = "available", target = "isAvailable")
+    @Mapping(target = "isAvailable",source = "available")
+    @Mapping(target = "userType" ,source = "trainer.user.userType" )
     TrainerResponseDto toDto(Trainer trainer);
 }
