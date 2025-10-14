@@ -9,6 +9,10 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TrainerMapper {
 
+    @Mapping(target = "userId", source = "trainer.user.id")
+    @Mapping(target = "email", source = "trainer.user.email")
+    @Mapping(target = "phoneNumber", source = "trainer.user.phoneNumber")
+    @Mapping(target = "trainerName", expression = "java(trainer.getUser().getFirstName() + \" \" + trainer.getUser().getLastName())")
     @Mapping(source = "available", target = "isAvailable")
     TrainerResponseDto toDto(Trainer trainer);
 }
