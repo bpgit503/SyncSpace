@@ -13,6 +13,8 @@ public interface InvoiceItemsMapper {
 
     @Mapping(target = "bookingStatus", source = "booking.bookingStatus")
     @Mapping(target = "paymentStatus", source = "booking.paymentStatus")
+    @Mapping(target = "bookingId", source = "booking.id")
+    @Mapping(target = "bookingDate", source = "booking.bookingDate")
     @Mapping(target = "notes", source = "booking.notes")
     InvoiceItemsResponseDto toDto(InvoiceItems invoiceItems);
 }

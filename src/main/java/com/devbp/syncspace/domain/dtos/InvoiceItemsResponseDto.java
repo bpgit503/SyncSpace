@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,12 +16,14 @@ import java.util.List;
 public class InvoiceItemsResponseDto {
 
     private long id;
-    private String description;
     private BigDecimal totalPrice;
     private int quantity;
     private BigDecimal unitPrice;
+    private String description;
 
+    private long bookingId;
     private String bookingStatus;
+    private LocalDateTime bookingDate;
     private PaymentStatus paymentStatus;
     private String notes;
 
