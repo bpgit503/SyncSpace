@@ -1,6 +1,7 @@
 package com.devbp.syncspace.services;
 
 import com.devbp.syncspace.domain.dtos.CreateUserRequest;
+import com.devbp.syncspace.domain.dtos.UpdateUserRequest;
 import com.devbp.syncspace.domain.dtos.UserResponseDto;
 import com.devbp.syncspace.domain.entities.User;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    User updateUser(long id, UserResponseDto.UpdateUserRequest userRequest);
+    User updateUser(long id, UpdateUserRequest userRequest);
 
     void deleteUserById(long id);
 

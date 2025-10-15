@@ -3,23 +3,25 @@ package com.devbp.syncspace.domain.entities;
 import com.devbp.syncspace.domain.BookingStatus;
 import com.devbp.syncspace.domain.PaymentStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "bookings",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "class_id"}))// add unique constraint for client and class id?
+        uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "class_id"}))
+// add unique constraint for client and class id?
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Bookings {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +35,8 @@ public class Bookings {
     @JoinColumn(name = "class_id", nullable = false)
     private Classes clazz;
 
-    @FutureOrPresent(message = "Bookings can be only made in the future or present")
-    @Column(name = "booking_date")
+    @CreationTimestamp
+    @Column(name = "booking_date", nullable = false)
     private LocalDateTime bookingDate;
 
     @NotNull(message = "Booking Status is required")
@@ -45,7 +47,7 @@ public class Bookings {
     @NotNull(message = "Paid price is required")
     @PositiveOrZero
     @Column(name = "price_paid", nullable = false)
-    private double pricePaid;
+    private BigDecimal pricePaid;
 
     @NotNull(message = "Payment Status is required")
     @Enumerated(EnumType.STRING)
@@ -58,8 +60,8 @@ public class Bookings {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Bookings bookings = (Bookings) o;
-        return Objects.equals(client, bookings.client) && Objects.equals(clazz, bookings.clazz);
+        Booking booking = (Booking) o;
+        return Objects.equals(client, booking.client) && Objects.equals(clazz, booking.clazz);
     }
 
     @Override

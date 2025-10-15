@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
+    @Query("SELECT u from User u where u.id = :id and u.userType = 'TRAINER'")
+    boolean existsById_AndUserType_Trainer(@Param("id") long id);
+
     Optional<User> findUserByEmail(String email);
+
+    @Query(value = "Select * from users where status = 'ACTIVE' AND user_type = 'CLIENT' and id = ?", nativeQuery = true)
+    Optional<User> findClientWithStatusActiveAndTypeClient(@Param("id") long id);
 
     @Query("Select u from User u where " +
             "Lower(u.firstName) LIKE lower(concat( '%', :searchTerm, '%')) OR " +
@@ -26,7 +31,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmailAndIdNot(String email, Long id);
 
     void deleteUserByEmailAndId(String email, Long id);
-
 
     boolean existsByEmailAndId(String email, Long id);
 }

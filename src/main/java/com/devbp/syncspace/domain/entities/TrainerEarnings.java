@@ -1,16 +1,17 @@
 package com.devbp.syncspace.domain.entities;
 
-import com.devbp.syncspace.domain.PaymentStatus;
+import com.devbp.syncspace.domain.TrainerPaymentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "trainer_earnings",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"trainer_id", "class_id"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"trainer_id", "class_id"}))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -38,14 +39,13 @@ public class TrainerEarnings {
     @Column(name = "earnings_percentage", nullable = false)
     private double earningPercentage;
 
-    @NotNull(message = "Earning amount is required")
-    @Column(name = "earnings_amount", nullable = false)
-    private double earningAmount;
+    @Column(name = "earnings_amount")
+    private BigDecimal earningAmount;
 
     @NotNull(message = "Payment Status is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status", nullable = false)
-    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    private TrainerPaymentStatus paymentStatus = TrainerPaymentStatus.PENDING;
 
     @Column(name = "payment_date")
     private LocalDateTime paymentDate;

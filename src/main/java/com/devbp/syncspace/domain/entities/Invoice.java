@@ -7,6 +7,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Invoice {
     private User client;
 
     @NotNull(message = "Invoice number is required")
-    @Column(name = "invoice_number", nullable = false, unique = true)
+    @Column(name = "invoice_number", nullable = false, unique = true, updatable = false)
     private String invoiceNumber;
 
     @CreationTimestamp
@@ -45,18 +46,17 @@ public class Invoice {
     @NotNull(message = "Total amount is required")
     @PositiveOrZero
     @Column(name = "total_amount", nullable = false)
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     @PositiveOrZero
     @Column(name = "tax_amount")
-    private double taxAmount = 0.0;
+    private BigDecimal taxAmount = new BigDecimal(0);
 
     @NotNull(message = "Invoice status is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private InvoiceStatus invoiceStatus = InvoiceStatus.PENDING;
 
-    //check this sql timestamp mapped to what in java
     @Column(name = "payment_date")
     private LocalDateTime paymentDate;
 
@@ -65,6 +65,13 @@ public class Invoice {
 
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<InvoiceItems> items = new ArrayList<>();
+
+    @Column()
+    private String notes;
+
+    @CreationTimestamp
+    @Column(name = "created_At")
+    private LocalDateTime createdAt;
 
     public void addInvoiceItem(InvoiceItems invoiceItem) {
         if (invoiceItem == null) {
@@ -89,13 +96,6 @@ public class Invoice {
         }
 
     }
-
-    @Column()
-    private String notes;
-
-    @CreationTimestamp
-    @Column(name = "created_At")
-    private LocalDateTime createAt;
 
     @Override
     public boolean equals(Object o) {

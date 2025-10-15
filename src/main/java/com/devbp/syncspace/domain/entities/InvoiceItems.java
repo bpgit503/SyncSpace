@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -25,7 +26,7 @@ public class InvoiceItems {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false)
-    private Bookings bookings;
+    private Booking booking;
 
     @NotNull
     @Column(nullable = false)
@@ -36,21 +37,21 @@ public class InvoiceItems {
 
     @NotNull
     @Column(name = "unit_price", nullable = false)
-    private double unitPrice;
+    private BigDecimal unitPrice;
 
     @NotNull
     @Column(name = "total_price", nullable = false)
-    private double totalPrice;
+    private BigDecimal totalPrice;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceItems that = (InvoiceItems) o;
-        return Objects.equals(invoice, that.invoice) && Objects.equals(bookings, that.bookings);
+        return Objects.equals(invoice, that.invoice) && Objects.equals(booking, that.booking);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoice, bookings);
+        return Objects.hash(invoice, booking);
     }
 }

@@ -28,19 +28,5 @@ public class UserResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class UpdateUserRequest {
 
-        private String email;
-        private String firstName;
-        private String lastName;
-        private String phoneNumber;
-        private LocalDate dateOfBirth;
-        private String address;
-        private UserStatus status;
-
-    }
 }

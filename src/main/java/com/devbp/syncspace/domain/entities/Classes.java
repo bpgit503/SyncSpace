@@ -21,7 +21,6 @@ import java.util.Objects;
 @Builder
 public class Classes {
 
-    //A way to validate that the start time < end time?
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

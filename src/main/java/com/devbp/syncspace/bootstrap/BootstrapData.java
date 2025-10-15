@@ -1,16 +1,17 @@
 package com.devbp.syncspace.bootstrap;
 
-import com.devbp.syncspace.domain.UserStatus;
-import com.devbp.syncspace.domain.UserType;
-import com.devbp.syncspace.domain.entities.Trainer;
-import com.devbp.syncspace.domain.entities.User;
-import com.devbp.syncspace.repositories.TrainerRepository;
-import com.devbp.syncspace.repositories.UserRepository;
+import com.devbp.syncspace.domain.*;
+import com.devbp.syncspace.domain.entities.*;
+import com.devbp.syncspace.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +19,12 @@ public class BootstrapData implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
+    private final ClassTypeRepository classTypeRepository;
+    private final ClassRepository classRepository;
+    private final BookingRepository bookingRepository;
+    private final InvoiceRepository invoiceRepository;
+    private final InvoiceItemsRepository invoiceItemsRepository;
+    private final TrainerEarningsRepository trainerEarningsRepository;
 
 
     @Override
@@ -74,12 +81,12 @@ public class BootstrapData implements CommandLineRunner {
             user4.setStatus(UserStatus.ACTIVE);
 
             user5 = User.builder()
-                    .email("FitJim@com")
+                    .email("slimJim@slimming.com")
                     .firstName("Slim")
-                    .lastName("Shaddy")
+                    .lastName("Jim")
                     .phoneNumber("000000000")
                     .dateOfBirth(LocalDate.parse("1969-06-09"))
-                    .address("69 shaddy Ave")
+                    .address("69 slim Ave")
                     .userType(UserType.TRAINER)
                     .status(UserStatus.ACTIVE)
                     .build();
@@ -90,23 +97,213 @@ public class BootstrapData implements CommandLineRunner {
             userRepository.save(user4);
             userRepository.save(user5);
 
-            if (trainerRepository.count() == 0) {
-                Trainer trainer1 = Trainer.builder()
-                        .user(user2)
-                        .earningsPercentage(0.4)
-                        .build();
 
-                Trainer trainer2 = Trainer.builder()
-                        .user(user5)
-                        .earningsPercentage(0.4)
-                        .build();
+            Trainer trainer1 = Trainer.builder()
+                    .user(user2)
+                    .specializations(List.of("Massive Specializations", "More Massive Specializations"))
+                    .certifications(List.of("Massive Certification", "Greater Massive Certifications"))
+                    .contractDetails("Sample Contract")
+                    .earningsPercentage(0.4)
+                    .hourlyRate(1)
+                    .bio("A Massive coach of massive standards who specialty is to get people to become massive in both mind and body")
+                    .experienceYears(10)
+                    .isAvailable(true)
+                    .build();
 
-                trainerRepository.save(trainer1);
-                trainerRepository.save(trainer2);
-            }
+            Trainer trainer2 = Trainer.builder()
+                    .user(user5)
+                    .specializations(List.of("Slimming Specializations", "More Slimming Specializations"))
+                    .certifications(List.of("Slimming Certification", "Greater Slimming Certifications"))
+                    .contractDetails("Sample Contract")
+                    .earningsPercentage(0.4)
+                    .hourlyRate(1)
+                    .bio("A Slim coach of slim standards who specialty is to get people to become slim in both mind and body")
+                    .experienceYears(10)
+                    .isAvailable(true)
+                    .build();
+
+            trainerRepository.save(trainer1);
+            trainerRepository.save(trainer2);
+
+
+            ClassType classType1 = ClassType.builder()
+                    .className("GetMassive")
+                    .description("Come and get absolutely massive with massive Bob")
+                    .durationMinutes(45)
+                    .isGroupClass(true)
+                    .maxCapacity(15)
+                    .basePrice(40)
+                    .isActive(true)
+                    .build();
+
+            ClassType classType2 = ClassType.builder()
+                    .className("Get Slim")
+                    .description("Come and slim down with slim Jim")
+                    .durationMinutes(60)
+                    .isGroupClass(true)
+                    .maxCapacity(20)
+                    .basePrice(25)
+                    .isActive(true)
+                    .build();
+
+            ClassType classType3 = ClassType.builder()
+                    .className("PrivatePilates")
+                    .description("One on one pilates class")
+                    .durationMinutes(60)
+                    .isGroupClass(false)
+                    .maxCapacity(1)
+                    .basePrice(150)
+                    .isActive(true)
+                    .build();
+
+            classTypeRepository.save(classType1);
+            classTypeRepository.save(classType2);
+            classTypeRepository.save(classType3);
+
+
+            Classes classes1 = Classes.builder()
+                    .classType(classType1)
+                    .trainer(trainer1)
+                    .scheduledDate(LocalDate.of(2025, 10, 15))
+                    .startTime(LocalTime.of(9, 0))
+                    .endTime(LocalTime.of(10, 0))
+                    .maxCapacity(20)
+                    .currentCapacity(12)
+                    .classStatus(ClassStatus.SCHEDULED)
+                    .notes("Massive Morning session")
+                    .build();
+
+
+            Classes classes2 = Classes.builder()
+                    .classType(classType2)
+                    .trainer(trainer2)
+                    .scheduledDate(LocalDate.of(2025, 10, 14))
+                    .startTime(LocalTime.of(18, 30))
+                    .endTime(LocalTime.of(20, 0))
+                    .maxCapacity(15)
+                    .currentCapacity(15)
+                    .classStatus(ClassStatus.COMPLETED)
+                    .notes("Evening Slimming session")
+                    .build();
+
+            Classes classes2Copy = Classes.builder()
+                    .classType(classType2)
+                    .trainer(trainer2)
+                    .scheduledDate(LocalDate.of(2025, 10, 15))
+                    .startTime(LocalTime.of(20, 30))
+                    .endTime(LocalTime.of(21, 15))
+                    .maxCapacity(15)
+                    .currentCapacity(15)
+                    .classStatus(ClassStatus.COMPLETED)
+                    .notes("Late Night Class slimming")
+                    .build();
+
+
+            classRepository.save(classes1);
+            classRepository.save(classes2);
+            classRepository.save(classes2Copy);
+
+
+            Booking booking1 = Booking.builder()
+                    .client(user3)
+                    .clazz(classes1)
+                    .bookingDate(LocalDateTime.now())
+                    .bookingStatus(BookingStatus.CONFIRMED)
+                    .pricePaid(BigDecimal.valueOf(40))
+                    .paymentStatus(PaymentStatus.PENDING)
+                    .notes("First booking - morning class")
+                    .build();
+
+            Booking booking2 = Booking.builder()
+                    .client(user4)
+                    .clazz(classes2)
+                    .bookingDate(LocalDateTime.now())
+                    .bookingStatus(BookingStatus.CONFIRMED)
+                    .pricePaid(BigDecimal.valueOf(25))
+                    .paymentStatus(PaymentStatus.PAID)
+                    .notes("Paid and Confirmed booking - payment received")
+                    .build();
+
+            Booking booking2Copy = Booking.builder()
+                    .client(user4)
+                    .clazz(classes2Copy)
+                    .bookingDate(LocalDateTime.now())
+                    .bookingStatus(BookingStatus.CONFIRMED)
+                    .pricePaid(BigDecimal.valueOf(25))
+                    .paymentStatus(PaymentStatus.PAID)
+                    .notes("Paid and Confirmed booking - payment received")
+                    .build();
+
+            bookingRepository.save(booking1);
+            bookingRepository.save(booking2);
+            bookingRepository.save(booking2Copy);
+
+            Invoice invoice1 = Invoice.builder()
+                    .client(user3)
+                    .invoiceNumber("INV-2025-00001")
+                    .invoiceDate(LocalDate.now())
+                    .dueDate(LocalDate.now().plusDays(30))
+                    .totalAmount(new BigDecimal(50))
+                    .taxAmount(new BigDecimal("0.08"))
+                    .invoiceStatus(InvoiceStatus.PENDING)
+                    .paymentMethod(null)
+                    .items(null)
+                    .notes("Sample Invoice")
+                    .build();
+
+            Invoice invoice2 = Invoice.builder()
+                    .client(user2)
+                    .invoiceNumber("INV-2025-002")
+                    .invoiceDate(LocalDate.now())
+                    .dueDate(LocalDate.now().plusDays(15))
+                    .totalAmount(new BigDecimal(50))
+                    .taxAmount(new BigDecimal("0.08"))
+                    .invoiceStatus(InvoiceStatus.PAID)
+                    .paymentDate(LocalDateTime.now())
+                    .paymentMethod("Credit Card")
+                    .items(null) // will be set once invoiceItem has been created
+                    .notes("Slimming session")
+                    .build();
+
+            invoiceRepository.save(invoice1);
+            invoiceRepository.save(invoice2);
+
+            InvoiceItems invoiceItems1 = InvoiceItems.builder()
+                    .invoice(invoice2)
+                    .booking(booking2)
+                    .description(classType2.getClassName() +" "+ classes2.getScheduledDate() +" "+ classes2.getStartTime())
+                    .quantity(1)
+                    .unitPrice(BigDecimal.valueOf(25))
+                    .totalPrice(BigDecimal.valueOf(25))
+                    .build();
+
+            InvoiceItems invoiceItems2 = InvoiceItems.builder()
+                    .invoice(invoice2)
+                    .booking(booking2Copy)
+                    .description(classType2.getClassName() +" "+ classes2Copy.getScheduledDate() +" "+ classes2Copy.getStartTime())
+                    .quantity(1)
+                    .unitPrice(BigDecimal.valueOf(25))
+                    .totalPrice(BigDecimal.valueOf(25))
+                    .build();
+
+            invoiceItemsRepository.save(invoiceItems1);
+            invoiceItemsRepository.save(invoiceItems2);
+
+            invoice2.setItems(List.of(invoiceItems1, invoiceItems2));
+
+
+            TrainerEarnings earnings1 = TrainerEarnings.builder()
+                    .trainer(trainer2)
+                    .clazz(classes2)
+                    .baseAmount(0)
+                    .earningPercentage(0.40)
+                    .paymentStatus(TrainerPaymentStatus.PENDING)
+                    .build();
+
+            trainerEarningsRepository.save(earnings1);
+
 
         }
-
 
     }
 }

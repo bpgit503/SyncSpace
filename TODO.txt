@@ -1,13 +1,76 @@
+##General Questions
+In invoice update can you update invoice itmes?
+how to create events for certain methods to be automaticalled called?
+    ex - time to class has passed and change to classes status has happened so class status = completed
+    Booking status becomes completed unless modified( no-show etc)
+    when class has been completed and payment is pending then payment status = over due send email etc
+-Classes Response Dto - iwant all field of ClassType excpet create at. What to do?
+##General
+- cCreate controller methods for class type activate and decativate classes
+- Have both soft delete and hard delete functions
+- as soft delete by making said entities inactive or turned off.
+    --As it is better to keep the data in db for future reference
+
+
 ## Invoice
-a way to automatically generate unique invoice numbers
+create invoice for all unpaid Bookings
+-Add Booking to Invoice hint use helper method
+-remove Booking from Invoice hint use helper method
 
 ## Classes
-a way to validate that start time < end time and total time cant be over 2 hours
+- when updating a class' trainer admin may be able to enter
+(id,trainer full name or trainer email) to be able to update the class' trainer
+
+- Class status should be automatically updated to completed once localtime.now is > endTime and
+    ClassStatus is != Canceled and Class status != completed/noshow;
+
+ADDITIONAL:
+    // should not be able to update class date to the past
+    //should not be able to update a class which has happened over 7 days ago
+    //make a date log in notes for whenever a change is made
+
+- SECURITY what is a business approach for handling updating record of classes that happened in the past?
+    cannot update classes whose dates are older than 7 days
+
+SEARCH: Should I create a search function to fetch class by the ff:
+    get all classes by class type
+    get all classes by trainer
+    get all classes by class status
+    get all classes by date range - day, week
 
 
 ## Class Types
-Make sure classname is immutable for equals safety
+Make classname is immutable for equals safety
  check unique db constraints on tables ex. invoice items
+
+ ##Booking Class
+     add special logic where needed when a class is cancelled, noshow, completed, etc
+    Get booking by FF: CLinet (id,name,email) and CLass(id, name)
+    -ex if client cancels and it before 24 hours before the class start time (refund Policy)
+        then money will be refunded
+        booking status will change to null and price paid 0
+        A spot in the class will be opened
+    -ex client is a noShow then booking status will be updated to noshow
+    update booking logic so that when a class is booking its payment status = pending
+        only when invoice status= paid booking status follows
+
+# CREATE checks for the following
+    - ONLY ACTIVE CLIENTS AND TRAINERS CAN BOOK CLASSES
+    - ONLY ACTIVE CLASS types CAN HAVE CLASSES BOOKED
+    - When CLASS is booked modify current capacity accordingly
+    - When class is fully booked modify field accordimgly
+    - handle when trying to insert same booking twice
+
+    - Booking status should be automatically updated to completed once localtime.now is > endTime and
+        Booking Status is != Canceled and Class status != completed/noshow;
+
+## INVOICES
+
+    - create function to change status accordingly - need to make layer responsible for checking app statuses
+        ex- when booking status = paid & completed -> invoice status = Paid
+        ex- when booking Payment status = pending & booking status = confirmed & -> invoice status = Overdue
+
+
 
 
 
