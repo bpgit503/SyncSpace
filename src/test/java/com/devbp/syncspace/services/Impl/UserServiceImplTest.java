@@ -1,5 +1,6 @@
 package com.devbp.syncspace.services.Impl;
 
+import com.devbp.syncspace.config.TestConfig;
 import com.devbp.syncspace.domain.dtos.CreateUserRequest;
 import com.devbp.syncspace.domain.UserStatus;
 import com.devbp.syncspace.domain.UserType;
@@ -20,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +39,8 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
+    private TestConfig testConfig;
+
     private User expectedUser;
     private User updatedUser;
     private CreateUserRequest createUserRequest;
@@ -45,6 +49,7 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        testConfig = new TestConfig();
 
         this.expectedUser = User.builder()
                 .id(1L)
@@ -273,7 +278,7 @@ class UserServiceImplTest {
 
             when(userRepository.findUserByEmail(email)).thenReturn(Optional.empty());
 
-            EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () -> userService.findUserByEmail(email));
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> userService.findUserByEmail(email));
 
 
             assertEquals("User not found with email : " + email, exception.getMessage());
@@ -285,9 +290,30 @@ class UserServiceImplTest {
     }
 
 
+    @DisplayName("Should Return non empty list of users")
+    @Test
+    void shouldSuccessfullyReturnListOfUsers() {
+        //given
+        List<User> listOfUsers = List.of(expectedUser, testConfig.createUpdatedUser());
+
+        when(userRepository.findAll()).thenReturn(listOfUsers);
+
+        //when
+        List<User> allUsers = userService.getAllUsers();
+
+        //then
+        verify( userRepository, times(1)).findAll();
+        assertFalse(allUsers.isEmpty());
+        assertEquals(2, allUsers.size());
+        assertTrue(allUsers.contains(expectedUser));
+    }
+
+
+
     @Nested
     @DisplayName("Should Delete User By Email or Id")
     class ShouldDeleteUserByEmailOrId {
+
 
         @Test
         @DisplayName("Should successfully Delete user by Id")
@@ -310,7 +336,6 @@ class UserServiceImplTest {
             verify(userRepository, times(1)).delete(expectedUser);
 
         }
-
 
     }
 
